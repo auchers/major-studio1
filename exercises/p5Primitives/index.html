@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--p5 core library-->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.min.js"></script>
+        
+        <script>
+            function setup() {
+                createCanvas(displayWidth, displayHeight); 
+                //image type container based on pixels/bitmap (as opposed to vectors)
+                //less memory, doesn't need to hold all vector objects in DOM, only uses graphics card
+                //by default draws 60x/sec
+            }        
+            function draw() {
+                background('white');
+                rect(mouseX, 0, 10, height/3);
+            }
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>

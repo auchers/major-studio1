@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+    <body>
+        <script>
+            d3.select('body')
+                .append('svg') //xml structure -- that element only speaks 'svg' language
+                .attr('width', window.innerHeight)
+                .attr('height', 500);
+                
+            var svg = d3.select('svg');
+            svg.append('circle')
+                .attr('r', 20)
+                .attr('cx', 200)
+                .attr('cy', 75);
+                
+            svg.append('rect')
+                .attr('width', 10)
+                .attr('height', 100)
+                .attr('x', 300)
+                .attr('y', 100)
+        </script>
+    </body>
+</html>
