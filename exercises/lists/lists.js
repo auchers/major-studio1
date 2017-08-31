@@ -18,8 +18,6 @@ console.log(report);
 
 var assignment =[];
 
-
-
 for (var i=0; i<report.length; i++) {
     assignment[i] = {
         report: report[i],
@@ -34,7 +32,6 @@ for (var key in assignment){
     console.log(rnd);
     assignment[key].team.push(participant[rnd]);
     participant.splice(rnd,1);
-        
     }
 }
 

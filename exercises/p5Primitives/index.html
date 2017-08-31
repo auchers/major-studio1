@@ -10,10 +10,30 @@
                 //image type container based on pixels/bitmap (as opposed to vectors)
                 //less memory, doesn't need to hold all vector objects in DOM, only uses graphics card
                 //by default draws 60x/sec
-            }        
-            function draw() {
+                
+                //both of the following relate to draw()
+                // frameRate(5); //manually change framerate
+                // noLoop(); //doesn't continue to draw - static picture upon load
+                
+            } 
+            //UI best pressed/released need to research what works best
+            function mouseReleased() {
                 background('white');
                 rect(mouseX, 0, 10, height/3);
+                
+                //no circle, just ellipse with same width and height
+                ellipse(mouseX, height/2, 30,30);
+                
+                //only polygon is affected by translate
+                translate(mouseX, height*3/4);
+                beginShape();
+                    vertex(1,0);
+                    vertex(1,20);
+                    vertex(20,40);
+                    vertex(-20,40);
+                    vertex(-1,20);
+                    vertex(-1,0);
+                endShape();
             }
         </script>
     </head>

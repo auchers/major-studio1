@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--p5 core library-->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.min.js"></script>
+        <script>
+            //following equation from wiki:https://en.wikipedia.org/wiki/Centroid
+            var x = [];
+            var y = [];
+
+            
+            function setup() {
+                createCanvas(windowWidth,windowHeight);
+                fill(255, 100, 0, 128);
+            }
+            
+            function mouseReleased() {
+                
+                if (x.length > 0){
+                    x.splice(1, 0, mouseX);
+                    y.splice(1, 0, mouseY);
+                } else {
+                    //to get it to start and end at the same point
+                    //pushes the same coords as first and last coords
+                    x.push(mouseX);
+                    y.push(mouseY);
+                    x.push(mouseX);
+                    y.push(mouseY);
+                }
+
+                display();
+            }
+            
+            function display() {
+                background('white');
+                fill('pink');
+                //not saved by P5 - our definition
+                var a = 0;
+                var cX = 0;
+                var cY = 0;
+                
+                if (x.length<3)
+                    return;
+            
+                
+                for (var i = 0; i<x.length -1; i++) {
+                    cX += (x[i] + x[i+1]) * (x[i] * y[i+1] - x[i+1] * y[i]);
+                    cY += (y[i] + y[i+1]) * (x[i] * y[i+1] - x[i+1] * y[i]);
+                    a += x[i] * y[i+1] - x[i+1] * y[i];
+                }
+                
+                a = 0.5 * a;
+                cX = cX / (6*a);
+                cY = cY / (6*a);
+                
+                beginShape();
+                    for (var i = 0; i<x.length; i++){
+                      vertex(x[i],y[i]);  
+                    }
+                    
+                endShape(CLOSE);
+                
+                fill('black');
+                ellipse(cX, cY, 10, 10);
+                console.log(cX + ' | ' + ScY);
+            }
+        </script>
+        
+    </head>
+    <body>
+        
+    </body>
+</html>
