@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--https://code.jquery.com/-->
+        <script
+			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			  crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <script>
+            $('body').append('<svg>')
+            
+            var svg = $('svg');
+            
+            svg.attr('width', window.innerWidth)
+                .attr('height', 500);
+            
+            svg.append('<circle>');
+            
+            $('circle').attr('r', 20)
+                .attr('cx', 200)
+                .attr('cy', 75);
+                
+            svg.append('<rect>');
+            
+            $('rect').attr('x', 300)
+                .attr('y', 50)
+                .attr('width', 50)
+                .attr('height', 50);
+                
+            svg.append('<polygon>');
+            
+            $('polygon').attr('points', '60,30 100,50 100,90 60,110 20,90 20,50');
+        
+            // required in jQuery to update svg, not needed in D3
+            svg.html(function(){return this.innerHTML});
+        </script>
+    </body>
+</html>

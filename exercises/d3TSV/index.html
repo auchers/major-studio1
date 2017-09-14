@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+
+    <body>
+        <script>
+            d3.select('body')
+                .append('svg')
+                .attr('width', window.innerWidth)
+                .attr('height', window.innerHeight);
+
+            var svg = d3.select('svg');
+
+            d3.tsv('groceries.tsv', function(error, data){
+
+                console.log(data);
+
+                data.forEach(function(d, i){ // for each returns data and iterator
+                    svg.append('text')
+                        .text(i + ': ' + d.amount + ' | ' + d.unit
+                            + ' | ' + d.item + ' | ' + d.source)
+                        .attr('x', window.innerWidth/2)
+                        .attr('y', (i * 20) + 20)
+                        .style('text-anchor', 'middle')
+                        .style('fill', function (){
+                            if (d.source == 'store')
+                                return 'darkGray';
+                            else
+                                return 'royalBlue';
+                            });
+                });
+
+            });
+
+        </script>
+    </body>
+</html>

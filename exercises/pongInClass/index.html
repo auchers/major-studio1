@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--p5 core library-->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.min.js"></script>
+
+        <script>
+            // globals - can't access P5 methods without being in setup()
+            var x, y, xSpeed, ySpeed, radius;
+
+            // P5 calls setup() exactly once when canvas loads
+            function setup() {
+                createCanvas(500, 500);
+                rectMode(CENTER);
+                x = random(width);
+                y = random(height);
+                xSpeed = random(-2.5, 2.5);
+                ySpeed = random(-2.5, 2.5);
+                radius = 5;
+            }
+
+            function draw(){ // has default frame rate
+                background('lightGray');
+
+                // Position update
+                x += xSpeed;
+                y += ySpeed;
+
+                // Boundaries
+                // horizontal boundary
+                if (x > width - radius || x < radius){
+                    xSpeed *= -1;
+                }
+
+                //  top boundary
+                if (y < radius){
+                    ySpeed *= -1;
+                }
+
+                //  paddle boundary
+                if (y >= height - 20 && abs(mouseX-x) < width / 12 
+                    && y < height - 25 + ySpeed) {
+                    ySpeed = ySpeed * -1  // ySpeed *= -1;
+                }
+                
+                ellipse(x, y, radius * 2, radius * 2);
+
+                rect(mouseX, height - 30, width / 6, 10, 5);
+            }
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--p5 core library CDN-->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.min.js"></script>
+
+        <script>
+            // globals
+            var x = [],
+                y = [],
+                xSpeed = [],
+                ySpeed = [];
+
+            var paddleColor;
+            var score = 0;
+            var quantity = 10;
+
+            // p5 calls setup() exactly once when the canvas loads
+            function setup() {
+                createCanvas(500, 500);
+                rectMode(CENTER);
+
+                for (var i = 0; i < quantity; i++) {
+                    x[i] = random(width);
+                    y[i] = random(height);
+                    xSpeed[i] = random(-2.5, 2.5);
+                    ySpeed[i] = random(-2.5, 2.5);
+                }
+
+                // paddle color
+                paddleColor = color(255, 255, 0);
+
+             }
+
+            function draw() {
+                background('lightgray');
+                fill('black');
+
+                // position update
+
+                for (var i = 0; i < quantity; i++) {
+                    x[i] = x[i] + xSpeed[i];
+                    y[i] = y[i] + ySpeed[i];
+
+                    // boundaries
+                    // horizontal boundary
+                    if (x[i] > width - 5 || x < 5) {
+                        xSpeed[i] = xSpeed[i] * -1; // xSpeed *= -1;
+                    }
+
+                    // top boundary
+                    if (y[i] < 5) {
+                        ySpeed[i] = ySpeed[i] * -1; // xSpeed *= -1;
+                    }
+
+                    // paddel boundary
+                    if (y[i] >= height - 40 && abs(mouseX-x[i]) < width/12 && y[i] < height - 40 + ySpeed[i]) {
+                        ySpeed[i] = ySpeed[i] * -1  // ySpeed *= -1;
+                        // fun items
+                        xSpeed[i] *= 1.2;
+                        ySpeed[i] *= 1.2;
+                        paddleColor = color(random(255), 0, 0);
+                        score++;
+                    }
+
+                    ellipse(x[i], y[i], 10, 10);
+                }
+
+                fill(paddleColor);
+                rect(mouseX, height - 30, width / 6, 10, 5);
+                fill('black');
+                text(score, mouseX, height-25);
+            }
+
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>
