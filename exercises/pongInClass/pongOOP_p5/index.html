@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--p5 core library CDN-->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.min.js"></script>
+
+        <script>
+            
+            var quantity;
+            var paddleColor;
+            var score = 0;
+            var pongBalls = [];
+
+            // p5 calls setup() exactly once when the canvas loads
+            function setup() {
+                createCanvas(500, 500);
+                rectMode(CENTER);
+                
+                quantity = 10;
+                
+                for (var i = 0; i < quantity; i++) {
+                   pongBalls.push(new PongBall(random(width), random(height)));
+                }
+
+                // paddle color
+                paddleColor = color(255, 255, 0);
+
+             }
+
+            function draw() {
+                background('lightgray');
+                fill('black');
+
+                for (var i = 0; i < quantity; i++) {
+                    pongBalls[i].update();
+                }
+
+                fill(paddleColor);
+                rect(mouseX, height - 30, width / 6, 10, 5);
+                fill('black');
+                text(score, mouseX, height-25);
+            }
+
+
+            function PongBall(myX, myY) { // notice the Capital Letter
+               // encapsulated -- can only access them, if write a method that returns them
+                this.x = myX;
+                this.y = myY;
+                this.xSpeed = random(-2.5, 2.5);
+                this.ySpeed = random(-2.5, 2.5);
+                
+                this.update = function(){
+                
+                    this.x = this.x + this.xSpeed;
+                    this.y = this.y + this.ySpeed;
+
+                    // boundaries
+                    // horizontal boundary
+                    if (this.x > width - 5 || this.x < 5) {
+                        this.xSpeed *= -1; // xSpeed *= -1;
+                    }
+
+                    // top boundary
+                    if (this.y < 5) {
+                        this.ySpeed *= -1; // xSpeed *= -1;
+                    }
+
+                    // paddel boundary
+                    if (this.y >= height - 40 && abs(mouseX-this.x) < width/12 && this.y < height - 40 + this.ySpeed) {
+                        this.ySpeed *= -1  // ySpeed *= -1;
+                        // fun items
+                        this.xSpeed *= 1.2;
+                        this.ySpeed *= 1.2;
+                        paddleColor = color(random(255), 0, 0); // stays global scope
+                        score++;
+                    }
+
+                ellipse(this.x, this.y, 10, 10);
+                }
+            }
+            // void mouse 
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>
