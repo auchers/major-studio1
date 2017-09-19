@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+    <style type="text/css">
+        
+        body {
+            font-family: sans-serif;
+        }
+        
+    </style>
+
+    <body>
+        <div id='target'></div>
+        <script>
+            var marginValue = 50;
+        
+            var graph = d3.select('#target')
+                .append('svg')
+                .attr('width', window.innerWidth)
+                .attr('height', window.innerHeight);
+
+            d3.json('museums.json', function(error, data){
+               if (error) throw error; //json log
+               svg(data);
+            });
+            
+            function svg(data){
+                // Data prep
+                var tmp = []; // need array for max function
+                data.forEach(function(d){tmp.push(d.operatingExpenses);});
+                var max = d3.max(tmp);
+                
+                // Scales
+                var x = d3.scaleLinear()
+                    .domain([0,data.length])
+                    .range([marginValue,window.innerWidth-marginValue]);
+                    
+                var y = d3.scaleLinear()
+                    .domain([0,max])
+                    .range([marginValue,window.innerHeight-marginValue]);
+                    
+                var width = (x(1)-x(0)) - (x(1)-x(0))/10;
+                    
+                // Graphing
+                graph.append('g') //SVG for group
+                    .attr('id', 'group'); //when you move a  group, all elements move together
+                    
+                var group = graph.select('#group')
+                    .selectAll('g')
+                    .data(data)
+                    .enter()
+                    .append('g')
+                    .attr('x', function(d, i){ return x(i); }) // i because of horiz position
+                    .attr('transform', function(d, i){
+                        return 'translate(' + x(i) + ', ' + 0 + ')'; //translate takes (x,y)
+                    }); //don't have y because g's height
+                
+                group.append('rect')
+                    .attr('class', 'bar')
+                    .attr('y', function(d, i){ return window.innerHeight - y(d.operatingExpenses); })
+                    .attr('width', width) //first gives the spacing
+                    .attr('height', function(d){ return y(d.operatingExpenses); });
+                    
+                group.append('text')
+                    .text(function(d){ return d.name; })
+                    .attr('transform', function(d, i){ return 'translate(' + ((x(1)-x(0))/2) + ',' + ((window.innerHeight - y(d.operatingExpenses)) - 5) + ')rotate(-90)'; });
+            }
+            
+        </script>
+    </body>
+</html>
