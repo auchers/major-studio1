@@ -18,13 +18,19 @@ var width = window.innerWidth - margin.left - margin.right,
 
 // GRAPHING ---------
 
-// call belarus
+// Belarus
 d3.json('belarus_subset.json', function(error, data){
     if (error) throw error;
     console.log(data);
     graph(data, 'belarus');
 });
 
+// Kyrgyzstan
+d3.json('kyrgyzstan_subset.json', function(error, data){
+    if (error) throw error;
+    console.log(data);
+    graph(data, 'kyrgyzstan');
+})
 
 
 function graph(data, countryID){
