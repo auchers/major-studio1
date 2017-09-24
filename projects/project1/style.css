@@ -1,3 +1,7 @@
+.heading h1{
+ text-align: center;
+}
+
 body {
  font-family: sans-serif;
 }
@@ -8,4 +12,24 @@ circle {
 
 .Revyear {
  fill: crimson;
+}
+
+.bio {
+ display:inline-block;
+ float:left;
+ width: 15%;
+ text-align: center;
+}
+
+.bio h3{
+ margin: 0px;
+}
+
+.bio h4{
+ margin-top: 0px;
+}
+
+svg {
+ display:inline-block;
+ padding-left : 20px;
 }

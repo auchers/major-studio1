@@ -1,8 +1,8 @@
 // window variables
 var margin = {top: 20, right: 50, bottom: 50, left: 20};
-var numCountries = 3;
+var numCountries = 4;
 
-var width = (window.innerWidth - margin.left - margin.right),
+var width = (window.innerWidth - margin.left - margin.right) * .75,
     height = (window.innerHeight - margin.top - margin.bottom) / numCountries;
 
 // Page Setup + Graphing
@@ -10,7 +10,7 @@ var width = (window.innerWidth - margin.left - margin.right),
 d3.json('data/rev_summary.json', function(error, data){
     if (error) throw error;
     console.log(data);
-    
+
     // Add div for each country/revolution
     var div = d3.select('#bodycontent')
         .selectAll('div')
@@ -18,22 +18,35 @@ d3.json('data/rev_summary.json', function(error, data){
         .enter()
         .append('div')
         .attr('id',function(d){ return d.Country});
-    
-    // for each country, pull it's data and graph it    
+
+    // Side Callouts
+    var callout = div.append('div')
+        .attr('class','bio');
+
+    callout.append('h3')
+        .text(function (d){ return d.Country + ':';});
+
+    callout.append('h4')
+        .text(function (d){ return '\'' + d.name + '\'';});
+
+    callout.append('p')
+        .text(function (d){ return 'Year of Revolution: ' + d.Revyear;});
+
+    // for each country, pull it's data and graph it
     data.forEach(function(d){
         var country = d.Country;
         console.log(country);
         d3.json('data/' + country + '_subset.json', function(error, data){
             if (error) throw error;
-            
+
             // filter out NA values
             data = data.filter(function(d){ return (d._row == 'NA')? false : true;});
-            
+
             console.log(data);
             graph(data, country);
         });
     });
-    
+
 });
 
 // Graph Function
@@ -42,29 +55,29 @@ function graph(data, countryID){
     var ginis = [];
     var radius = 5;
     var scaleBuffer = 1;
-    
+
     data.forEach(function(d){
         years.push(d.Year);
         ginis.push(d.Gini);
     });
-    
+
     // Define Scales
     var	x = d3.scaleLinear()
         .domain([d3.min(years) - scaleBuffer, d3.max(years)])
         .range([0, width]);
-        
+
     var	y = d3.scaleLinear()
         .domain([d3.min(ginis) - scaleBuffer, d3.max(ginis)])
         .range([height, 0]);
-  
+
     console.log(x(2000) + ' | ' + d3.min(years));
     console.log(y(49));
-    
+
     // Define Axes
     var	xAxis = d3.axisBottom(x).ticks(5);
     var	yAxis = d3.axisLeft(y).ticks(5);
-    
-    // Create Svg and G    
+
+    // Create Svg and G
     var svg = d3.select('#'+countryID)
         .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -76,16 +89,16 @@ function graph(data, countryID){
     svg.append('g')
         .attr('class', 'yAxis')
         .call(yAxis);
-    
+
     svg.append('g')
         .attr('class', 'xAxis')
         .attr("transform", 'translate(0,' + height + ')')
         .call(xAxis);
-    
-    // Begin Plotting Data Points	
+
+    // Begin Plotting Data Points
     svg.append('g')
         .attr('class', 'group');
-        
+
     var group = svg.select('.group')
         .selectAll('g')
         .data(data)
@@ -94,7 +107,7 @@ function graph(data, countryID){
         .attr('class', function(d){ return d.Country + ' ' + d.Year + ' '
             + d.YearsTillRev + ' ' + d.Quality + ' ' + d.Gini})
         .attr('x', function(d,i){return x(d.Year);})
-        
+
     group.append('circle')
         .attr('class', 'point')
         .attr('class', function (d){
@@ -104,12 +117,12 @@ function graph(data, countryID){
         .attr('cy', function(d, i){ return y(d.Gini)})
         .attr('cx', function(d, i){ return x(d.Year)})
         .attr('r', radius);
-    
+
     // group.append('text')
     //     .text(function(d){ return d.Year})
     //     .style('text-anchor', 'middle')
     //     .attr('x', function(d, i){ return x(d.Year)})
     //     .attr('y', height);
-        
+
 
 }
