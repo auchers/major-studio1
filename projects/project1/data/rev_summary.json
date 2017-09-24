@@ -1,0 +1,28 @@
+[
+    {
+        "Country": "Georgia",
+        "name": "Rose Revolution",
+        "Revyear": "2003"
+    },
+    {
+        "Country": "Ukraine",
+        "name": "Orange Revolution",
+        "Revyear": "2004"
+    },
+    {
+        "Country": "Kyrgyzstan",
+        "name": "Tulip Revolution",
+        "Revyear": "2005"
+    },
+    {
+        "Country": "Belarus",
+        "name": "Jeans Revolution",
+        "Revyear": "2006"
+    },
+    {
+        "Country": "Moldova",
+        "name": "Grape Revolution",
+        "Revyear": "2009"
+    }
+]
+

@@ -33,23 +33,23 @@ function graph(data, countryID){
         ginis.push(d.Gini);
     });
     
-    // Set the ranges
+    // Define Scales
     var	x = d3.scaleLinear()
-        .domain([d3.min(years) - 1, d3.max(years)])
+        .domain([d3.min(years) - scaleBuffer, d3.max(years)])
         .range([0, width]);
         
     var	y = d3.scaleLinear()
-        .domain([0, d3.max(ginis)])
+        .domain([d3.min(ginis) - scaleBuffer, d3.max(ginis)])
         .range([height, 0]);
   
     console.log(x(2000) + ' | ' + d3.min(years));
     console.log(y(49));
     
-    // Define the axes
+    // Define Axes
     var	xAxis = d3.axisBottom(x).ticks(5);
     var	yAxis = d3.axisLeft(y).ticks(5);
     
-    // create svg and g    
+    // Create Svg and G    
     var svg = d3.select('#'+countryID)
         .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -57,7 +57,7 @@ function graph(data, countryID){
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // call axes
+    // Call Axes
     svg.append('g')
         .attr('class', 'yAxis')
         .call(yAxis);
@@ -67,7 +67,7 @@ function graph(data, countryID){
         .attr("transform", 'translate(0,' + height + ')')
         .call(xAxis);
     
-    // begin group	
+    // Begin Plotting Data Points	
     svg.append('g')
         .attr('class', 'group');
         
