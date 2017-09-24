@@ -55,18 +55,21 @@ function graph(data, countryID){
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .call(yAxis)
-        .attr('class', 'yAxis');
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // call axes
+    svg.append('g')
+        .attr('class', 'yAxis')
+        .call(yAxis);
     
     svg.append('g')
-        .attr("transform", 'translate(0,' + height + ')')
         .attr('class', 'xAxis')
+        .attr("transform", 'translate(0,' + height + ')')
         .call(xAxis);
-    	
+    
+    // begin group	
     svg.append('g')
-        .attr('class', 'group')
-        
+        .attr('class', 'group');
         
     var group = svg.select('.group')
         .selectAll('g')
@@ -87,11 +90,11 @@ function graph(data, countryID){
         .attr('cx', function(d, i){ return x(d.Year)})
         .attr('r', radius);
     
-    group.append('text')
-        .text(function(d){ return d.Year})
-        .style('text-anchor', 'middle')
-        .attr('x', function(d, i){ return x(d.Year)})
-        .attr('y', height);
+    // group.append('text')
+    //     .text(function(d){ return d.Year})
+    //     .style('text-anchor', 'middle')
+    //     .attr('x', function(d, i){ return x(d.Year)})
+    //     .attr('y', height);
         
 
 }
