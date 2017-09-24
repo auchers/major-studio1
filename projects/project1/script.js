@@ -55,6 +55,9 @@ function graph(data, countryID){
     var ginis = [];
     var radius = 5;
     var scaleBuffer = 1;
+    
+    var format = d3.timeFormat("%Y");
+    data.Year = format(data.Year);
 
     data.forEach(function(d){
         years.push(d.Year);
@@ -62,7 +65,7 @@ function graph(data, countryID){
     });
 
     // Define Scales
-    var	x = d3.scaleLinear()
+    var	x = d3.scaleTime()
         .domain([d3.min(years) - scaleBuffer, d3.max(years)])
         .range([0, width]);
 
@@ -74,7 +77,7 @@ function graph(data, countryID){
     console.log(y(49));
 
     // Define Axes
-    var	xAxis = d3.axisBottom(x).ticks(5);
+    var	xAxis = d3.axisBottom(x).ticks(5).tickFormat(format);
     var	yAxis = d3.axisLeft(y).ticks(5);
 
     // Create Svg and G
