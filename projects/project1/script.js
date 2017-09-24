@@ -25,6 +25,10 @@ d3.json('data/rev_summary.json', function(error, data){
         console.log(country);
         d3.json('data/' + country + '_subset.json', function(error, data){
             if (error) throw error;
+            
+            // filter out NA values
+            data = data.filter(function(d){ return (d._row == 'NA')? false : true;});
+            
             console.log(data);
             graph(data, country);
         });
