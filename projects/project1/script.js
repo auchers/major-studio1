@@ -1,6 +1,6 @@
 // window variables
 var margin = {top: 20, right: 50, bottom: 50, left: 20};
-var numCountries = 4;
+var numCountries = 6;
 
 var width = (window.innerWidth - margin.left - margin.right) * .75,
     height = (window.innerHeight - margin.top - margin.bottom) / numCountries;
@@ -79,6 +79,11 @@ function graph(data, countryID){
     // Define Axes
     var	xAxis = d3.axisBottom(x).ticks(5).tickFormat(format);
     var	yAxis = d3.axisLeft(y).ticks(5);
+    
+    // Define the div for the tooltip
+    var tooltip = d3.select("body").append("div")	
+        .attr("class", "tooltip")				
+        .style("opacity", 0);
 
     // Create Svg and G
     var svg = d3.select('#'+countryID)
@@ -127,12 +132,25 @@ function graph(data, countryID){
         
     group.append('circle')
         .attr('class', 'point')
-        .attr('class', function (d){
-                    if (d.Year == d.Revyear)
-                        return 'Revyear';
-                })
+        .attr('class', function (d){return (d.Year == d.Revyear)? 'Revyear': 'Regyear';})
         .attr('cy', function(d, i){ return y(d.Gini)})
         .attr('cx', function(d, i){ return x(d.Year)})
-        .attr('r', radius);
+        .attr('r', radius)
+        .on("mouseover", function(d) {		
+            tooltip
+                // .transition()		
+                // .duration(200)		
+                .style("opacity", .9);
+                
+            tooltip.html('Year: ' + d.Year + "<br/>"  + 'Gini: ' + d.Gini)	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+            })					
+        .on("mouseout", function(d) {		
+            tooltip.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        });
+;
 
 }
