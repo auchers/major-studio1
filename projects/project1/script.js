@@ -5,21 +5,32 @@ var numCountries = 3;
 var width = (window.innerWidth - margin.left - margin.right),
     height = (window.innerHeight - margin.top - margin.bottom) / numCountries;
 
-// GRAPHING ---------
-
-// Belarus
-d3.json('belarus_subset.json', function(error, data){
+// Page Setup + Graphing
+// Pull list of countries and revolutions
+d3.json('data/rev_summary.json', function(error, data){
     if (error) throw error;
     console.log(data);
-    graph(data, 'belarus');
+    
+    // Add div for each country/revolution
+    var div = d3.select('#bodycontent')
+        .selectAll('div')
+        .data(data)
+        .enter()
+        .append('div')
+        .attr('id',function(d){ return d.Country});
+    
+    // for each country, pull it's data and graph it    
+    data.forEach(function(d){
+        var country = d.Country;
+        console.log(country);
+        d3.json('data/' + country + '_subset.json', function(error, data){
+            if (error) throw error;
+            console.log(data);
+            graph(data, country);
+        });
+    });
+    
 });
-
-// Kyrgyzstan
-d3.json('kyrgyzstan_subset.json', function(error, data){
-    if (error) throw error;
-    console.log(data);
-    graph(data, 'kyrgyzstan');
-})
 
 // Graph Function
 function graph(data, countryID){
