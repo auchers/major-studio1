@@ -4,14 +4,18 @@
 
 body {
  font-family: sans-serif;
+ 
 }
 
 circle {
- fill: blue;
+ fill: none;
+ stroke: steelblue;
 }
 
 .Revyear {
  fill: crimson;
+ position: relative;
+ z-index: 3;
 }
 
 .bio {
@@ -32,4 +36,9 @@ circle {
 svg {
  display:inline-block;
  padding-left : 20px;
+}
+
+path {
+ position: relative;
+ z-index: 1;
 }

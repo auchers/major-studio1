@@ -35,14 +35,16 @@ d3.json('data/rev_summary.json', function(error, data){
     // for each country, pull it's data and graph it
     data.forEach(function(d){
         var country = d.Country;
-        console.log(country);
+        
+        // load individual country data
         d3.json('data/' + country + '_subset.json', function(error, data){
             if (error) throw error;
 
             // filter out NA values
             data = data.filter(function(d){ return (d._row == 'NA')? false : true;});
-
             console.log(data);
+            
+            // GRAPH
             graph(data, country);
         });
     });
@@ -56,6 +58,7 @@ function graph(data, countryID){
     var radius = 5;
     var scaleBuffer = 1;
     
+    // turn 'years' into datetime formats
     var format = d3.timeFormat("%Y");
     data.Year = format(data.Year);
 
@@ -71,10 +74,7 @@ function graph(data, countryID){
 
     var	y = d3.scaleLinear()
         .domain([d3.min(ginis) - scaleBuffer, d3.max(ginis)])
-        .range([height, 0]);
-
-    console.log(x(2000) + ' | ' + d3.min(years));
-    console.log(y(49));
+        .range([height - radius, 0]);
 
     // Define Axes
     var	xAxis = d3.axisBottom(x).ticks(5).tickFormat(format);
@@ -98,19 +98,33 @@ function graph(data, countryID){
         .attr("transform", 'translate(0,' + height + ')')
         .call(xAxis);
 
+    // Define Lines
+    var line = d3.line()
+        .x(function(d){ return x(d.Year); })
+        .y(function(d){ return y(d.Gini); });
+
     // Begin Plotting Data Points
     svg.append('g')
-        .attr('class', 'group');
+        .attr('class', 'dataGroup');
 
-    var group = svg.select('.group')
+    var group = svg.select('.dataGroup')
         .selectAll('g')
         .data(data)
         .enter()
         .append('g')
         .attr('class', function(d){ return d.Country + ' ' + d.Year + ' '
             + d.YearsTillRev + ' ' + d.Quality + ' ' + d.Gini})
-        .attr('x', function(d,i){return x(d.Year);})
+        .attr('x', function(d,i){return x(d.Year);});
 
+    group.append('path')
+        .datum(data)
+        .attr('d', line)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("stroke-width", 1.5);
+        
     group.append('circle')
         .attr('class', 'point')
         .attr('class', function (d){
@@ -120,12 +134,5 @@ function graph(data, countryID){
         .attr('cy', function(d, i){ return y(d.Gini)})
         .attr('cx', function(d, i){ return x(d.Year)})
         .attr('r', radius);
-
-    // group.append('text')
-    //     .text(function(d){ return d.Year})
-    //     .style('text-anchor', 'middle')
-    //     .attr('x', function(d, i){ return x(d.Year)})
-    //     .attr('y', height);
-
 
 }
