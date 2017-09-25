@@ -1,15 +1,15 @@
 [
     {
-        "Country": "Belarus",
-        "name": "Jeans Revolution",
-        "Revyear": "2006",
-        "outcome": "successful",
-        "additionalAttempt": 2005
-    },
-    {
         "Country": "Georgia",
         "name": "Rose Revolution",
         "Revyear": "2003",
+        "outcome": "successful",
+        "additionalAttempt": 1900
+    },
+    {
+        "Country": "Ukraine",
+        "name": "Orange Revolution",
+        "Revyear": "2004",
         "outcome": "successful",
         "additionalAttempt": 1900
     },
@@ -21,17 +21,17 @@
         "additionalAttempt": 1900
     },
     {
+        "Country": "Belarus",
+        "name": "Jeans Revolution",
+        "Revyear": "2006",
+        "outcome": "successful",
+        "additionalAttempt": 2005
+    },
+    {
         "Country": "Moldova",
         "name": "Grape Revolution",
         "Revyear": "2009",
         "outcome": "unsuccessful",
-        "additionalAttempt": 1900
-    },
-    {
-        "Country": "Ukraine",
-        "name": "Orange Revolution",
-        "Revyear": "2004",
-        "outcome": "successful",
         "additionalAttempt": 1900
     }
 ]

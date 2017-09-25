@@ -1,8 +1,8 @@
 // window variables
-var margin = {top: 20, right: 50, bottom: 50, left: 30};
+var margin = {top: 10, right: 10, bottom: 20, left: 10};
 var heightDivider = 7;
 
-var width = (window.innerWidth - margin.left - margin.right) * .75,
+var width = (window.innerWidth  * .78) - margin.left - margin.right,
     height = (window.innerHeight - margin.top - margin.bottom) / heightDivider;
 
 // Page Setup + Graphing
@@ -24,18 +24,18 @@ d3.json('data/rev_summary.json', function(error, data){
         .attr('class','bio');
 
     callout.append('h3')
-        .text(function (d){ return d.Country + ':';});
+        .text(function (d){ return d.Country;});
 
     callout.append('h4')
         .text(function (d){ return '\'' + d.name + '\'';});
 
     callout.append('p')
         .attr('class', 'year')
-        .text(function (d){ return 'Year of Revolution: ' + d.Revyear;});
+        .text(function (d){ return d.Revyear;});
     
     callout.append('p')
         .attr('class', 'outcome')
-        .text(function (d){ return 'Outcome: ' + capitalizeFirstLetter(d.outcome);});
+        .text(function (d){ return capitalizeFirstLetter(d.outcome);});
 
     // for each country, pull it's data and graph it
     data.forEach(function(d){
@@ -87,7 +87,7 @@ function graph(data, countryID){
     // Define Axes
     var	xAxis = d3.axisBottom(x).ticks(5).tickFormat(formatTime);
     
-    var	yAxis = d3.axisLeft(y).ticks(5);
+    var	yAxis = d3.axisLeft(y).ticks(3);
     
     // Define the div for the tooltip
     var tooltip = d3.select("body").append("div")	
@@ -104,28 +104,28 @@ function graph(data, countryID){
 
     // Call Axes
     svg.append('g')
-        .attr('class', 'yAxis')
-        .call(yAxis);
+        .attr('class', 'yAxis');
+        // .call(yAxis);
 
     svg.append('g')
         .attr('class', 'xAxis')
         .attr("transform", 'translate(0,' + height + ')')
         .call(xAxis);
     
-    // if (countryID == 'Ukraine'){ // only call xAxis for last country
+    // if (countryID == 'Moldova'){ // only call xAxis for last country
     //     console.log('found Ukraine!');
     //     svg.select('.xAxis').call(xAxis);
     // }
     
     // Axis Labels
-    svg.append("text")
-        .attr('class', 'yAxisLabel')
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left * 1.5)
-        .attr("x",0 - (height / 2))
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .text("Gini");      
+    // svg.append("text")
+    //     .attr('class', 'yAxisLabel')
+    //     .attr("transform", "rotate(-90)")
+    //     .attr("y", 0 - margin.left * 1.5)
+    //     .attr("x",0 - (height / 2))
+    //     .attr("dy", "1em")
+    //     .style("text-anchor", "middle")
+    //     .text("Gini");      
 
 
     // Define Lines
