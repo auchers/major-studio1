@@ -37,7 +37,7 @@ d3.json('data/rev_summary.json', function(error, data){
     //     .attr('class', 'outcome')
     //     .text(function (d){ return capitalizeFirstLetter(d.outcome);});
 
-    // for each country, pull it's data and graph it
+    // for each country, pull its data and graph it
     data.forEach(function(d){
         var country = d.Country;
         
@@ -111,12 +111,7 @@ function graph(data, countryID){
         .attr('class', 'xAxis')
         .attr("transform", 'translate(0,' + height + ')')
         .call(xAxis);
-    
-    // if (countryID == 'Moldova'){ // only call xAxis for last country
-    //     console.log('found Ukraine!');
-    //     svg.select('.xAxis').call(xAxis);
-    // }
-    
+
     // Axis Labels
     // svg.append("text")
     //     .attr('class', 'yAxisLabel')
@@ -126,7 +121,6 @@ function graph(data, countryID){
     //     .attr("dy", "1em")
     //     .style("text-anchor", "middle")
     //     .text("Gini");      
-
 
     // Define Lines
     var line = d3.line()
