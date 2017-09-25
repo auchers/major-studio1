@@ -1,9 +1,9 @@
 // window variables
 var margin = {top: 20, right: 50, bottom: 50, left: 30};
-var numCountries = 6;
+var heightDivider = 7;
 
 var width = (window.innerWidth - margin.left - margin.right) * .75,
-    height = (window.innerHeight - margin.top - margin.bottom) / numCountries;
+    height = (window.innerHeight - margin.top - margin.bottom) / heightDivider;
 
 // Page Setup + Graphing
 // Pull list of countries and revolutions
@@ -30,7 +30,12 @@ d3.json('data/rev_summary.json', function(error, data){
         .text(function (d){ return '\'' + d.name + '\'';});
 
     callout.append('p')
+        .attr('class', 'year')
         .text(function (d){ return 'Year of Revolution: ' + d.Revyear;});
+    
+    callout.append('p')
+        .attr('class', 'outcome')
+        .text(function (d){ return 'Outcome: ' + capitalizeFirstLetter(d.outcome);});
 
     // for each country, pull it's data and graph it
     data.forEach(function(d){
@@ -59,15 +64,15 @@ function graph(data, countryID){
     var scaleBuffer = 1;
     
     // turn 'years' into datetime formats
-    var parseTime = d3.timeParse("%Y")
+    var parseTime = d3.timeParse("%Y");
     var formatTime = d3.timeFormat("%Y");
 
     data.forEach(function(d){
-        d.Year = formatTime(parseTime(d.Year));
-        d.Revyear = formatTime(parseTime(d.Revyear));
+        d.Year = (parseTime(d.Year));
+        // d.Revyear = (parseTime(d.Revyear));
         years.push(d.Year);
         ginis.push(d.Gini);
-        // console.log((parseTime(d.Year)));
+        console.log();
     });
 
     // Define Scales
@@ -106,6 +111,11 @@ function graph(data, countryID){
         .attr('class', 'xAxis')
         .attr("transform", 'translate(0,' + height + ')')
         .call(xAxis);
+    
+    // if (countryID == 'Ukraine'){ // only call xAxis for last country
+    //     console.log('found Ukraine!');
+    //     svg.select('.xAxis').call(xAxis);
+    // }
     
     // Axis Labels
     svg.append("text")
@@ -147,14 +157,24 @@ function graph(data, countryID){
         
     group.append('circle')
         .attr('class', 'point')
-        .attr('class', function (d){return (d.Year == d.Revyear)? 'Revyear': 'Regyear';})
+        .attr('class', function (d){ // set class to highlight revolution years
+            var yearType;
+            if (formatTime(d.Year) == d.Revyear){
+                yearType = 'revYear';
+            } else if (formatTime(d.Year) == d.additionalAttempt){
+                yearType = 'addnlRevYear';
+            } else{
+                yearType = 'regYear';
+            }
+            return yearType;
+        })
         .attr('cy', function(d, i){ return y(d.Gini)})
         .attr('cx', function(d, i){ return x(d.Year)})
         .attr('r', radius)
         .on('mouseover', function(d) {		
             tooltip.style("opacity", .9);
                 
-            tooltip.html('Year: ' + d.Year + "<br/>"  + 'Gini: ' + d.Gini)	
+            tooltip.html('Year: ' + formatTime(d.Year) + "<br/>"  + 'Gini: ' + d.Gini)	
                 .style('left', (d3.event.pageX) + "px")		
                 .style('top', (d3.event.pageY - 28) + "px");	
             })					
@@ -163,6 +183,8 @@ function graph(data, countryID){
                 .duration(500)		
                 .style("opacity", 0);	
         });
-;
+}
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }

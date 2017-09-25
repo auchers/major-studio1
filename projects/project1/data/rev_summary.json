@@ -1,28 +1,38 @@
 [
     {
-        "Country": "Georgia",
-        "name": "Rose Revolution",
-        "Revyear": "2003"
+        "Country": "Belarus",
+        "name": "Jeans Revolution",
+        "Revyear": "2006",
+        "outcome": "successful",
+        "additionalAttempt": 2005
     },
     {
-        "Country": "Ukraine",
-        "name": "Orange Revolution",
-        "Revyear": "2004"
+        "Country": "Georgia",
+        "name": "Rose Revolution",
+        "Revyear": "2003",
+        "outcome": "successful",
+        "additionalAttempt": 1900
     },
     {
         "Country": "Kyrgyzstan",
         "name": "Tulip Revolution",
-        "Revyear": "2005"
-    },
-    {
-        "Country": "Belarus",
-        "name": "Jeans Revolution",
-        "Revyear": "2006"
+        "Revyear": "2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900
     },
     {
         "Country": "Moldova",
         "name": "Grape Revolution",
-        "Revyear": "2009"
+        "Revyear": "2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900
+    },
+    {
+        "Country": "Ukraine",
+        "name": "Orange Revolution",
+        "Revyear": "2004",
+        "outcome": "successful",
+        "additionalAttempt": 1900
     }
 ]
 

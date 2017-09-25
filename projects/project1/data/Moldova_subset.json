@@ -1,6 +1,60 @@
 [
     {
         "Country": "Moldova",
+        "Gini": 41.4,
+        "Year": 1996,
+        "Quality": "Average",
+        "Welfaredefn_new": "Income, gross",
+        "AreaCovr_new": "All",
+        "Incomegroup": "Lower middle income",
+        "name": "Grape Revolution",
+        "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
+        "Revyear": "2009",
+        "YearsTillRev": -13,
+        "_row": "41"
+    },
+    {
+        "Country": "Moldova",
+        "Gini": 39.1,
+        "Q5": 44.46,
+        "D1": 2.01,
+        "D10": 28.09,
+        "Year": 1997,
+        "Quality": "High",
+        "Welfaredefn_new": "Consumption",
+        "AreaCovr_new": "All",
+        "Incomegroup": "Lower middle income",
+        "name": "Grape Revolution",
+        "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
+        "Revyear": "2009",
+        "YearsTillRev": -12,
+        "_row": "40"
+    },
+    {
+        "Country": "Moldova",
+        "Gini": 39.52,
+        "Q5": 45.94,
+        "D1": 2.22,
+        "D10": 30.12,
+        "Year": 1998,
+        "Quality": "Average",
+        "Welfaredefn_new": "Consumption",
+        "AreaCovr_new": "All",
+        "Incomegroup": "Lower middle income",
+        "name": "Grape Revolution",
+        "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
+        "Revyear": "2009",
+        "YearsTillRev": -11,
+        "_row": "39"
+    },
+    {
+        "Country": "Moldova",
         "Gini": 42.62,
         "Q5": 49.56,
         "D1": 2.33,
@@ -12,9 +66,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -10,
-        "_row": "40"
+        "_row": "38"
     },
     {
         "Country": "Moldova",
@@ -26,9 +82,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -9,
-        "_row": "39"
+        "_row": "37"
     },
     {
         "Country": "Moldova",
@@ -40,9 +98,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -8,
-        "_row": "38"
+        "_row": "36"
     },
     {
         "Country": "Moldova",
@@ -54,9 +114,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -7,
-        "_row": "37"
+        "_row": "35"
     },
     {
         "Country": "Moldova",
@@ -68,9 +130,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -6,
-        "_row": "36"
+        "_row": "34"
     },
     {
         "Country": "Moldova",
@@ -85,9 +149,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -5,
-        "_row": "35"
+        "_row": "33"
     },
     {
         "Country": "Moldova",
@@ -102,9 +168,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -4,
-        "_row": "34"
+        "_row": "32"
     },
     {
         "Country": "Moldova",
@@ -116,9 +184,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -3,
-        "_row": "33"
+        "_row": "31"
     },
     {
         "Country": "Moldova",
@@ -133,9 +203,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -2,
-        "_row": "32"
+        "_row": "30"
     },
     {
         "Country": "Moldova",
@@ -150,9 +222,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": -1,
-        "_row": "31"
+        "_row": "29"
     },
     {
         "Country": "Moldova",
@@ -167,9 +241,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": 0,
-        "_row": "30"
+        "_row": "28"
     },
     {
         "Country": "Moldova",
@@ -184,9 +260,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": 1,
-        "_row": "29"
+        "_row": "27"
     },
     {
         "Country": "Moldova",
@@ -201,9 +279,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": 2,
-        "_row": "28"
+        "_row": "26"
     },
     {
         "Country": "Moldova",
@@ -218,9 +298,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": 3,
-        "_row": "27"
+        "_row": "25"
     },
     {
         "Country": "Moldova",
@@ -235,26 +317,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Grape Revolution",
         "start": "6 April 2009",
+        "outcome": "unsuccessful",
+        "additionalAttempt": 1900,
         "Revyear": "2009",
         "YearsTillRev": 4,
-        "_row": "26"
-    },
-    {
-        "Country": "Moldova",
-        "Gini": 26.83,
-        "Q5": 36.65,
-        "D1": 4.2,
-        "D10": 22.09,
-        "Year": 2014,
-        "Quality": "Average",
-        "Welfaredefn_new": "Consumption",
-        "AreaCovr_new": "All",
-        "Incomegroup": "Lower middle income",
-        "name": "Grape Revolution",
-        "start": "6 April 2009",
-        "Revyear": "2009",
-        "YearsTillRev": 5,
-        "_row": "25"
+        "_row": "24"
     },
     {
         "_row": "NA"

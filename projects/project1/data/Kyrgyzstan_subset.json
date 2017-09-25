@@ -1,20 +1,6 @@
 [
     {
         "Country": "Kyrgyzstan",
-        "Gini": 39.5,
-        "Year": 1995,
-        "Quality": "Average",
-        "Welfaredefn_new": "Income, gross",
-        "AreaCovr_new": "All",
-        "Incomegroup": "Lower middle income",
-        "name": "Tulip Revolution",
-        "start": "27 February 2005",
-        "Revyear": "2005",
-        "YearsTillRev": -10,
-        "_row": "62"
-    },
-    {
-        "Country": "Kyrgyzstan",
         "Gini": 48.5,
         "Q5": 65.14,
         "D1": 0.5,
@@ -26,9 +12,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": -9,
-        "_row": "61"
+        "_row": "60"
     },
     {
         "Country": "Kyrgyzstan",
@@ -43,9 +31,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": -8,
-        "_row": "60"
+        "_row": "59"
     },
     {
         "Country": "Kyrgyzstan",
@@ -57,9 +47,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": -7,
-        "_row": "59"
+        "_row": "58"
     },
     {
         "Country": "Kyrgyzstan",
@@ -71,9 +63,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": -6,
-        "_row": "58"
+        "_row": "57"
     },
     {
         "Country": "Kyrgyzstan",
@@ -88,9 +82,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": -5,
-        "_row": "57"
+        "_row": "56"
     },
     {
         "Country": "Kyrgyzstan",
@@ -102,9 +98,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": -4,
-        "_row": "56"
+        "_row": "55"
     },
     {
         "Country": "Kyrgyzstan",
@@ -116,9 +114,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": -3,
-        "_row": "55"
+        "_row": "54"
     },
     {
         "Country": "Kyrgyzstan",
@@ -130,9 +130,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": -2,
-        "_row": "54"
+        "_row": "53"
     },
     {
         "Country": "Kyrgyzstan",
@@ -147,9 +149,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": -1,
-        "_row": "53"
+        "_row": "52"
     },
     {
         "Country": "Kyrgyzstan",
@@ -164,9 +168,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": 0,
-        "_row": "52"
+        "_row": "51"
     },
     {
         "Country": "Kyrgyzstan",
@@ -178,9 +184,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": 1,
-        "_row": "51"
+        "_row": "50"
     },
     {
         "Country": "Kyrgyzstan",
@@ -195,9 +203,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": 2,
-        "_row": "50"
+        "_row": "49"
     },
     {
         "Country": "Kyrgyzstan",
@@ -212,9 +222,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": 3,
-        "_row": "49"
+        "_row": "48"
     },
     {
         "Country": "Kyrgyzstan",
@@ -229,9 +241,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": 4,
-        "_row": "48"
+        "_row": "47"
     },
     {
         "Country": "Kyrgyzstan",
@@ -246,9 +260,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": 5,
-        "_row": "47"
+        "_row": "46"
     },
     {
         "Country": "Kyrgyzstan",
@@ -263,9 +279,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": 6,
-        "_row": "46"
+        "_row": "45"
     },
     {
         "Country": "Kyrgyzstan",
@@ -280,9 +298,11 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": 7,
-        "_row": "45"
+        "_row": "44"
     },
     {
         "Country": "Kyrgyzstan",
@@ -297,26 +317,14 @@
         "Incomegroup": "Lower middle income",
         "name": "Tulip Revolution",
         "start": "27 February 2005",
+        "outcome": "successful",
+        "additionalAttempt": 1900,
         "Revyear": "2005",
         "YearsTillRev": 8,
-        "_row": "44"
+        "_row": "43"
     },
     {
-        "Country": "Kyrgyzstan",
-        "Gini": 26.82,
-        "Q5": 37.03,
-        "D1": 4.37,
-        "D10": 22.89,
-        "Year": 2014,
-        "Quality": "Average",
-        "Welfaredefn_new": "Consumption",
-        "AreaCovr_new": "All",
-        "Incomegroup": "Lower middle income",
-        "name": "Tulip Revolution",
-        "start": "27 February 2005",
-        "Revyear": "2005",
-        "YearsTillRev": 9,
-        "_row": "43"
+        "_row": "NA"
     }
 ]
 
