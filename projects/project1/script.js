@@ -31,11 +31,11 @@ d3.json('data/rev_summary.json', function(error, data){
 
     callout.append('p')
         .attr('class', 'year')
-        .text(function (d){ return d.Revyear;});
+        .text(function (d){ return (d.Country == 'Belarus')? '(' + d.additionalAttempt + ') ' + d.Revyear:d.Revyear;});
     
-    callout.append('p')
-        .attr('class', 'outcome')
-        .text(function (d){ return capitalizeFirstLetter(d.outcome);});
+    // callout.append('p')
+    //     .attr('class', 'outcome')
+    //     .text(function (d){ return capitalizeFirstLetter(d.outcome);});
 
     // for each country, pull it's data and graph it
     data.forEach(function(d){
