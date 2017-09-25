@@ -59,25 +59,29 @@ function graph(data, countryID){
     var scaleBuffer = 1;
     
     // turn 'years' into datetime formats
-    var format = d3.timeFormat("%Y");
-    data.Year = format(data.Year);
+    var parseTime = d3.timeParse("%Y")
+    var formatTime = d3.timeFormat("%Y");
 
     data.forEach(function(d){
+        d.Year = formatTime(parseTime(d.Year));
+        d.Revyear = formatTime(parseTime(d.Revyear));
         years.push(d.Year);
         ginis.push(d.Gini);
+        // console.log((parseTime(d.Year)));
     });
 
     // Define Scales
     var	x = d3.scaleTime()
-        .domain([d3.min(years) - scaleBuffer, d3.max(years)])
-        .range([0, width]);
+        .domain(d3.extent(years))
+        .range([radius, width]);
 
     var	y = d3.scaleLinear()
-        .domain([d3.min(ginis) - scaleBuffer, d3.max(ginis)])
+        .domain([d3.min(ginis), d3.max(ginis)])
         .range([height - radius, 0]);
 
     // Define Axes
-    var	xAxis = d3.axisBottom(x).ticks(5).tickFormat(format);
+    var	xAxis = d3.axisBottom(x).ticks(5).tickFormat(formatTime);
+    
     var	yAxis = d3.axisLeft(y).ticks(5);
     
     // Define the div for the tooltip
