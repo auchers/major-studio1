@@ -40,8 +40,9 @@ circle {
 .bio {
  display: inline-block;
  float: left;
- width: 18%;
+ width: 170px;
  text-align: left;
+ /*padding-left: 20px;*/
 }
 
 .bio h3{
