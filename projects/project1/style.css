@@ -1,6 +1,6 @@
 .heading{
  text-align: left;
- margin-bottom: 20px;
+ margin-bottom: 5%;
 }
 
 h1{
@@ -9,9 +9,12 @@ h1{
 
 body {
  /*font-family: sans-serif;*/
- background-color: lightGray;
+ color: rgb(68,	69,	68);
+ background-color: rgb(239, 240,	245);
  font-family: 'Raleway', sans-serif;
- margin: 20px;
+ margin: 5%;
+ margin-left: 10%;
+ margin-right: 10%;
  
 }
 

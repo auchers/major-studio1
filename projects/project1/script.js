@@ -1,8 +1,9 @@
 // window variables
 var margin = {top: 10, right: 10, bottom: 20, left: 10};
+var startWidth = (window.innerWidth  * .8 - 180)
 var heightDivider = 7;
 
-var width = (window.innerWidth  * .78) - margin.left - margin.right,
+var width = startWidth - margin.left - margin.right,
     height = (window.innerHeight - margin.top - margin.bottom) / heightDivider;
 
 // Page Setup + Graphing
@@ -97,7 +98,7 @@ function graph(data, countryID){
     // Create Svg and G
     var svg = d3.select('#'+countryID)
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", startWidth)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -144,7 +145,7 @@ function graph(data, countryID){
         .datum(data)
         .attr('d', line)
         .attr("fill", "none")
-        .attr("stroke", "steelblue")
+        .attr("stroke", "steelBlue")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 1.5);
