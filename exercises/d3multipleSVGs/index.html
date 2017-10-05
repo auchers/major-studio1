@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+    <style type="text/css">
+        svg {
+            font-family: sans-serif;
+            margin: 5px;
+            padding: 0;
+            border: 2px solid transparent;
+            background: lightgray;
+        }
+        svg:hover {
+            border: 2px solid black;
+        }
+        text.label {
+            text-anchor: middle;
+            text-size: 0.5em;
+        }
+    </style>
+    <body>
+        <script>
+            var min = 100000;
+            var max = 0;
+
+            d3.tsv("LaborInNonAgricultSector.tsv", function(error, data) {
+              if (error) throw error;
+
+                // console.log(data);
+                var mapX = d3.scaleLinear()
+                    .domain([0, 24])
+                    .range([10, 390]);
+
+                data.forEach(function(d) {
+                    for (var col = 0; col < 24; col++) {
+                        var val = Object.keys(d)[col];
+                        if (min > parseFloat(d[val]))
+                            min = parseFloat(d[val]);
+                        if (max < parseFloat(d[val]))
+                            max = parseFloat(d[val]);
+                    }
+                });
+
+                console.log('min : ' + min + ' max: ' + max);
+
+                var mapY = d3.scaleLinear()
+                    .domain([min, max])
+                    .range([300, 0]);
+
+                d3.select('body')
+                    .data(data)  // bind data
+                    .enter()  // sticky data
+                    .append('svg')
+                        .attr('width', 400)
+                        .attr('height', 300)
+                        .each(function(d, i) {
+                            // country name
+                            d3.select(this) // selects DOM elements - in this case SVG
+                                .append('text')
+                                    .attr('x', 10)
+                                    .attr('y', 25)
+                                    .text(function() { return d['Country Name']; })
+                            // each column
+                            for (var col = 0; col < 24; col++) {
+                                d3.select(this)
+                                    .append('text')
+                                        .attr('class', 'label')
+                                        .attr('x', function() { return mapX(col); })
+                                        .attr('y', function() { return mapY(d[Object.keys(d)[col]]) - 5; })
+                                        .attr('visibility', 'hidden')
+                                        .text(function() { return d[Object.keys(d)[col]]; })
+
+                                d3.select(this)
+                                    .append('circle') // add dom element svg circle
+                                        .attr('r', 2.5)
+                                        .attr('cx', function() { return mapX(col); })
+                                        .attr('cy', function() { return mapY(d[Object.keys(d)[col]]); })
+                                    .on('mouseover', function() {
+                                        d3.select(this) // diff scope, this time selects circle
+                                            .style('fill', 'white')
+                                    .on('mouseout', function (){
+                                        d3.select(this)
+                                            .style('fill', 'black');
+                                    });
+                                    });
+
+                            }
+                        })
+                        .on('mouseover', function() {
+                            d3.select(this).selectAll('text').attr('visibility', 'visible');
+                        })
+                        .on('mouseout', function() {
+                            d3.select(this).selectAll('text.label').attr('visibility', 'hidden');
+                        });
+            });
+        </script>
+    </body>
+</html>
