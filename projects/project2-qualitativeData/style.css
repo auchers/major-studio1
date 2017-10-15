@@ -1,0 +1,44 @@
+body{
+    font-family: 'Merriweather', serif;
+    margin: 50px;
+}
+
+.words{
+    font-weight: lighter;
+    margin-bottom: 4rem;
+    margin-right: .25em;
+    margin-left: .25em;
+    
+}
+
+.bold{
+    font-weight: bolder;
+}
+
+.words:hover{
+    font-weight: bolder;
+}
+
+
+#freq{
+    float: left;
+    margin: 10px;
+    width: 50%;
+}
+
+#kwic{
+    float: right;
+    margin: 10px;
+    width: 40%;
+
+}
+
+h3{
+    display: inline-block;
+    margin-right: .5em;
+    margin-bottom: 0;
+}
+
+circle{
+    fill: black;
+}
