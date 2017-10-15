@@ -1,0 +1,89 @@
+<html>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="./rita-full.min.js"></script>
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            font: 48pt sans-serif;
+            padding-right: .25em;
+        }
+
+        input {
+            position: fixed;
+            width: calc(100vw - 2em);
+            font-size: 2rem;
+            margin: 1em;
+            padding: 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+        }
+
+        span {
+            border: 1px solid white;
+            transition: all .5s;
+            padding-right: 0.25em;
+        }
+
+        span:hover {
+            border: 1px solid black;
+            font-size: 110%;
+        }
+    </style>
+
+    <script>
+        // RiTa: the generative language toolkit (in JS)
+        // https://rednoise.org/rita/
+        window.onload = function() {
+            var ritaString, input;
+
+            input = d3.select('body')
+                .append('input')
+                .on('change', rita);
+
+            content = d3.select('body')
+                .append('div')
+                .attr('id', '#content');
+
+            function rita(event) {
+                var str = this.value; // var str = input.value();
+                console.log(str);
+
+                // RiString
+                ritaString = RiString(str);
+
+                var words = ritaString.words();
+
+                // Features
+                words.forEach(function(element) {
+                    var features = RiString(element).features();
+                    console.log(features);
+
+                    var span = d3.select('#content')
+                        .append('span')
+                        .text(features.text);
+
+                    // Parts of Speech
+                    // http://rednoise.org/rita/reference/PennTags.html
+                    console.log(features.pos);
+                    if (features.pos === 'nn' || features.pos === 'nnp')
+                        span.style('background', 'lavender');
+
+                    // Plural
+                    if (features.pos === 'nns' || features.pos === 'nnps')
+                        span.style('background', 'purple');
+                });
+            }
+        };
+  </script>
+  <div id="content"></div>
+<html>

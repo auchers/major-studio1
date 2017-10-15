@@ -11,8 +11,9 @@
             border: 2px solid transparent;
             background: lightgray;
         }
-        svg:hover {
-            border: 2px solid black;
+        svg:hover { 
+            border: 2px solid black; /*sets expectation of interactivity*/
+            /* don't need to code hover interactivity into the code*/
         }
         text.label {
             text-anchor: middle;
@@ -63,36 +64,35 @@
                                     .text(function() { return d['Country Name']; })
                             // each column
                             for (var col = 0; col < 24; col++) {
-                                d3.select(this)
-                                    .append('text')
+                                var group = d3.select(this)
+                                    .append('g')
+                                    .attr('id', 'group_' + col); // associate a unique id for each column
+                                
+                                    group.append('text')
                                         .attr('class', 'label')
                                         .attr('x', function() { return mapX(col); })
                                         .attr('y', function() { return mapY(d[Object.keys(d)[col]]) - 5; })
                                         .attr('visibility', 'hidden')
                                         .text(function() { return d[Object.keys(d)[col]]; })
 
-                                d3.select(this)
-                                    .append('circle') // add dom element svg circle
+                                    group.append('circle') // add dom element svg circle
                                         .attr('r', 2.5)
                                         .attr('cx', function() { return mapX(col); })
                                         .attr('cy', function() { return mapY(d[Object.keys(d)[col]]); })
-                                    .on('mouseover', function() {
-                                        d3.select(this) // diff scope, this time selects circle
-                                            .style('fill', 'white')
-                                    .on('mouseout', function (){
-                                        d3.select(this)
-                                            .style('fill', 'black');
-                                    });
-                                    });
+                                        
+                                    group.on('mouseover', function() {
+                                            d3.select(this) // diff scope, this time selects circle
+                                                .style('fill', 'white');
+                                            d3.select(this).selectAll('text').attr('visibility', 'visible');
+                                        })
+                                        .on('mouseout', function (){
+                                            d3.select(this)
+                                                .style('fill', 'black');
+                                            d3.select(this).selectAll('text.label').attr('visibility', 'hidden');
+                                        });
 
                             }
                         })
-                        .on('mouseover', function() {
-                            d3.select(this).selectAll('text').attr('visibility', 'visible');
-                        })
-                        .on('mouseout', function() {
-                            d3.select(this).selectAll('text.label').attr('visibility', 'hidden');
-                        });
             });
         </script>
     </body>

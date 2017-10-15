@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--p5js download: https://p5js.org/download/-->
+    <!--Content Delivery Network (CDN): https://cdnjs.com/libraries/p5.js-->
+    <title>Word Frequency</title>
+    <!--p5 core library, minified-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.13/p5.min.js" type="text/javascript"></script>
+    <!--p5 interaction with the DOM-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.13/addons/p5.dom.min.js" type="text/javascript"></script>
+
+    <script>
+        var dictionary = [];
+        var textX = 100;
+        
+        function setup(){
+            createCanvas(window.innerWidth, window.innerHeight);
+            loadStrings('sotu.txt', analyze);
+        }
+            
+        function analyze(sotu){
+            // console.log(sotu);
+            
+            sotu.forEach(function (phrases){
+                // REGEX explanation
+                // '/ /' deliminate the pattern to search for 
+                // '^' is negation
+                // 'gi' global scope
+                // '\w' - words, '\s' - white spaces
+                phrases = phrases.replace(/[^\w\s]/gi, '')
+                
+                var words = phrases.split(' ').map(function(x) {return x.toLowerCase();});
+                
+                words.forEach(function(word){
+                    // console.log(word);
+                    
+                    var wordCount = dictionary.filter(function(el){
+                        return el.word == word;
+                    })
+                    
+                    if (wordCount.length)
+                        wordCount[0].count++;
+                    else
+                        dictionary.push({word: word, count: 1});
+                });
+            });
+            
+            console.log(dictionary);
+            dictionary.sort(function (a, b){
+                return b.count - a.count;
+            });
+            
+            display();
+        }
+        
+        function display(){
+            background(255);
+            translate(textX, height/2);
+            
+            dictionary.forEach(function(element) {
+                textSize(element.count * 2);
+                text(element.word, 0, 0);
+                
+                var txtWidth = textWidth(element.word);
+                translate(txtWidth, 0); // this way don't have to deal with absolute coordinates
+            });
+        }
+        
+        function mouseDragged(){
+            textX += mouseX - pmouseX; //previous mouseX;
+            display();
+        }
+        
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

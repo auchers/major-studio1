@@ -1,0 +1,82 @@
+<html>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="./rita-full.min.js"></script>
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            font: 48pt sans-serif;
+            padding-right: .25em;
+        }
+
+        input {
+            position: fixed;
+            width: calc(100vw - 2em);
+            font-size: 2rem;
+            margin: 1em;
+            padding: 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+        }
+
+        span {
+            border: 1px solid white;
+            transition: all .5s;
+            padding-right: 0.25em;
+        }
+
+        span:hover {
+            border: 1px solid black;
+            font-size: 110%;
+        }
+    </style>
+
+    <script>
+        // RiTa: the generative language toolkit (in JS)
+        // https://rednoise.org/rita/
+        window.onload = function() {
+            var input = d3.select('body')
+                .append('input')
+                .on('change', rita);
+                
+            function rita (event){
+                var str = this.value;
+                
+                ritaString = RiString(str);
+                var words = ritaString.words();
+                
+                words.forEach(function(w){
+                    var features = RiString(w).features();
+                    console.log(features);
+                
+                    var span = d3.select('#content')
+                        .append('span')
+                        .text(features.text)
+                        .style("background", function(){
+                            if (features.pos == 'nn' || features.pos == 'nnp'){
+                                return 'lavender';
+                            }else if (features.pos == 'nns' || features.pos == 'nnps'){
+                                return 'purple';
+                            }
+                        });
+                        
+                })
+                
+
+                
+                
+            }
+            
+        };
+  </script>
+  <div id="content"></div>
+<html>

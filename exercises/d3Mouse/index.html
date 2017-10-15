@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+            body {
+                background: white;
+            }
+        </style>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+    <body>
+        <script>
+            d3.select('body')
+                .append('svg')
+                .attr('width', window.innerWidth)
+                .attr('height', window.innerHeight)
+                .on('mousemove', callback);
+                
+                function callback() {
+                    var pos = d3.mouse(this); // in this case "this" is the svg
+                    
+                    d3.select('svg')
+                        .insert('circle') // instead of appending to the end -- where they are being added
+                            .attr('r', 0)
+                            .attr('cx', pos[0])
+                            .attr('cy', pos[1])
+                            .style('fill', 'transparent')
+                            .style('stroke', 'black')
+                            .style('stroke-opacity', 1)
+                        .transition()
+                            .attr('r', 100)
+                            .style('stroke-opacity', 0)
+                            .ease(Math.sqrt)
+                            .duration(5000)
+                            .delay(1000)
+                            .remove();
+                    
+                }
+        </script>
+    </body>
+</html>
