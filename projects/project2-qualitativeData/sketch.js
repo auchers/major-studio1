@@ -1,13 +1,18 @@
-
-var file_path = 'data/ch17.json';
+// var rita = require('rita');
+var file_path = 'data/ch7.txt';
+var t;
+var dict = [],
+    phrases = [];
 
 var w = window.innerWidth/2,
     h = window.innerHeight/4;
-    
-var minCount = 10, // fequency cutoff
+
+var minSize = 25,
+    maxSize = 48;
+
+var minCount = 10, // frequency cutoff
     r = 5, // circle radius
-    wordsIC = 4; // words in context
-    // padding = 5;
+    wordsIC = 6; // words in context
 
 var mainDiv = d3.select('body')
     .append('div')
@@ -21,132 +26,94 @@ var kwicContent = mainDiv
     .append('div')
     .attr('id', 'kwic')
 
-// POS frequency section    
-var nouns = freqContent.append('div')
-    .attr('class', 'nouns')
+freqContent.append('h3')
+    .text('Most Frequent Words:')
+    
+kwicContent.append('h3')
+    .text('Word in Context')
+    .append('p')
+    .text('(click on word above to see in context)');
 
-var verbs = freqContent.append('div')
-    .attr('class', 'verbs')
-    
-var adjs = freqContent.append('div')
-    .attr('class', 'adjs')
-
-// section headers  
-nouns.append('h3').attr('class', 'header nouns').text('Nouns:');
-verbs.append('h3').attr('class', 'header verbs').text('Verbs:');
-adjs.append('h3').attr('class', 'header adjs').text('Adjectives:');
-
-kwicContent.append('h2').attr('class', 'kwic').text('KWIC');
-var kwicSVG = kwicContent.append('svg')
-    .attr('class', 'kwic')
-    .attr('width', parent.innerHeight)
-    .attr('height', window.innerHeight);
-    
-// load in text
-d3.json(file_path, display);
-
-function display(data){
-    console.log(data);
-    
-    // NOUNS
-    nounData = data.filter(function(d){
-            pos = d.features.pos;
-            isNoun = (pos == 'nn' || pos == 'nns' || pos == 'nnps' || pos == 'nnp');
-            isFrequent = d.count > minCount;
-            return (isNoun && isFrequent);
-        })
-        
-    // fill noun svg with most frequent words
-    nouns.selectAll('span')
-        .data(nounData)
-        .enter()
-        .append('span')
-        .attr('class','words')
-        .text(function(d){return d.word + ' '})
-        .on('click',displayContext)
-        
-    // VERBS
-    verbData = data.filter(function(d){
-        pos = d.features.pos;
-        isVerb = (pos == 'vb' || pos == 'vbd' || pos == 'vbn' || pos == 'vbp' || pos == 'vbz');
-        isFrequent = d.count > minCount;
-        return (isVerb && isFrequent);
-    })
-        
-    // fill verb svg with most frequent words
-    verbs.selectAll('span')
-        .data(verbData)
-        .enter()
-        .append('span')
-        .attr('class','words')
-        .text(function(d){return d.word + ' '})
-        .on('click',displayContext)
-        
-    // ADJECTIVES
-    adjData = data.filter(function(d){
-        pos = d.features.pos;
-        isAdj = (pos == 'jj' || pos == 'jjr' || pos == 'jjs');
-        isFrequent = d.count > minCount;
-        return (isAdj && isFrequent);
-    })
-        
-    // fill verb svg with most frequent words
-    adjs.selectAll('span')
-        .data(adjData)
-        .enter()
-        .append('span')
-        .attr('class','words')
-        .text(function(d){return d.word + ' '})
-        .on('click',displayContext)
-    
-}
-
-function displayContext(d, i){
-    d3.selectAll('.words').classed('bold', false);
-    
-    d3.select(this).classed('bold', true);
-    
-    var phrases = d.kwic;
+// DATA - load in JSON
+d3.text(file_path, function (d){
+    t = d.replace(/\n/g, " ");
+    phrases = RiTa.splitSentences(t, '. ');
     console.log(phrases);
     
-    kwicSVG.selectAll('g').remove(); //clean for new round
+    display(t);
+});
+
+function display(data){
+	var cArgs = {
+    	 ignoreCase: true,
+    	 ignoreStopWords: true,
+    	 wordsToIgnore: ['chapter', 'chapters', 'cent', 'between', 'per', '+', '=']
+	};
     
-    var phraseG = kwicSVG.selectAll('g')
-        .data(phrases)
+    // create concordance
+    var c = RiTa.concordance(data, cArgs);
+    
+    // reformat concordance to only include minCount of frequencies and above
+	for (w in c){
+    	(c[w] > minCount) ? dict.push({ word: w, count: c[w], features: RiString(w).features() }) : null;
+	}
+	
+	dict.sort(function(a, b) { return b.count - a.count; });
+	
+	var freq = d3.scaleLinear()
+        .domain([dict[dict.length-1].count, dict[0].count])
+        .range([minSize, maxSize]);
+	
+    // fill noun svg with most frequent words
+    freqContent.selectAll('div')
+        .data(dict)
         .enter()
-        .append('g');
+        .append('div')
+        .attr('class', function(d){ return 'words ' + d.count + ' '; })
+        .text(function(d){ return d.word;})
+        .style('font-size', function(d){ return freq(d.count) + 'px'; })
+        .on('click', function(d){ displayContext(d.word, this)});
         
-    phraseG.append('circle')
-        .attr('cx', r)
-        .attr('cy', function (d, i){return (i+1) * 50 })
-        .attr('r', r);
-        
-    var text = phraseG.append('text')
-        .attr('x', r * 2 + 10)
-        .attr('y', function(d, i){return (i+1) * 50})
-        
-    text.append('tspan')
-        .text(function(d,i){
-            return d.split(' ').slice(0,wordsIC).join(' ');
-        });
-        
-    text.append('tspan')
-        .attr('class', 'bold')
-        .text(function(d) {
-            return ' ' + d.split(' ')[wordsIC] + ' ';
-        });
-        
-    text.append('tspan')
-        .text(function(d,i){
-            return d.split(' ').slice(wordsIC+1,).join(' ');
-        });
-        
-        
-        // .text(function(d, i){
-        //     var toArray = d.split(' ')
-        //     toArray.splice(wordsIC, 0 , '<b>');
-        //     toArray.splice(wordsIC + 2, 0 , '</b>');
-        //     return toArray.join(' ');
-        // });
-        
+    freqContent.append('input')
+        .attr('placeholder', 'your word here')
+        .on('change', function(){displayContext(this.value, this) });
 }
+
+function displayContext(word, elem){
+    //clean for new round
+    // console.log(word);
+    var w = word.toLowerCase();
+    var wLength = w.length;
+    var phraseMatch = [];
+    // var iOfWord;
+    
+    kwicContent.selectAll('*').remove(); 
+    kwicContent.insert('h3').text(function(d){return 'Context of: \'' + w + '\' ';});
+    // kwicContent.select('p').remove();
+
+    d3.selectAll('*').classed('bold', false);
+    d3.select(elem).classed('bold', true);
+    
+    phrases.forEach(function(p){
+      if (p.toLowerCase().includes(w)){
+          console.log(p);
+          var start = p.toLowerCase().indexOf(w);
+          phraseMatch.push({
+              phrase: p,
+              start: start,
+              end: start + wLength
+          });
+      }
+    });
+    
+    var text = kwicContent.selectAll('div')
+        .data(phraseMatch)
+        .enter()
+        .append('div')
+        .attr('class', 'phrase')
+        .html(function(p){
+            return p.phrase.slice(0, p.start) + ' <b>' + p.phrase.slice(p.start, p.end) + '</b> ' + p.phrase.slice(p.end+1,);
+        });
+}
+    
+        

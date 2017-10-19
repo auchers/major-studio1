@@ -1,0 +1,522 @@
+Towards a pro-equity fiscal policy in Africa.
+7.1 Introduction.
+Over the past five decades, substantial attention has been placed on the role of economic
+growth in reducing poverty. This is premised on the trickle-down effect of longterm
+economic growth on poverty and inequality, based on Simon Kuznets’ theory. However,
+evidence across the world has shown that high economic growth and rapid reduction in
+poverty do not automatically translate into accelerated reduction in inequality (Stiglitz,
+2015; Reid-Henry, 2015; Piketty, 2015). China and Rwanda provide some good examples
+of the lack of trickle-down effect on inequality where rapid economic growth has been
+accompanied by rising income inequality.1 The global inequality crisis – where the richest
+1 per cent of the world’s population has more wealth than the rest of the world combined2
+– has disproved Kuznets’ theory and has further questioned the efficacy of fiscal policies in
+promoting economic efficiency and development effectiveness.
+Income inequality is not only an outcome of economic forces such as economic growth, but
+also a consequence of public choices. It is often a by-product of regressive taxes, unresponsive
+wage structures, especially stagnant minimum wages in the face of high wage compression
+ratios, and inadequate investment in education, health and social protection for the vulnerable
+and marginalised. The capacity to manage urbanisation bias is also important in addressing
+inequality. Fiscal policies affect inequality directly, through the progressivity of taxes, welltargeted
+transfers and the quality of public expenditure, and indirectly, by impacting other
+factors that influence income and wealth inequality. Despite the wide recognition of fiscal
+policy’s distributive role on income inequality, this role has been neglected since the 1980s,
+particularly starting from the era of the Washington Consensus, when undue emphasis was
+shifted to macro-economic stability and allocative efficiency roles.
+The high level of income inequality in Africa has rekindled the debate on the distributional impact
+of government fiscal policies, particularly taxes and spending choices. The agitation for an effective
+redistribution policy has become more intense since the consultations on the post-2015 Development
+Agenda, which commenced about five years ago. The emerging reality – that high inequality harms
+macroeconomic stability and economic growth, reduces growth elasticity of poverty and limits
+economic mobility of younger generations – further explains why development stakeholders in
+Africa, including policymakers and civil society, are more concerned about the role of fiscal policies
+and distributive programmes in addressing poverty and inequality. The evidence of income inequality
+bifurcation in African countries3 has enhanced the role of fiscal policies and distributional programmes
+in explaining why some countries are succeeding in the war against inequality and others are losing
+out.
+The concern for inequality peaked when the Sustainable Development Goals (SDGs) were endorsed
+by the United Nations General Assembly in September 2015 as the framework for shaping the global
+development agenda over the next 15 years. The 2030 Agenda for Sustainable Development aims
+to eliminate poverty and to rapidly reduce inequality as its overarching goal, anchored on a strategy
+of ‘leaving no one behind’ in the development process by 2030. And, as articulated in the Outcome
+Document of the third International Conference on Financing for Development, implementing
+progressive and efficient tax systems and delivering social protection and essential public services to
+all are crucial to realizing the SDGs, especially Goal 1 on poverty and Goal 10 on inequality.
+To build a better world, the lopsided nature of the distribution of incomes and wealth must be
+addressed and fiscal policies have a strong role to play. It is important to know who benefits from
+public spending programmes and who pays for them. This, therefore, calls for a deeper understanding
+of how fiscal policies and distributional programmes of governments could help reduce income
+inequality and promote shared prosperity. For the 2030 Agenda for Sustainable Development,
+addressing inequality is not only crucial for political stability and social cohesion, but is also good
+economics and a development imperative.
+Despite the recognition in the literature of fiscal policy’s central role in addressing inequality, especially
+through tax progressivity, well-targeted transfers and quality public expenditure, there is limited
+empirical work in Africa on this issue. The objective of this chapter is to examine how governments’
+fiscal and distributive policies have impacted inequalities and, based on the findings, to suggest how
+these policies can help accelerate the reduction of inequality in the continent.
+7.2 Inequality in Africa in the context of the Sustainable Development Goals.
+
+In sub-Saharan Africa, the debate about the levels and dimensions of income inequality remains
+inconclusive; there are diverging views regarding these issues. Income inequality is high, and according
+to the latest Gini index figures available, it fell from 0.475 to about 0.435 between 1993 and 2010
+(Cornia, 2016:6). Yet, it rose by over 3.0 percentage points in one out of every four countries in the
+region.This notwithstanding, the emerging reality is that Africa remains one of the most unequal regions
+globally. Ten of the 19 most unequal countries globally are in Africa (see figure 7.1). Most of these
+countries are in the Southern African region, with South Africa the most unequal country in
+the world. Inequality is still driven by the lopsided economic structure imposed by the apartheid
+regimes in the region, including unequal access to land and economic opportunities, which cannot be
+addressed overnight. Income inequality is a double-edged sword. One school of thought believes some level of income
+inequality may be conducive to economic growth.5 Another, which believes in demand-side economics,
+however, views extreme inequality as harmful to economic growth and human development. The
+latter’s members believe that a more equal society favours the middle class and lower income group
+with a high propensity to consume. In addition, through the accelerator principle, a more equal
+society often leads to higher investments and employment by firms. As argued by Stiglitz (2015:287),“…once inequality becomes extreme, harmful social, economic and political effects become evident.
+Extreme inequalities tend to hamper economic growth and undermine both political equality and
+social stability.” Extreme inequality is a social problem because it can be destructive through social
+resentment, conflicts and insurgencies, thereby impeding long-term development.6 Rising income
+inequalities and unequal economic opportunities reduce aggregate demand,7 especially through the
+accelerator principle, thereby slowing economic growth. Stiglitz (2012) links inequalities to shorter
+growth cycles. A misinterpretation of short cycles of economic growth, especially through incentives
+for the rich, can lead to economic instability. Stiglitz (2015) argues that countries experiencing
+high inequality tend to invest less in public goods such as infrastructure, education and technology
+that are vital for long-term economic growth and shared prosperity. To this end, pursuing a growth
+objective without equity is counterproductive, while growth that is job-rich, skills-enhanced and
+human capital-driven tends to reinforce long-term growth, shared prosperity, human development
+and social cohesion.
+Africa’s high level of inequality poses a serious challenge to realizing the overarching goal of ‘leaving
+no one behind’ by 2030. Unless innovative ideas are formulated and implemented, achieving SDG
+1, ‘End poverty in all its forms everywhere’ and SDG 10, ‘Reduce inequality within and among
+countries’ remains practically impossible. High inequality reduces the growth elasticity of poverty
+and hinders macroeconomic, political and social stability, which are required to drive sustained and
+inclusive growth and development.
+Specifically, one of the targets of achieving SDG 10 is, ‘by 2030, progressively achieve and sustain
+income growth of the bottom 40 per cent of the population at a rate higher than the national average’
+(UN, 2015). How does Africa fare on this target? Having the answer to this question at this early
+stage provides a good baseline for measuring progress and determining policies that promote its
+realization in the long term.
+Between 1990 and 2012, the income share of the bottom 40 per cent of the population, on average,
+rose from 13.99 per cent to 15.24 per cent, i.e., by 1.25 percentage points. The share of income of the
+bottom 40 per cent increased in 25 countries (led by Zambia), remained stagnant in two countries
+(Democratic Republic of the Congo and Mauritius) and regressed in 15 countries (led by Cameroon)
+(figure 7.2). Most countries that increased the share of the bottom 40 per cent succeeded in reducing
+the income share of the top 10.0 per cent of the population and vice versa. The income share of the
+two groups fell in Botswana, Cameroon, Ghana and Lesotho, possibly as a result of the rising trend
+within the middle class, which, as an example, constitutes 47.6 per cent of Botswana’s population.8
+To avoid the variability associated with measuring inequality either by the extreme percentiles or
+quintiles, a severity index of the relative income share of the bottom 40 per cent to the top 10 per
+cent is used to measure the severity of inequality across African countries. On average, the index
+rose by 6.7 percentage points, from 40.8 per cent in the 1990s to 47.51 per cent in the 2000s. It rose
+in 25 countries (ranging from 0.43 percentage points in the Democratic Republic of the Congo to
+46.97 percentage points in Mali) and declined in 17 countries (ranging from -0.21 percentage points
+in Botswana to -13.56 percentage points in Guinea-Bissau). The share of the bottom 40 per cent in the top 10 per cent income is less than 20 per cent in South Africa, Botswana and Namibia, which
+shows a high intensity of income inequality. The index is higher than 70 per cent in Sao Tome and
+Principe, Mali, Ethiopia, Guinea, Burundi, Sierra Leone, Niger and Mauritania, which suggests a
+better distribution of income in these countries (see figure 7.3 for changes across countries based on
+data availability).
+Some policies and programmes have made a significant difference in reducing inequality in Africa.
+The following have played critical roles in bridging the gap between the bottom 40 per cent and the
+top 10 per cent of the population: implementation of well-targeted social protection systems across
+many African countries (e.g. Ethiopia and Senegal); policies that facilitate school enrolment and
+transition across primary, secondary and tertiary education systems (e.g. Cabo Verde and Mauritania);
+the adoption of free basic health services to the marginalised (e.g. Mauritius and Tunisia); and the
+reform of the labour market institutions, especially the adoption of minimum wages (e.g. Mali,
+Burkina Faso and Zambia) (AfDB et al., 2011). The widening salary and wage compression ratio is an important driver of inequality across the
+continent.9 Many studies acknowledge the rising share of income going to the top earners as a key
+driver of inequality (Piketty and Saez, 2006; McCall and Percheski, 2010; Atkinson, Piketty and Saez,
+2011; Piketty, 2014 and 2015; Odusola, 2015 and 2017). The International Labour Organisation
+illustrates how wage compression affects wage inequality (ILO, 2008). Lower inequality in France
+was induced mainly by wage compressions between the median and lowest wages; in Brazil, by narrowing the gap between median and higher wages; and in Mexico, by narrowing the gap between
+the lowest and highest wages.
+While countries in other regions are making efforts to narrow wage gaps between the lowest and the
+highest income brackets, the opposite is the case in many African countries. A good example of this
+is the widening gap between the salaries of political office holders and national per capita incomes.
+Politicians influence the amount of their emoluments, with limited consideration of their countries’
+development context. The salaries of some African legislators relative to minimum wages and per
+capita income at the national level show wide wage compression ratios. While legislators from the
+Organisation for Economic Co-operation and Development (OECD) countries earned less than
+eight times their countries’ per capita income (ranging from 1.3 times in Norway to 7.1 times in
+Britain), it is 64.0 times in Nigeria, 60.0 times in Kenya and 15.1 times in South Africa (Odusola,
+2015). Based on available data from the World Development Indicators, the wage compression ratio
+in Africa is one of the worst.10 It ranges from 8.0 (Burkina Faso) to 32.0 (Malawi) compared to
+OECD countries, which range from 1.5 (United Kingdom) to 3.3 (United States of America), and
+Latin America and the Caribbean, which ranges from 2.6 in Suriname to 33.0 in the Dominican
+Republic.
+A good indicator of the compression ratio where comparable data are not available is the gap between
+the top-level salary and income per capita (a proxy for median income). A correlation index of 0.401
+is established between these variables. Evidence from figure 7.4 indicates that a pronounced gap
+between parliamentarians’ salaries and emoluments and their countries’ per capita income tends to
+drive income disparity. Based on available data, the correlation index between the change in the share of the bottom 40 per
+cent (between the 1990s and 2000s) and the minimum wage is -19.94. Minimum wage plays an
+important role in reducing the gaps between the super-rich and the poor. Narrowing wage gaps in
+Africa could help accelerate the reduction of inequality in Africa.
+Corruption, which manifests in the form of poor service delivery, is the bane of poverty and inequality
+in several countries. The correlation index between changes in the income share of the bottom 40
+per cent in the top 10 per cent of the population and transparency and corruption index11 is 0.18.
+The lopsided nature of the educational system, which is at variance with labour market reality, is
+another factor that tends to complicate income disparity. The dynamics of economic structures,
+especially the predominance of traditional agriculture in the midst of commercial agriculture, the
+enclave extractive sector and the sophisticated financial and telecommunications sector play an
+important role in creating earnings disparity in many African countries. The dichotomy between
+rural and urban economies also drives disparity (Cornia, 2015). The wide urban-rural gap in access
+to education, health and housing services exacerbates inequality in income and opportunities, as well
+as in low intergenerational mobility (Lipton, 2013). Using fiscal policies to influence some of these
+determinants of inequality in Africa could further enhance income redistribution.
+7.3 Overview of fiscal policies and distributions in Africa.
+7.3.1 Fiscal policies.
+Fiscal policy is an important tool that governments throughout the world use to promote
+macroeconomic stability, allocate resources to priority projects and activities, provide public goods to
+correct market failures, and redistribute incomes and wealth to the marginalised and underprivileged. If
+well-formulated and implemented, fiscal policy is crucial for driving economic growth, social stability
+and national development. Taxes, expenditures and transfers are key instruments for achieving these
+objectives. However, as pointed out by the United Nations Conference on Trade and Development
+(UNCTAD, 2012), the distributive role of fiscal policy has been neglected since the 1980s, with
+undue emphasis on macro-economic stability and on the allocative efficiency roles of fiscal policy.
+Tax plays a dual role in promoting the equity agenda. First, an adequate mix of direct and indirect tax
+instruments plays an important role in income distribution. Progressive taxes that focus on personal
+income taxes (especially on top income earners), capital and wealth taxes, and indirect taxes that are
+skewed against conspicuous consumption tend to promote distributive policy. Second, taxation raises
+resources to finance social spending to support poor, vulnerable and marginalised people. In this
+regard, the level and component of taxes is important for the distributional objective of governments.12
+Although levels of tax revenue and grants, as well as tax revenue as a share of GDP, have been
+increasing over time, they still remain low in Africa relative to those in developed and West Asian
+countries (table 7.1 and figure 7.5). This low level reduces the fiscal flexibility in funding social
+spending, including investing substantially in quality education, health and social protection services
+in the continent. The increase in the level of official development assistance (ODA) and in the non-tax revenues from booming primary commodity prices accounted for the rising level of revenues and
+grants as a share of GDP not as a result of efficiency in tax administration.
+Institutions play an important role in an increasing fiscal space in Africa. The Open Budget Index
+(OBI) provides a comprehensive view of a participatory, transparent and accountable budgetary
+process, including revenue generation and management.13 The correlation index between the OBI
+and fiscal space is as high as 0.23; the coefficient of determination is 5.1 per cent. In 2010, for
+instance, South Africa was ranked the best globally in terms of OBI. It is therefore not surprising that
+it is one of the countries with the largest fiscal space in the continent. Namibia, Botswana, Ghana and
+Uganda also scored very high in OBI over the past years and are also among countries in Africa with
+revenue-to-GDP ratio of more than 10 per cent. By contrast, countries with low institutional ratings
+on OBI such as Nigeria, Democratic Republic of the Congo and Cameroon are among countries
+with very low fiscal space in the continent (Odusola, 2015 and 2017). The strong linkage between
+institutions and fiscal space points to the urgent need to address institutional issues relating to tax
+administration and management in order to expand tax revenues. Issues relating to fraud, tax evasion
+and discretionary tax waivers should be thoroughly reviewed and concrete actions taken. The rampant
+tax holidays granted to foreign firms create inequality of opportunities between local and foreign
+firms, which, in many instances, crowds out the activities of local firms.
+The regional average tends to hide country peculiarities. The 37 countries with consistent data on
+tax revenue-to-GDP ratio fall into three distinct groups (table 7.2). The first group is composed of
+underperforming countries. Fourteen of those, led by resource-endowed countries such as Nigeria,
+Republic of the Congo and Democratic Republic of the Congo, recorded a tax revenue-to-GDP ratio of at least 3.0 percentage points below the regional average of 17.71 per cent as of 2013. The second
+group includes countries that performed moderately with respect to the regional average (i.e., within
+3.0 percentage points below or above the regional average). These are countries with tax revenue-to-
+GDP ratio of between 14.5 and 20.5 per cent. The third group, which outperformed the regional
+average by more than 3.0 percentage points, includes Lesotho, Algeria, Seychelles, Botswana and
+South Africa. This group is led by Lesotho; 50 per cent of its tax revenue-to-GDP share comes from
+the South African Custom Union (FIAS, 2006). Performance in Algeria, Seychelles, Botswana and
+South Africa is mostly driven by institutional improvement.
+The components of tax revenue have been very dynamic across various regions. International trade
+taxes (e.g. border tax) have been declining since 1990 across all regions. Africa recorded the largest
+decline between 1991 and 2010, while the developed region has the least decline. Value-added tax rose
+across all regions during the period, with the largest increase from Latin America and the Caribbean.
+Income tax rose across all developing regions, while it declined in the developed region (table 7.1).
+The redistributive effect of the tax system depends on the relative share of direct tax to indirect tax,
+especially income tax, compared to value-added tax and the progressivity of the personal tax schedule.
+On a positive note, the share of income tax in value-added tax, for instance, has been rising in Africa. 
+7.3.2 Government spending.
+Public expenditure, either aimed at benefitting society as a whole or targeted to specific groups of
+marginalised or vulnerable people, can be a potent instrument to address poverty and inequality. The
+implementation of targeted or means-tested cash transfers could help reduce extreme poverty and universal provision of education and health services can address both inequality and overall economic
+development. The form of social spending to adopt depends, to a large extent, on the state’s capacity
+to raise revenues on a sustainable basis. Countries with capacity to effectively raise and judiciously
+utilise large amounts of revenue tend to be more successful in using social transfers and providing
+social services to the majority of the population in order to influence income distribution.
+The expanding revenues base since 1996 has created fiscal space to increase government expenditure
+in Africa as well as in Latin America (table 7.3). Total expenditure in Africa rose from 23.8 per cent
+in 1996-2000 to 27.6 per cent in 2006-2010, essentially driven by the rise in recurrent and capital
+spending over the period. The fiscal space – the capacity to spend – was also boosted by the lower
+interest payment resulting from debt relief enjoyed by the region. As of March 2016, 31 of the
+36 Heavily Indebted Poor Countries (HIPC) that were qualified, eligible or potentially eligible to
+receive HIPC Initiative assistance are from Africa.14 Three other countries - Eritrea, Somalia and
+Sudan - have reached the pre-decision point. The International Monetary Fund (IMF, 2016) puts the
+estimated total cost of providing debt relief to the 39 countries under the enhanced HIPC Initiative
+to be around US$75 billion in end-2014 net present value terms.
+Unlike well-institutionalized social protection mechanisms in Latin America, social protection
+coverage, quality and level of assistance still remain very limited in Africa. Yet, such mechanisms in
+Africa have assumed various forms, including free provision of tax-funded national health services,
+the use of voucher instruments, cash transfer schemes and contribution-based system such as the
+social health insurance. Social protection implementation is more pronounced in Southern African
+countries with government funds committed to them, while in others, social protection is funded
+essentially by ODA.
+The comprehensive review of social protection in Africa by AfDB et al. (2011) shows its potential
+impact on poverty and inequality reduction. For instance, it shows that in Mauritius, the poverty rate
+for older people living with more than one younger person was 30 per cent lower than it would be
+without the universal pension. Also, in South Africa, the social grant reduced the poverty headcount
+by 4.3 per cent and the destitution gap by 45 per cent, and the child support grant reduced the
+poverty gap among recipients by 47 per cent. The comprehensive system of social grants in South
+Africa has helped to reduce the Gini coefficient by three percentage points, thus doubling the share
+of the poorest quintile in national incomes. The implementation of cash transfers in Namibia reduced
+poverty incidence by 4.3 per cent, the poverty gap by 18.4 per cent, and poverty severity by 27.5 per
+cent. The implementation of the Productive Safety Nets Programme (PSNP) in Ethiopia between
+2005 and 2008 prevented vulnerable people from selling their assets as a result of shocks; 55 per cent
+of the beneficiaries affirmed that the programme increased their household incomes and 7.8 million
+that previously relied on emergency food relief became food-secure.
+The pension scheme in Lesotho, Namibia, South Africa and Swaziland reached between 80 and
+100 per cent of the elderly at an estimated cost of 1.0-3.0 per cent of GDP. Based on this finding,
+UNCTAD (2012) concluded that implementing social protection in Africa is fiscally, administratively
+and politically feasible. Evidence from Odusola (2015) further shows that many African countries
+still depend heavily on ODA for social spending. A substantial part of ODA should be devoted to
+building capacity for tax administration. To this end, public spending, if well managed, plays an important role in expanding the reach of
+social services, especially to rural communities, poor families, and unemployed and marginalised
+people who could not have been reached through the interplay of market forces. In this regard, public
+spending could help correct market failures by providing social services and social transfers in the
+face of unequal endowments and the associated undesirable outcomes imposed by market forces. One
+important strategy for boosting equality of opportunity and promoting intergenerational mobility is
+to improve the access of low-income families to quality education, especially tertiary education, by
+providing free tuition, scholarships and loans. In addition, access to basic health services would be
+improved, such as universal health services in Egypt, Mauritius and Tunisia.15 Implementation of
+these services has allowed these countries to be grouped among the most equal in Africa and in the
+world with Gini coefficients of less than 0.360 as of 2013. 
+7.4 Distributional effectiveness of fiscal policy in Africa.
+The previous sections reveal that taxes, transfers and public expenditures are important instruments
+for distributing income and economic opportunities among the population. The framework for
+measuring the effectiveness of fiscal policy on income distributions across countries is obtained from
+the Standardized World Income Inequality Database (SWIID). It is measured as the difference
+between the gross Gini (before taxes and transfers) and the net Gini (after taxes and transfers) (e.g.
+Solt, 2009; Cevik and Correa-Caro, 2015).
+Many African countries experienced erosion in the distributional impact of fiscal policy, as the rate
+of increase in the net Gini coefficient is faster than that of the market Gini coefficient. Of the 47
+countries where data are available, 29 countries recorded declines in their fiscal policy distributional
+effectiveness (see Odusola, 2015). In this regard, examples of countries with substantial performance
+(35 per cent increase and above) include Angola, Mozambique, Democratic Republic of the Congo,
+South Africa and Togo. For instance, in South Africa, between 1965 and 2011, market Gini rose by
+17.6 per cent while net Gini rose by 14.9 per cent. The dismantling of apartheid, the expansive social
+protection coverage, innovative revenue management made this possible.
+The effectiveness of fiscal policy across countries with available data in Africa, as measured by the
+difference between the market and net Ginis, is shown in figure 7.6. South Africa recorded the highest
+performance on this indicator, followed by Burkina Faso, Kenya and Gabon. This suggests that the
+level and composition of taxes and the quality of spending, as well as its distribution across groups and
+spatial locations, are contributing to a reduction in inequality in most of these countries. Many countries
+are deepening their direct taxation, while some are shifting from indirect to direct taxation to reduce
+income inequality. The reform in the tax collection system, which is blocking tax evasion by companies
+and individuals in South Africa, is also contributing to the enviable performance in fiscal distribution in
+the country. The implementation of fiscal decentralisation in Kenya, which has been adjudged to have
+promoted allocative efficiency and equity (Bakaga, 2008), could be one of the factors explaining fiscal
+distribution effectiveness in the country. The increasing wave of public participation in budgeting and
+the introduction of the social accountability matrix in service delivery at the county level (World Bank,
+2015) are other factors driving the distributional effectiveness of fiscal policy in Kenya. Improved fiscal policy effectiveness enhances economic efficiency and improves distributional
+coverage. Fiscal policies affect poverty and inequality through taxes, transfers and public expenditure.
+The relationship is not automatic or linear. Progressive taxes reallocate and distribute resources from
+the rich and super-rich to marginalised and vulnerable groups. The progressivity of direct taxes (such
+as those levied on income, wealth and inheritance) and indirect taxes (such as on consumption)
+is an important channel.16 Efficient and well-targeted public spending on education, vocational
+and entrepreneurial training, and basic health services are vehicles to reduce income inequality. For instance, public spending that proactively supports girls and women’s education could help address
+inter-generational poverty, while those directed at vocational skills of unskilled labour could accelerate
+reduction in income inequality. Quality investment in human capital accumulation (including
+education and skill development) could drive poverty and inequality reduction.
+The transmission channels between fiscal policies and reduction in inequality are progressive taxes,
+well-targeted transfers and pro-poor quality expenditures. An effective redistribution of the total
+tax burden towards the rich via personal and corporate income taxes, and reallocations of public
+spending to favour the poor and marginalised groups play a strong role in substantially reducing
+poverty and inequality.
+More equitable access to economic, social and political resources not only enhances the well-being
+of the population, but also promotes better income distribution (IMF, 2014). Even in a majority of
+African countries where the fiscal system is mostly regressive, should these regressively mobilised
+resources be used to finance progressive spending, such as meeting the needs of the marginalised, this
+could generate progressive distribution. A good example is using revenues from value-added tax to
+support progressive spending on education, health and transfers to the poor.
+Lessons can be drawn from China and Thailand about using fiscal instruments to influence income
+distribution. With regard to China, Cevik and Correa-Caro (2015) show the contrasting effects
+between taxes and government expenditures on inequality. Government spending shows some
+worsening impact, whereas government taxes improve inequality. The ability of fiscal policies to
+counter other drivers of poverty and inequality also matters. For instance, fiscal policies that are
+progressive and are able to strengthen accountability and transparency in collecting and using public
+resources may produce stronger effects on poverty and inequality.
+In Thailand, the redistributive policies targeted rural areas and focused on social protection for poor
+households, including: provision of financial transfers to the elderly poor; universal health coverage;
+15 years’ of free education; debt suspension for small-scale farmers, which affected 1.9 million families; introduction of micro-credit schemes through a revolving fund; implementation of the
+One Village One Product Programme; and provision of agricultural inputs to farmers. All of these
+policies contributed significantly to reducing inequality (UNCTAD, 2012; Boonperm, Haughton and
+Khandker, 2009). The Thailand Village and Urban Revolving Fund, which provided about US$22,500
+to every village and urban community in Thailand as working capital for locally run rotating credit
+associations, started with about US$2.0 billion in 2001. By May 2005, the committee managing the
+Fund had made loans totalling US$8.0 billion. The Fund benefitted 74,000 villages and more than
+4,500 urban communities. The impact of the Fund, which disproportionately focused on borrowers
+from poor and agricultural families in 2004, shows that borrowers had, on average, 1.9 per cent more
+income, 3.3 per cent more expenditure and about 5.0 per cent more ownership of durable goods. Due
+to the implementation of the various reforms, the Gini fell from 0.452 in 1981 to 0.379 in 2013.
+In Pakistan, a computable general equilibrium analysis of the way in which fiscal policy impacts income
+inequality shows that a combination of fiscal instruments is required to correct income distribution
+(Bhatti, Naqvi and Batool, 2012). These authors conclude that in Pakistan, the use of sales tax or
+transfers can reduce income inequality but could exacerbate budget deficit. An appropriate fiscal
+policy mix of sales tax, income tax and government expenditure not only reduces income inequality,
+but also helps address the challenge of budget deficit.
+Salotti and Trecroci (2015) show how inequality is sensitive to fiscal policy (the bottom and the
+top tails of income distribution). Using data for advanced countries, they found that the inequalityreducing
+power of fiscal policy (using public debt instruments) ranged between -0.05 and -0.18,
+while those of government final consumption expenditure ranged between -0.23 and -0.55. When
+efficiency and quality of government spending is assured, public expenditure is a potent tool to
+redistribute wealth and opportunities to the lowest quintiles of the population. The equalising impact
+of public spending on education, health and social spending is prominent.
+The experience from OECD countries reveals the importance of policy experiments in reducing
+inequality in labour earnings. It shows that a 10 per cent rise in post-secondary school education,
+job projection on temporary work relative to OECD average, and union membership reduces the
+income share of the top ten percentile relative to the bottom ten percentile from 0.04 to 0.08. It is
+also evident that cash transfers, such as pensions, unemployment and child benefits, account for the
+overall distributive impact, while taxes account for one-quarter. However, the impact across OECD
+countries varies according to the size, composition and progressivity of taxes and cash transfers
+(OECD, 2012; Joumard, Pisu and Bloch, 2012). A major lesson from OECD countries shows that
+tax progressivity explains the redistributive impact of taxes more than the tax-to-GDP ratios tends
+to suggest. Several countries with high tax-to-GDP ratios show lower distributive impact due to
+lower levels of tax progressivity. The lower impact arises from three channels: (i) the tax mix that
+favours consumption taxes and social security contributions over more progressive personal income
+and wealth and inheritance taxes; (ii) limited progressivity of tax schedules, especially on certain types
+of incomes or deductions such as interest income, mortgage interest and charitable contributions,
+particularly in the Nordic countries; and (iii) emphasis on tax expenditures that favour high-income
+groups (OECD, 2012).
+IMF (2014) provides a comprehensive review of the evidence of fiscal policy on inequality in advanced
+and developing economies. Its conclusions show that direct income taxes and transfers reduced
+inequality in advanced countries by an average of one-third; it reduced market Gini coefficient by about 14 percentage points in 2005. The reduction through income taxes is even greater than meanstested
+transfers. The redistributive impacts of fiscal policy were reduced when the benefits drastically
+declined and when taxes became less progressive. As a result, the percentage change in market Gini
+offset by taxes fell from 16.9 per cent during 1985-1995 to 10.9 per cent during 1985-2005, while
+those of transfers also declined from 46.7 per cent to 34.4 per cent during the same period. IMF’s
+main conclusion is that the income disparities across regions during the period 1990-2010, especially
+between the two most unequal regions, SSA and Latin America and the Caribbean, and the two most
+equal regions, emerging Europe and advanced economies, can be explained by differences in levels
+and compositions of taxes, public spending and labour market institutions. 7.5.2 Methodology, data and data sources
+Different variants of taxes and social spending indicators have been used to analyse the linkage
+between income inequality and fiscal policies and distribution. The disaggregation of fiscal policies
+into its components provides a good opportunity to examine the impact of each instrument on
+inequality. This follows the approach of Salotti and Trecroci (2015) and Cevik and Correa-Caro
+(2015).
+Using a panel data of 41 African countries with at least two data points between 1990 and 2012, an
+ordinary least squares technique was employed to estimate the various parameters. The model is run on
+145 data points. The dependent variable is the Gini coefficient, as provided by the SWIID Database
+Version 5. The explanatory variables are as indicated in equations 1 and 2 below. A sensitivity analysis
+on the impact of only fiscal variables is also employed.
+Gini = β0 + β1fd + β2g + β3rr + β4av + β5mv + β6sv + B7tr + β8st + β9he + β10xr + β11op + B12ms + μ (1)
+Gini = α0 + α1tr+ α2st + α3tgs + α4cid + α5tit + α6tip + Ω (2)
+Where: Gini stands for Gini coefficient, fd = fiscal distribution measured as the difference between
+market and net Ginis based on SWIID Version 5, g = GDP growth, rr = share of natural resource rent
+in GDP, av = agricultural value added as a share of GDP, mv = manufacturing value added as a share
+of GDP, sv = services value added as a share of GDP, tr = tax revenue-to-GDP ratio, st = subsidies
+and transfers as a share of total expenses, he = health expenditure per capita, xr = external resources
+for health as a share of total expenditures on health, op = out-of-pocket expenditure as a percentage
+of private expenditure on health, and ms = mean year of schooling. Other variables are tgs = taxes on
+goods and services as a percentage of revenue, cid = custom and other import duties as a percentage of
+tax revenues, tit = taxes on international trade as a percentage of revenue, and tip = taxes on incomes,
+profits and capital gains as a percentage of revenue. βi and αi are parameter estimates, and μ and Ω
+are error terms.
+The Gini figures are sourced from the SWIID Database Version 5. Other variables are from the
+World Development Indicators from the World Bank database, except those complemented by the
+United Nations Children’s Fund (UNICEF) database on health-related variables.
+7.5.3 Analysis of empirical results and policy options
+In Africa, over the 1990-2013 period, evidence from bivariate analysis on the relationship between
+fiscal space, on the one hand, and market and net Gini (after taxes and transfers) coefficients (averages), on the other, suggests that there are some elements of tax regressivity. Gini coefficients
+are positively correlated with fiscal space (figure 7.7).17 All countries with a revenue-to-GDP ratio
+of 20 per cent and above (except Algeria, Morocco and Seychelles) have income inequality (market
+and net Gini coefficients) that are over 0.5. These countries (Algeria, Morocco and Seychelles) are
+either not resource-rich or are not heavily dependent on primary commodities for their exports and
+revenues. The need to enhance non-extractive revenues by reducing governments’ heavy dependence
+on revenues from the extractive sectors in countries such as Nigeria and Democratic Republic of the
+Congo, for instance, could help reverse the positive linkage. This also calls for improving progressive
+taxation in countries with high fiscal space and high income inequality, such as Lesotho, Namibia,
+South Africa, Angola and Zimbabwe. The coefficient of determination, which is 13.3 per cent, is
+relatively high, while correlation coefficients for both gross and net Gini measures are over 0.36.
+To this end, a progressive tax system and diversification of government revenues away from the
+extractive sector could help to reduce inequality in the continent.
+The evidence from the multivariate analysis also confirms the regressive nature of tax revenue in
+Africa. The relationship between tax revenue-to-GDP ratio and income inequality remains positive
+but not statistically significant. This may be as a result of the low tax revenue-to-GDP ratio in Africa.
+Since improved revenues enhance the capacity and flexibility of the state to make spending choices
+that have a strong impact on poverty and inequality - especially on health, education and social
+services – it is important to foster the poverty- and inequality-reducing power of fiscal policies. In
+this regard, expanding the tax bases in African countries remains critical. This would entail improving
+enforcement on existing tax handles and levying new taxes (Odusola, 2006), including by increasing
+marginal tax rates and bringing the informal sector into the tax bases in a way that does not encourage
+underground economic activities. Policies that promote economic growth also increase the tax base
+of the economy.
+Total natural resource rent as a share of GDP appears to have a weak impact on inequality.18 Due to
+the enclave nature of this sector, the prevalence of Dutch disease, concentration of asset ownership
+and associated inefficiencies, natural resource rent is expected to drive income inequalities. Given
+the sustainability agenda and the heavy resources flowing from this sector, it is imperative to ensure
+that natural resource rent caters for current and future generations and generates a strong impact on
+inequality reduction. Decoupling government revenues from the extractive sector could help avert
+variations in revenues from primary commodities, such as the current bust in primary commodity
+prices. Raising more revenues from personal and corporate income taxes helps to increase tax
+progressivity. It also enhances fiscal citizenships across countries. Fiscal citizenship helps to engender
+accountability and transparency in the use of public budgets, both public expenditures and revenues.
+Quid pro quo in tax management also helps to boost and smooth revenues across countries. The
+need to decouple government revenues from the extractive sector is further reinforced by the fiscal
+distributional effectiveness index, which is positive and statistically significant at 1.0 per cent. A 1.0
+per cent increase in the level of fiscal distribution raises income inequality by 1.7 per cent. This is a
+clear indication of regressive distributional policies. Most of the benefits of distributions go to the rich, not the poor. A thorough review of the distributional policies and strategies is critical to reverse
+the regressive nature of fiscal distribution in Africa.
+The implementation of subsidies and transfers seems to be yielding some dividends. It appears to be
+an equalising factor, and the relationship between subsidies and transfers and the reduction of income
+and economic inequalities is statistically established at 1.0 per cent level of significance. This tends to
+confirm the finding from Younger, Myamba and Mdadila (2016) on the fiscal incidence in the United
+Republic of Tanzania. Improving the design and operational effectiveness of subsidies and transfers,
+including better targeting, could further help to reduce income and economic inequalities in Africa.
+GDP growth also appears to be an equaliser. A 1.0 per cent rise in economic growth reduces inequality
+by 0.45 per cent. A structural analysis of the growth shows that the value added in manufacturing,
+agriculture and services helps mitigate inequality in Africa. The results for manufacturing and
+agriculture value added are established at 5 per cent level of significance, while that of services value
+added is established at 10 per cent. The relative strength of manufacturing value added is strongest,
+followed by agriculture value added. This tends to support the IMF’s (2011) conclusion that growth
+equalises when employment opportunities in rural areas and labour intensity in manufacturing
+improve.
+Both the mean year of schooling and external resources for health services as a share of total health
+expenditure have no significant effect on inequality. However, out-of-pocket expenses as a share of total
+private expenditure appear to be a strong equaliser. A 1.0 per cent rise in out-of-pocket expenditure
+reduces income inequality by 0.22 per cent and is statistically established at a 1.0 per cent level of significance. This might not be the case for all, especially the poor and the marginalised, who may not
+be able to afford out-of-pocket expenditures, as shown in Mauritius, Egypt and Tunisia with their
+universal health coverage. The correlation coefficient of -0.216 provides evidence that improvement
+in the transition rate from primary to lower secondary education between 1999 and 2013 tends to
+reduce inequality. Through substantial investment in quality and accessible education and health
+services, fiscal policy is a common factor in simultaneously reducing poverty and inequality in Egypt,
+Tunisia, Mauritius and Morocco. Fiscal policy could also be used to proactively expand employment
+opportunities, modernize their economies, and maintain effective and well-targeted social protection
+mechanisms that benefit the marginalised. Deepening skills acquisition programmes for unskilled
+and uneducated individuals is vital to addressing inequality.
+Making tax instruments an equalising factor remains critical. Comparing the two intercepts from the
+two models in table 7.4 shows a lower Gini response function when all explanatory variables are fiscal
+policy instruments as opposed to when they are a fraction of the explanatory variables. When tax and
+transfer variables are grouped together, only taxes on income, profit and capital gains are statistically
+significant. This further confirms that taxes are generally regressive in the continent, suggesting that
+income taxes have a greater impact on low-income groups to the extent that their impact outweighs
+corporate profit and capital gain taxes. This points to the urgent need for tax system reform in Africa. Reducing income inequality calls for increasing the progressivity of the tax system, including by
+increasing marginal tax rates at the top level, reducing tax brackets and eliminating tax loopholes
+and exemptions, particularly tax holidays and incentives to multinational companies. Broadening
+the tax bases in the face of a high level of informality reinforces the need to deepen value-added
+tax administration and bring many actors outside the tax handle into the tax bases across many
+African countries. The tax system should be reoriented towards middle-class and top income earners,
+while public spending should target poor families, the elderly, the unemployed and the marginalised.
+Social security contribution is at an infant stage in many countries. It must thus be overhauled and
+strengthened across the public and private sectors to promote social equity and life-cycle income
+smoothing, especially at old age or during periods of unemployment or underemployment.
+7.6 Conclusions.
+In the era of the 2030 Agenda for Sustainable Development, addressing inequality is not only crucial
+for political stability and social cohesion, but it is also good economics and a development imperative.
+However, regressive tax systems with a high incidence on low-income groups, low levels of taxes and
+social spending, and a low distributional impact of fiscal instruments limit the distribution impact
+of fiscal policy in Africa. The volume and level of public spending and coverage of transfers depend
+on the aggregate revenues mobilised. Expanding the fiscal space (tax revenue-to-GDP ratio), from
+the current 17.0 per cent to over 30.0 per cent, and adopting an appropriate fiscal policy mix are
+highly desirable to shift the frontier of fiscal distribution and promote fiscal citizenship. Moreover,
+increasing access to social services and implementing effective social protection is fiscally, technically
+and politically practicable in Africa.
+Both bivariate and multivariate analyses show the regressive nature of tax revenue in Africa, although
+it is not statistically established. The impact of the mainstay of most African economies (i.e., natural
+resource rent) on inequality remains weak. This is an important finding, suggesting an urgent need
+to decouple government revenues from the extractive sector. The positive relationship between the
+fiscal distribution effectiveness index and income inequality creates a puzzle; that is, a 1.0 per cent
+increase in the level of fiscal distribution raises income inequality by 1.7 per cent, indicating regressive
+distributional policies under which the rich benefit more than the poor. GDP growth appears to be
+an equaliser with a 1.0 per cent rise in economic growth reducing inequality by 0.45 per cent.
+If well-formulated and implemented, fiscal policies could be powerful tools to make a dent, directly
+and indirectly, in income inequality in Africa. First, pro-equity fiscal policies per se are good in
+their own right because they have a direct impact on reducing income inequality. Second, they also
+work to: tame other drivers of income inequality by increasing access to quality education, health
+and housing services; narrow wage gaps; strengthen tax administration capacity; and promote
+participatory, transparent and accountable budgetary process. As a matter of necessity, African
+governments must integrate progressive fiscal policies to positively influence income distribution in
+their national development strategies, including national development plans and annual budgets. To
+this end, pursuing growth with equity should become a primary objective of African governments.
+As a matter of policy, fiscal policy should be used to promote growth that is job-rich, skills-enhanced
+and human capital-driven. Such growth tends to reinforce long-term growth, shared prosperity and
+social cohesion and creates more fiscal space.
