@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+        /*generally do 3 tiers for desktop, mobile, tablet -- will eventually use bootstrap*/
+            /*large screens*/
+            @media (min-width: 1024px){
+                body{
+                    background-color: black;
+                    color: white;
+                }
+            }
+            /*medium screens*/
+            @media (min-width: 768px) and (max-width: 1023px) {
+                body{
+                background-color: pink;
+                color: white;
+                }
+            } /*best practice not to leave pixel underdetermined*/
+            /*small screens*/
+            @media(max-width: 767px){ 
+                body{
+                    background-color: gray;
+                    color: white;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Responsive Color</h1>
+    </body>
+</html>
