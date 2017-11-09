@@ -158,7 +158,7 @@ function onMouseover(d){
     country_hover.transition()
         .duration(200)
         .style("opacity", .9);
-    country_hover.text(d.Country)
+    country_hover.text(`${d.Country} - ${Math.round(d[m])}`)
         // .attr("transform", "translate(0,480)")
         .style("top", (height+titleHeight+controlHeight + 80) + 'px')
         // .style("top", '90%')
