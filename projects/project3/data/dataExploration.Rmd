@@ -7,8 +7,9 @@ output: html_notebook
 library('dplyr')
 library('jsonlite')
 library('readr')
+options(scipen=999)
 
-data <- read.csv('Project 3 Prelim Data2 (3)/6a9f52d0-528d-4670-b162-85ebf902f4f3_Data.csv')
+data <- read.csv('Project 3 Prelim Data2 (4)/c28f8717-b7cd-42d0-a7e7-2e688ef78c3f_Data.csv')
 View(data)
 
 meta<- read.csv('Project 3 Prelim Data2 (1)/718a0a51-7e31-4851-bce7-4403cc3e4913_Country - Metadata.csv')
@@ -24,8 +25,9 @@ View(merged)
 
 country_data <- merged %>%
   select(Country.Name, Country.Code, Time, Agricultural.irrigated.land....of.total.agricultural.land...AG.LND.IRIG.AG.ZS., Agricultural.machinery..tractors..AG.AGR.TRAC.NO., Agricultural.machinery..tractors.per.100.sq..km.of.arable.land..AG.LND.TRAC.ZS., Agriculture.value.added.per.worker..constant.2010.US....EA.PRD.AGRI.KD., Agricultural.land....of.land.area...AG.LND.AGRI.ZS., Agriculture..value.added..annual...growth...NV.AGR.TOTL.KD.ZG., Depth.of.the.food.deficit..kilocalories.per.person.per.day...SN.ITK.DFCT., Food.exports....of.merchandise.exports...TX.VAL.FOOD.ZS.UN., Food.imports....of.merchandise.imports...TM.VAL.FOOD.ZS.UN., Fertilizer.consumption....of.fertilizer.production...AG.CON.FERT.PT.ZS., Fertilizer.consumption..kilograms.per.hectare.of.arable.land...AG.CON.FERT.ZS., Rural.poverty.gap.at.national.poverty.lines......SI.POV.RUGP., Employment.in.agriculture....of.total.employment...SL.AGR.EMPL.ZS., Rural.population....of.total.population...SP.RUR.TOTL.ZS.,
-Industry..value.added....of.GDP...NV.IND.TOTL.ZS.,
-Industry..value.added..annual...growth...NV.IND.TOTL.KD.ZG.
+Income.share.held.by.lowest.10...SI.DST.FRST.10.,
+Income.share.held.by.lowest.20...SI.DST.FRST.20.,
+Account..income..poorest.40.....ages.15....ts...WP_time_10.8.
 ) %>%
   rename(AgriValuePerWorker = Agriculture.value.added.per.worker..constant.2010.US....EA.PRD.AGRI.KD.,
         RuralPovGap = Rural.poverty.gap.at.national.poverty.lines......SI.POV.RUGP., 
@@ -39,12 +41,13 @@ Industry..value.added..annual...growth...NV.IND.TOTL.KD.ZG.
         FertilizerConsump = Fertilizer.consumption....of.fertilizer.production...AG.CON.FERT.PT.ZS., 
         FertilizerConsumpPerHA = Fertilizer.consumption..kilograms.per.hectare.of.arable.land...AG.CON.FERT.ZS.,
         EmployInAg = Employment.in.agriculture....of.total.employment...SL.AGR.EMPL.ZS.,
-        IndustryAddedValPercGDP = Industry..value.added....of.GDP...NV.IND.TOTL.ZS.,
-        IndustryPecGrowth = Industry..value.added..annual...growth...NV.IND.TOTL.KD.ZG.,
-        Country = Country.Name)
+        Country = Country.Name, 
+        IncomeShareLowest10 = Income.share.held.by.lowest.10...SI.DST.FRST.10., 
+        IncomeShareLowest20 = Income.share.held.by.lowest.20...SI.DST.FRST.20.)
 #TODO: add more variabel aliases
 
-View(country_data)
+glimpse(country_data)
+country_data$Time = as.numeric(country_data$Time)
 ```
 
 # Top Crops per Country
@@ -52,7 +55,7 @@ View(country_data)
 options(scipen=999)
 crops <- read.csv('CpC2.csv')
 # summary(crops)
-crops <- crops[order(crops$Area, crops$Year, -crops$Value),]
+crops <- crops[order(crops$Area, crops$Year, -crops$Value, crops$Item),]
 View(crops)
 # grouped_crops <- group_by(crops, crops$Area, crops$Year)
 
@@ -68,7 +71,7 @@ merged_crops <- left_join(crops, grouped_summary, by= c("Area", "Year"))
 merged_crops$percentOfTotal<- merged_crops$Value/merged_crops$totalValue
 
 # View(grouped_summary)
-# View(merged_crops)
+View(merged_crops)
 
 top_crops <- merged_crops %>%
   group_by(Area, Year) %>%
@@ -76,12 +79,20 @@ top_crops <- merged_crops %>%
   select(Area, Year, Unit, Value, Item, totalValue, percentOfTotal)
 
 View(top_crops)
-
+glimpse(top_crops)
 ```
 
 blending both datasources together
 ```{r}
-final_data <- left_join(country_data, top_crops, by= c ("Country.Name" = "Area", "Time" = "Year"))
+# country_data$Time = as.integer(country_data$Time)
+top_crops$Year = as.factor(top_crops$Year)
+
+View(top_crops)
+View(country_data)
+
+final_data <- left_join(country_data, top_crops, by= c ("Country" = "Area", "Time" = "Year"))
+
+View(final_data[final_data$Time >= 2004,])
 
 final_data <- final_data %>% 
   filter(Time >= 2004) %>%
@@ -93,4 +104,58 @@ View(final_data)
 
 ```
 
+getting crop distribution for each country
+```{r}
+crops <- read.csv('CpC2.csv')
+# summary(crops)
+# crops <- crops[order(crops$Area, crops$Year, crops$Item),]
+# View(crops)
+# grouped_crops <- group_by(crops, crops$Area, crops$Year)
+
+# gets the total number of crops for each country/year
+grouped_summary <- crops %>%
+  group_by(Area, Year) %>%
+  summarise(totalValue = sum(Value, na.rm= TRUE))
+
+View(grouped_summary)
+
+# add total column to full data
+merged_crops <- left_join(crops, grouped_summary, by= c("Area", "Year"))
+
+# calculate % of total
+merged_crops$percentOfTotal<- merged_crops$Value/merged_crops$totalValue
+merged_crops = merged_crops[order(merged_crops$Area, merged_crops$Year, -merged_crops$percentOfTotal),]
+
+# View(grouped_summary)
+# View(merged_crops)
+
+# get top 10 crops
+top_crops <- merged_crops %>%
+  group_by(Area, Year) %>%
+  filter(row_number() <= 10) %>%
+  select(Area, Year, Unit, Value, Item, totalValue, percentOfTotal)
+
+top_crops_top_summary <- top_crops %>%
+  group_by(Area, Year) %>%
+  summarise(subtotalValue = sum(Value, na.rm= TRUE))
+
+merged_top_crops<- left_join(top_crops, top_crops_top_summary, by = c("Area", "Year"))
+merged_top_crops$percentOfSubtotal<- merged_top_crops$Value/merged_top_crops$subtotalValue
+
+View(merged_top_crops)
+top_crops$Year = as.factor(top_crops$Year)
+glimpse(top_crops)
+
+glimpse(country_data)
+
+final_crop_data <- right_join(country_data, top_crops, by= c ("Country" = "Area", "Time" = "Year"))
+
+View(final_data[final_data$Time >= 2004,])
+
+final_crop_data <- final_crop_data %>% 
+  filter(Time >= 2004) %>%
+  toJSON() %>%
+  write_lines('cropdata.json')
+
+```
 
