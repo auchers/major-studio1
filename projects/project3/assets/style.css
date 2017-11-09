@@ -14,7 +14,7 @@ select{
 }
 
 div.plot{
-    min-width: 500px;
+    min-width: 600px;
     max-height: 800px;
 }
 
@@ -53,8 +53,12 @@ div.tooltip {
     pointer-events: none;
 }
 
+.label{
+    position: absolute;
+}
+
 .crop{
-    background-color: #c4c4c4;
+    background-color: rgba(196, 196, 196, 0.4);
 
 }
 

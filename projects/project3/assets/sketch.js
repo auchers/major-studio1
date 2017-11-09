@@ -1,179 +1,182 @@
-var imgMapping = {
-    "Bananas": 'noun_1314055_cc.svg',
-    "Plantains and others": 'noun_1314055_cc.svg',
-    "Cassava": "noun_563420_cc.svg",
-    "Sweet potatoes": 'noun_457236_cc.svg',
-    "Sorghum": "noun_76625_cc.svg",
-    "Roots and tubers, nes": "noun_563420_cc.svg",
-    "Sugar cane": "noun_573903_cc.svg",
-    "Maize": "noun_563406_cc.svg",
-    "Rice, paddy": "noun_303700_cc.svg",
-    "other": "noun_920797_cc.svg"
+
+var metricMapping = {
+    'Worker Productivity': "AgriValuePerWorker",
+    'Food Deficit': "FoodDeficit",
+    'Fertilizer Consumption': 'FertilizerConsumpPerHA',
+    'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
-var agData,
-    maxWorkerProd,
-    minWorkerProd,
-    maxIndustryPercGDP,
-    minIndustryPercGDP;
+var agData, divW;
 
 var x,y;
 
-var year = 2010;
-var iconSize = 60;
-var marginSize = 60;
+// set starting values
+var year = 2010,
+    metric = 'Worker Productivity',
+    m; // current underlying metric
+
+var title = d3.select('.title')
+    .append('h2')
+    .text('Agricultural Crop Profiles of Countries in Sub-Saharan Africa');
+
 // create year dropdown
-var select = d3.select('.scatterplot')
+var yearSelect = d3.select('.controls')
     .append('select')
-    .attr('class', 'select')
-    .on('change', onSelect);
+    .on('change', onYearSelect);
+
+var metricSelect = d3.select('.controls')
+    .append('select')
+    .on('change', onMetricSelect);
 
 // create main scatterplot svg
-var svg = d3.select('.scatterplot')
-    .append('svg')
-    .attr('class', 'scatterplot')
-    .attr('height','90%')
-    .attr('width', '100%');
+var plot = d3.select('.plot')
+    .append('div')
+    .attr('class', 'plot')
+    .style('height','70%')
+    .style('width', '100%');
 
-var width = parseInt(d3.select('svg').style('width'));
-var height = parseInt(d3.select('svg').style('height'));
+// plot.append('g'); // buffer for data join later
+
+var width = plot.node().offsetWidth;
+var height = plot.node().offsetHeight;
+
+var titleHeight = title.node().offsetHeight;
+var controlHeight = metricSelect.node().offsetHeight;
 
 console.log(`width: ${width} height: ${height}`);
 
-var tool_tip = d3.tip()
-    .attr("class", "d3-tip")
-    .style('background-color', 'pink')
-    .style("opacity", .8)
-    .html(function(d) {
-        return `Country: ${d.Country} <br> Primary Crop: ${d.Item} <br>  Year: ${d.Time}`;
-    });
+// create tooltip -- later move it to location of hover
+var tool_tip = d3.select('body')
+    .append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0);
 
-svg.call(tool_tip);
+// create country label -- later move it to location of hover
+var country_hover = d3.select('body')
+    .append('div')
+    .attr('class', 'label')
+    .style('opacity', 0);
+
 // get data
-d3.json('data/agdata.json', function(err, data){
-    // filter out NA values on worker productivity
-    agData = _.filter(data, function(d){ return !(d.AgriValuePerWorker === '..' || d.IncomeShareLowest20 === '..'); });
+d3.json('data/cropdata.json', function(err, data){
+    agData = data;
     console.log(agData);
 
     // get array of unique years from data -- use to populate dropdown
     var years = _.uniq(_.map(data, 'Time'));
-    var options = select.selectAll('option')
+    var metrics = Object.keys(metricMapping);
+
+    yearSelect.selectAll('option')
         .data(years)
         .enter()
         .append('option')
-        .text(function(d){ return d; });
+        .text(function(d){ return d; })
+        .property("selected", function(d){ return +d === year; }); //sets defaults value
 
-    // get extrema for total dataset
-    maxWorkerProd = _.maxBy(agData, function(d){ return +d.AgriValuePerWorker; }).AgriValuePerWorker;
-    minWorkerProd = _.minBy(agData, function(d){ return +d.AgriValuePerWorker; }).AgriValuePerWorker;
-    maxIndustryPercGDP = _.maxBy(agData, function(d){ return +d.IncomeShareLowest20; }).IncomeShareLowest20;
-    minIndustryPercGDP = _.minBy(agData, function(d){ return +d.IncomeShareLowest20; }).IncomeShareLowest20;
+    metricSelect.selectAll('option')
+        .data(metrics)
+        .enter()
+        .append('option')
+        .text(function(d){ return d; })
+        .property("selected", function(d){ return d === metric; }); //sets defaults value;
 
-    console.log(minIndustryPercGDP + ' ' + maxIndustryPercGDP);
-
-    // display scatterplot
+    // display plot
     display();
 });
 
 
-function display(){
+function display() {
+    var t = d3.transition()
+        .duration(750);
+    var headerSize = 20;
     // filter the data to the selected year
-    var agDataF = agData;
-    // var agDataF = _.filter(agData, function(d){ return (+d.Time === year); });
-    console.log(agDataF);
+    m = metricMapping[metric];
+    //get data ready
+    var agDataF = _.filter(agData, function(d){return ((+d.Time === year) && d.hasOwnProperty(m) && !(d[m] === "..") ); });
+    agDataF = _.sortBy(agDataF, function(d){ return +d[m]; }); // sort by metric of choice
+    agDataF = _.reverse(agDataF);
+    var grouped = _.groupBy(agDataF, function(d){ return d.Country; });
+    grouped = _.values(grouped);
 
-    // make linear scales
-    x = d3.scaleLinear()
-        .domain([minWorkerProd, maxWorkerProd])
-        .range([2*iconSize, width-iconSize]);
+    divW = width/(grouped.length);
+    console.log(grouped);
 
-    y = d3.scaleLinear()
-        .domain([minIndustryPercGDP, maxIndustryPercGDP])
-        .range([height-2*iconSize, iconSize]);
+    var group = plot.selectAll('g')
+        .data(grouped, function(d){return d.Country; });
 
-    // TODO: makes axes
-    var xAxis = d3.axisBottom(x);
-    var yAxis = d3.axisLeft(y);
+    var countries = group.enter()
+        .append('g')
+        .append('div')
+        .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} country`; })
+        .attr('data-AgriValuePerWorker', function(d){ return d[0].AgriValuePerWorker})
+        .attr('data-FertilizerConsumpPerHA', function(d){ return d[0].FertilizerConsumpPerHA})
+        .attr('data-FoodDeficit', function(d){ return d[0].FoodDeficit})
+        .attr('data-IncomeShareLowest20', function(d){ return d[0].IncomeShareLowest20})
+        .style('width', divW)
+        .style('height', height);
 
+    group.exit().remove();
 
-    var scatterGroup = svg.selectAll('g')
-        .data(agDataF);
+    crops = countries.selectAll('div')
+        .data(function(d){return d;})
+        .enter()
+        .append('div')
+        .attr('class', function(d){
+            var item = d.Item.replace(/\s/g, '').split(',')[0];
+            return `${item} crop`; })
+        .style('height', function(d){return ((height) * d.percentOfSubtotal); })
+        .on("mouseover", function(d){ onMouseover(d); })
+        .on('mouseout', function(d){
+            tool_tip.transition()
+                .duration(500)
+                .style('opacity', 0);
+        });
 
-        scatterGroup.enter()
-            .append('g')
+    crops.exit().remove();
 
-            // .append('image')
-            // .attr('xlink:href', function(d){
-            //     return (imgMapping[d.Item])? `assets/${imgMapping[d.Item]}`:`assets/${imgMapping["other"]}`;
-            //     // return `assets/${imgMapping[d.Item]}` || `assets/${imgMapping["other"]}`;
-            // })
-            // .attr('x', function(d){ return x(d.AgriValuePerWorker) - iconSize/2; })
-            // .attr('y', function(d){ return y(d.IncomeShareLowest20) - iconSize/2;})
-            // .attr('height', iconSize)
-            // .attr('width', iconSize)
+    // countries.append('div')
+    //     .text(function(d){ return d[0].Country; })
+    //     .attr('class', 'header')
+    //     .style('opacity', 0)
+    //     .style('height', headerSize-2)
+    //     .style('width', divW)
+    //     .style('display', 'inline-block');
+}
 
-            .append('circle')
-            .attr('cx', function(d){ return x(d.AgriValuePerWorker); })
-            .attr('cy', function(d){ return y(d.IncomeShareLowest20);})
-            .attr('r', 2)
-            .style('stroke', 'black')
-            .style('fill', 'white')
-            .style('fill-opacity', 0)
+function onMouseover(d){
+    tool_tip.transition()
+        .duration(200)
+        .style("opacity", .9);
+    tool_tip.html(
+            `<h5>${d.Item} (${Math.round(d.percentOfTotal * 100)}% total crops)</h5>
+            <br> 
+            <h6> ${metric}: ${Math.round(d[m])}</h6>
+            ${d.Time}`)
+        .style("left", (d3.event.pageX) + "px")
+        .style("top", (d3.event.pageY - 28) + "px");
 
-            .on('mouseover', function (d){ tool_tip.show(d).style('opacity', .8);} )
-            .on('click', onClick)
-            .on('mouseout', tool_tip.hide);
-            //     function(d, i , g){
-            //     console.log(`${d.Country} has prod of ${d.AgriValuePerWorker} from ${d.Item}`);
-            // });
-        scatterGroup.exit().remove();
-
-        // AXES
-        // call xAxis
-        svg.append('g')
-            .attr("transform", "translate(0," + (height-marginSize) + ")")
-            .call(xAxis);
-        // call yAxis
-        svg.append('g')
-            .attr("transform", "translate(" + marginSize + ", 0)")
-            .call(yAxis);
-
-        // xAxis Label
-        svg.append("text")
-            .attr("transform",
-                "translate(" + (width/2) + " ," +
-                (height -(marginSize/2) + 10) + ")")
-            .style("text-anchor", "middle")
-            .text("Agriculture Value Added Per Worker (in 2010 US$)");
-
-        // yAxis Label
-        svg.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0 + 10)
-            .attr("x",0 - (height / 2))
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text("Income Share of the Bottom 20%");
+    country_hover.transition()
+        .duration(200)
+        .style("opacity", .9);
+    country_hover.text(d.Country)
+        // .attr("transform", "translate(0,480)")
+        .style("top", (height+titleHeight+controlHeight + 80) + 'px')
+        // .style("top", '90%')
+        .style("left", (d3.event.pageX - divW) + "px");
 
 }
 
-function onClick(d, i , nodes){
-    console.log(this.parentNode);
-    d3.select(this.parentNode)
-        .append('image')
-        .attr('xlink:href', function(d){
-           return (imgMapping[d.Item])? `assets/${imgMapping[d.Item]}`:`assets/${imgMapping["other"]}`;
-        })
-        .attr('x', function(d){ return x(d.AgriValuePerWorker) - iconSize/2; })
-        .attr('y', function(d){ return y(d.IncomeShareLowest20) - iconSize/2;})
-        .attr('height', iconSize)
-        .attr('width', iconSize)
 
-}
-
-function onSelect(){
+function onYearSelect(){
+    console.log(this);
     year = +d3.select(this).property('value');
     // console.log(d3.select(this));
     console.log(`year changed to ${year}`);
+    display();
+}
+
+function onMetricSelect(){
+    metric = d3.select(this).property('value');
+    console.log(metric);
     display();
 }
