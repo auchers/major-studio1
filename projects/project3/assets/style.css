@@ -18,15 +18,15 @@ div.plot{
     max-height: 800px;
 }
 
-.plot > g{
+.plot > div{
     display: inline-block;
 }
 
-.plot > g{
+.plot > div{
     opacity: .7;
 }
 
-.plot > g:hover{
+.plot > div:hover{
     opacity: 1;
 }
 

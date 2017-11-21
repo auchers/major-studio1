@@ -60,7 +60,7 @@ var country_hover = d3.select('body')
 // get data
 d3.json('data/cropdata.json', function(err, data){
     agData = data;
-    console.log(agData);
+    // console.log(agData);
 
     // get array of unique years from data -- use to populate dropdown
     var years = _.uniq(_.map(data, 'Time'));
@@ -81,33 +81,39 @@ d3.json('data/cropdata.json', function(err, data){
         .property("selected", function(d){ return d === metric; }); //sets defaults value;
 
     // display plot
-    display();
+    updateData();
 });
 
-
-function display() {
-    var t = d3.transition()
-        .duration(750);
-    var headerSize = 20;
-    // filter the data to the selected year
+function updateData(){
     m = metricMapping[metric];
     //get data ready
+    // filter the data to the selected year
     var agDataF = _.filter(agData, function(d){return ((+d.Time === year) && d.hasOwnProperty(m) && !(d[m] === "..") ); });
     agDataF = _.sortBy(agDataF, function(d){ return +d[m]; }); // sort by metric of choice
     agDataF = _.reverse(agDataF);
     var grouped = _.groupBy(agDataF, function(d){ return d.Country; });
     grouped = _.values(grouped);
-
-    divW = width/(grouped.length);
     console.log(grouped);
 
-    var group = plot.selectAll('g')
-        .data(grouped, function(d){return d.Country; });
+    display(grouped);
+}
+
+function display(data) {
+    console.log(data.length);
+    var t = d3.transition()
+        .duration(750);
+    var headerSize = 20;
+
+    divW = width/(data.length);
+
+    var group = plot.selectAll('div')
+        .data(data, function(d){console.log(d.Country); return d.Country; });
+
 
     var countries = group.enter()
-        .append('g')
         .append('div')
         .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} country`; })
+        .merge(group)
         .attr('data-AgriValuePerWorker', function(d){ return d[0].AgriValuePerWorker})
         .attr('data-FertilizerConsumpPerHA', function(d){ return d[0].FertilizerConsumpPerHA})
         .attr('data-FoodDeficit', function(d){ return d[0].FoodDeficit})
@@ -124,6 +130,7 @@ function display() {
         .attr('class', function(d){
             var item = d.Item.replace(/\s/g, '').split(',')[0];
             return `${item} crop`; })
+        .merge(countries)
         .style('height', function(d){return ((height) * d.percentOfSubtotal); })
         .on("mouseover", function(d){ onMouseover(d); })
         .on('mouseout', function(d){
@@ -134,13 +141,6 @@ function display() {
 
     crops.exit().remove();
 
-    // countries.append('div')
-    //     .text(function(d){ return d[0].Country; })
-    //     .attr('class', 'header')
-    //     .style('opacity', 0)
-    //     .style('height', headerSize-2)
-    //     .style('width', divW)
-    //     .style('display', 'inline-block');
 }
 
 function onMouseover(d){
@@ -172,11 +172,11 @@ function onYearSelect(){
     year = +d3.select(this).property('value');
     // console.log(d3.select(this));
     console.log(`year changed to ${year}`);
-    display();
+    updateData();
 }
 
 function onMetricSelect(){
     metric = d3.select(this).property('value');
     console.log(metric);
-    display();
+    updateData();
 }
