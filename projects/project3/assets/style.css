@@ -55,8 +55,8 @@ div.tooltip {
 }
 
 .crop{
-    background-color: rgba(196, 196, 196, 0.4);
-
+    background-image: url('cereal.jpeg');
+    background-size: 100px;
 }
 
 .Sugarcane{
@@ -93,7 +93,7 @@ div.tooltip {
     background-size: 100px;
 }
 
-.Millet {
+.Millet, .Barley {
     background-image: url('millet.jpg');
     background-size: 200px;
 }
@@ -113,12 +113,12 @@ div.tooltip {
     background-size: 500px;
 }
 
-.Cereals {
+.Cereals, .Fonio {
     background-image: url('cereal.jpeg');
     background-size: 100px;
 }
 
-.Groundnuts {
+.Groundnuts, .Sunflowerseed {
     background-image: url('groundnuts.jpg');
     background-size: 80px;
 }
@@ -151,4 +151,49 @@ div.tooltip {
 .Onions {
     background-image: url('onion.jpg');
     background-size: 100px;
+}
+
+.Taro {
+    background-image: url('taro.jpg');
+    background-size: 200px;
+}
+
+.Cabbagesandotherbrassicas {
+    background-image: url('cabbage.jpg');
+    background-size: 200px;
+}
+
+.Cowpeas, .Peas, .Beans, .Pulses {
+    background-image: url('cowpea.jpg');
+    background-size: 80px;
+}
+
+.Mangoes, .Fruit, .Oranges, .Apples, .Watermelons, .Grapes, .Pineapples {
+    background-image: url('mango.jpg');
+    background-size: 100px;
+}
+
+.Dates {
+    background-image: url('dates.jpg');
+    background-size: 100px;
+}
+
+.Wheat {
+    background-image: url('wheat.jpeg');
+    background-size: 100px;
+}
+
+.Seedcotton, .Cottonseed  {
+    background-image: url('cotton.jpg');
+    background-size: 100px;
+}
+
+.Cocoa, .Coffee, .Cottonlint {
+    background-image: url('cocoa.jpg');
+    background-size: 100px;
+}
+
+.Rubber {
+    background-image: url('rubber.jpg');
+    background-size: 200px;
 }

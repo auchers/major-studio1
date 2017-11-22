@@ -144,7 +144,7 @@ function display(data) {
         .enter()
         .append('div')
         .attr('class', function(d){
-            var item = d.Item.replace(/\s/g, '').split(',')[0];
+            var item = d.Item.replace(/\s/g, '').split(',')[0].split('(')[0];
             return `${item} crop`; })
         .merge(countries)
         // .style('height', function(d){return ((height) * d.percentOfSubtotal); })
