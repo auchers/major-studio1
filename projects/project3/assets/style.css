@@ -18,15 +18,12 @@ div.plot{
     max-height: 800px;
 }
 
-.plot > div{
+.country{
     display: inline-block;
-}
-
-.plot > div{
     opacity: .7;
 }
 
-.plot > div:hover{
+.country:hover{
     opacity: 1;
 }
 

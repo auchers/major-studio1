@@ -6,9 +6,9 @@ var metricMapping = {
     'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
-var agData, divW;
+var agData, divW, gdp;
 
-var x,y;
+var countries, crops;
 
 // set starting values
 var year = 2010,
@@ -27,6 +27,18 @@ var yearSelect = d3.select('.controls')
 var metricSelect = d3.select('.controls')
     .append('select')
     .on('change', onMetricSelect);
+
+var scaleSelect = d3.select('.controls')
+    .append('input')
+    .attr('id', 'scaleSelect')
+    .attr('type', 'checkbox')
+    .on('change', scale);
+
+d3.select('.controls')
+    .append('label')
+    .attr('for', 'scaleSelect')
+    .text('scale by gdp');
+    // .on('change', onMetricSelect);
 
 // create main scatterplot svg
 var plot = d3.select('.plot')
@@ -85,6 +97,7 @@ d3.json('data/cropdata.json', function(err, data){
 });
 
 function updateData(){
+    gdp = [];
     m = metricMapping[metric];
     //get data ready
     // filter the data to the selected year
@@ -95,22 +108,25 @@ function updateData(){
     grouped = _.values(grouped);
     console.log(grouped);
 
+    // TODO - populate this on full dataset so that we don't change scale with each filtering
+    grouped.forEach(function(d){
+        gdp.push(+d[0].GDP);
+    });
+
     display(grouped);
 }
 
 function display(data) {
-    console.log(data.length);
-    var t = d3.transition()
-        .duration(750);
+
     var headerSize = 20;
 
     divW = width/(data.length);
 
     var group = plot.selectAll('div')
-        .data(data, function(d){console.log(d.Country); return d.Country; });
+        .data(data, function(d){return d.Country; });
 
 
-    var countries = group.enter()
+    countries = group.enter()
         .append('div')
         .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} country`; })
         .merge(group)
@@ -119,7 +135,7 @@ function display(data) {
         .attr('data-FoodDeficit', function(d){ return d[0].FoodDeficit})
         .attr('data-IncomeShareLowest20', function(d){ return d[0].IncomeShareLowest20})
         .style('width', divW)
-        .style('height', height);
+        // .style('height', height);
 
     group.exit().remove();
 
@@ -131,7 +147,7 @@ function display(data) {
             var item = d.Item.replace(/\s/g, '').split(',')[0];
             return `${item} crop`; })
         .merge(countries)
-        .style('height', function(d){return ((height) * d.percentOfSubtotal); })
+        // .style('height', function(d){return ((height) * d.percentOfSubtotal); })
         .on("mouseover", function(d){ onMouseover(d); })
         .on('mouseout', function(d){
             tool_tip.transition()
@@ -140,7 +156,40 @@ function display(data) {
         });
 
     crops.exit().remove();
+    scale();
+}
 
+function scale(){
+    var t = d3.transition()
+        .duration(750);
+    if (scaleSelect.property('checked')){
+        console.log('checked!');
+
+        var heightScale = d3.scaleLog()
+            .domain([d3.min(gdp), d3.max(gdp)])
+            .range([10, height]);
+
+        d3.selectAll('.country')
+            .style('height', function(d){
+                return heightScale(d[0].GDP);
+            });
+
+        d3.selectAll('.crop')
+            .style('height', function(d){
+                return (heightScale(d.GDP) * d.percentOfSubtotal);
+            })
+
+    } else{
+        console.log('unchecked!');
+
+        d3.selectAll('.country')
+            .style('height', height);
+
+        d3.selectAll('.crop')
+            .style('height', function(d){
+                // console.log('changing crop height');
+                return ((height) * d.percentOfSubtotal); })
+    }
 }
 
 function onMouseover(d){
@@ -165,7 +214,6 @@ function onMouseover(d){
         .style("left", (d3.event.pageX - divW) + "px");
 
 }
-
 
 function onYearSelect(){
     console.log(this);
