@@ -134,7 +134,7 @@ function display(data) {
         .attr('data-FertilizerConsumpPerHA', function(d){ return d[0].FertilizerConsumpPerHA})
         .attr('data-FoodDeficit', function(d){ return d[0].FoodDeficit})
         .attr('data-IncomeShareLowest20', function(d){ return d[0].IncomeShareLowest20})
-        .style('width', divW)
+        .style('width', divW);
         // .style('height', height);
 
     group.exit().remove();
@@ -147,6 +147,7 @@ function display(data) {
             var item = d.Item.replace(/\s/g, '').split(',')[0].split('(')[0];
             return `${item} crop`; })
         .merge(countries)
+        .style('width', divW)
         // .style('height', function(d){return ((height) * d.percentOfSubtotal); })
         .on("mouseover", function(d){ onMouseover(d); })
         .on('mouseout', function(d){

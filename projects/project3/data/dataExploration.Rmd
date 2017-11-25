@@ -9,8 +9,8 @@ library('jsonlite')
 library('readr')
 options(scipen=999)
 
-data <- read.csv('Project 3 Prelim Data2 (4)/c28f8717-b7cd-42d0-a7e7-2e688ef78c3f_Data.csv')
-View(data)
+data <- read.csv('Project 3 Data (1)/33165b1a-c572-4ad1-89ac-6a488a71c0af_Data.csv')
+glimpse(data)
 
 meta<- read.csv('Project 3 Prelim Data2 (1)/718a0a51-7e31-4851-bce7-4403cc3e4913_Country - Metadata.csv')
 View(meta)
@@ -21,13 +21,17 @@ View(meta)
 merged <- merge(data, meta, by.x = 'Country.Code', by.y = 'Code')
 merged <- merged[merged$Region == 'Sub-Saharan Africa',]
 summary(merged)
-View(merged)
+glimpse(merged)
+
+# test<- merged %>% select(Country.Name, Country.Code, Time)
 
 country_data <- merged %>%
   select(Country.Name, Country.Code, Time, Agricultural.irrigated.land....of.total.agricultural.land...AG.LND.IRIG.AG.ZS., Agricultural.machinery..tractors..AG.AGR.TRAC.NO., Agricultural.machinery..tractors.per.100.sq..km.of.arable.land..AG.LND.TRAC.ZS., Agriculture.value.added.per.worker..constant.2010.US....EA.PRD.AGRI.KD., Agricultural.land....of.land.area...AG.LND.AGRI.ZS., Agriculture..value.added..annual...growth...NV.AGR.TOTL.KD.ZG., Depth.of.the.food.deficit..kilocalories.per.person.per.day...SN.ITK.DFCT., Food.exports....of.merchandise.exports...TX.VAL.FOOD.ZS.UN., Food.imports....of.merchandise.imports...TM.VAL.FOOD.ZS.UN., Fertilizer.consumption....of.fertilizer.production...AG.CON.FERT.PT.ZS., Fertilizer.consumption..kilograms.per.hectare.of.arable.land...AG.CON.FERT.ZS., Rural.poverty.gap.at.national.poverty.lines......SI.POV.RUGP., Employment.in.agriculture....of.total.employment...SL.AGR.EMPL.ZS., Rural.population....of.total.population...SP.RUR.TOTL.ZS.,
 Income.share.held.by.lowest.10...SI.DST.FRST.10.,
 Income.share.held.by.lowest.20...SI.DST.FRST.20.,
-Account..income..poorest.40.....ages.15....ts...WP_time_10.8.
+Account..income..poorest.40.....ages.15....ts...WP_time_10.8.,
+GDP..current.US....NY.GDP.MKTP.CD.,
+Population..total..SP.POP.TOTL.
 ) %>%
   rename(AgriValuePerWorker = Agriculture.value.added.per.worker..constant.2010.US....EA.PRD.AGRI.KD.,
         RuralPovGap = Rural.poverty.gap.at.national.poverty.lines......SI.POV.RUGP., 
@@ -43,7 +47,10 @@ Account..income..poorest.40.....ages.15....ts...WP_time_10.8.
         EmployInAg = Employment.in.agriculture....of.total.employment...SL.AGR.EMPL.ZS.,
         Country = Country.Name, 
         IncomeShareLowest10 = Income.share.held.by.lowest.10...SI.DST.FRST.10., 
-        IncomeShareLowest20 = Income.share.held.by.lowest.20...SI.DST.FRST.20.)
+        IncomeShareLowest20 = Income.share.held.by.lowest.20...SI.DST.FRST.20., 
+        Population_total = Population..total..SP.POP.TOTL.,
+        GDP = GDP..current.US....NY.GDP.MKTP.CD.
+        )
 #TODO: add more variabel aliases
 
 glimpse(country_data)
@@ -150,7 +157,7 @@ glimpse(country_data)
 
 final_crop_data <- right_join(country_data, top_crops, by= c ("Country" = "Area", "Time" = "Year"))
 
-View(final_data[final_data$Time >= 2004,])
+View(final_crop_data[final_crop_data$Time >= 2004,])
 
 final_crop_data <- final_crop_data %>% 
   filter(Time >= 2004) %>%
