@@ -2,11 +2,11 @@
 var metricMapping = {
     'Worker Productivity': "AgriValuePerWorker",
     'Food Deficit': "FoodDeficit",
-    'Fertilizer Consumption': 'FertilizerConsumpPerHA',
-    'Income Share of Lowest 20%':'IncomeShareLowest20'
+    'Fertilizer Consumption': 'FertilizerConsumpPerHA'
+    // 'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
-var agData, divW, gdp;
+var agData, divW, gdp, metricArray;
 
 var countries, crops;
 
@@ -37,8 +37,7 @@ var scaleSelect = d3.select('.controls')
 d3.select('.controls')
     .append('label')
     .attr('for', 'scaleSelect')
-    .text('scale by gdp');
-    // .on('change', onMetricSelect);
+    .text('scale by gdp (log)');
 
 // create main scatterplot svg
 var plot = d3.select('.plot')
@@ -47,7 +46,11 @@ var plot = d3.select('.plot')
     .style('height','70%')
     .style('width', '100%');
 
-// plot.append('g'); // buffer for data join later
+var ghostAxis = d3.select('.plot')
+    .append('svg')
+    .attr('class', 'ghost')
+    .style('height','100px')
+    .style('width', '100%');
 
 var width = plot.node().offsetWidth;
 var height = plot.node().offsetHeight;
@@ -98,6 +101,8 @@ d3.json('data/cropdata.json', function(err, data){
 
 function updateData(){
     gdp = [];
+    metricArray = [];
+
     m = metricMapping[metric];
     //get data ready
     // filter the data to the selected year
@@ -111,20 +116,26 @@ function updateData(){
     // TODO - populate this on full dataset so that we don't change scale with each filtering
     grouped.forEach(function(d){
         gdp.push(+d[0].GDP);
+        metricArray.push(+d[0][m]);
     });
 
     display(grouped);
 }
 
 function display(data) {
+    /*Ghost Axis Setup*/
+    var r = 7;
 
-    var headerSize = 20;
+    let ghostX = d3.scaleLinear()
+        .domain([d3.min(metricArray), d3.max(metricArray)])
+        .range([width-r, r]);
 
+    /*Width of Bars*/
     divW = width/(data.length);
 
+    /* Begin Plotting Bars*/
     var group = plot.selectAll('div')
         .data(data, function(d){return d.Country; });
-
 
     countries = group.enter()
         .append('div')
@@ -135,7 +146,6 @@ function display(data) {
         .attr('data-FoodDeficit', function(d){ return d[0].FoodDeficit})
         .attr('data-IncomeShareLowest20', function(d){ return d[0].IncomeShareLowest20})
         .style('width', divW);
-        // .style('height', height);
 
     group.exit().remove();
 
@@ -148,21 +158,56 @@ function display(data) {
             return `${item} crop`; })
         .merge(countries)
         .style('width', divW)
-        // .style('height', function(d){return ((height) * d.percentOfSubtotal); })
         .on("mouseover", function(d){ onMouseover(d); })
-        .on('mouseout', function(d){
-            tool_tip.transition()
-                .duration(500)
-                .style('opacity', 0);
-        });
+        .on('mouseout', function(d){ onMouseOut(d); });
 
     crops.exit().remove();
     scale();
+    /* Finish Plotting Bars*/
+
+    /* Begin Plotting Ghost Axis*/
+    var ghostCircles = ghostAxis.selectAll('circle')
+        .data(data);
+
+    ghostCircles.enter()
+        .append('circle')
+        .merge(ghostCircles)
+        .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} ghost`; })
+        .attr(`d_${m}`, function(d){ return `${d[0][m]}_${ghostX(d[0][m])}`; })
+        .transition()
+        .duration(2000)
+        .attr('cx', function(d){ return ghostX(d[0][m]); })
+        .attr('cy', 3*r)
+        .attr('r', r)
+        .style('opacity', 0.7);
+
+    ghostCircles.exit().remove();
+
+    ghostAxis.selectAll('text').remove();
+    // metric maximum label
+    ghostAxis.append('text')
+        .attr('class', 'ghostLabel')
+        .transition().duration(1000)
+        .attr('x', 0)
+        .attr('y', 6*r)
+        .text(Math.round(d3.max(metricArray)));
+
+    // metric minimum label
+    ghostAxis.append('text')
+        .attr('class', 'ghostLabel')
+        .attr('text-anchor', 'end')
+        .transition().duration(1000)
+        .attr('x', width)
+        .attr('y', 6*r)
+        .text(Math.round(d3.min(metricArray)));
+
+    /* Finish Plotting Ghost Axis*/
 }
 
 function scale(){
     var t = d3.transition()
         .duration(750);
+
     if (scaleSelect.property('checked')){
         console.log('checked!');
 
@@ -171,6 +216,7 @@ function scale(){
             .range([10, height]);
 
         d3.selectAll('.country')
+            // .transition().duration(2000)
             .style('height', function(d){
                 return heightScale(d[0].GDP);
             });
@@ -178,7 +224,7 @@ function scale(){
         d3.selectAll('.crop')
             .style('height', function(d){
                 return (heightScale(d.GDP) * d.percentOfSubtotal);
-            })
+            });
 
     } else{
         console.log('unchecked!');
@@ -210,10 +256,33 @@ function onMouseover(d){
         .style("opacity", .9);
     country_hover.text(`${d.Country} - ${Math.round(d[m])}`)
         // .attr("transform", "translate(0,480)")
-        .style("top", (height+titleHeight+controlHeight + 80) + 'px')
+        .style("top", (height+titleHeight+controlHeight + 100) + 'px')
         // .style("top", '90%')
         .style("left", (d3.event.pageX - divW) + "px");
 
+    d3.select(`circle.${d.Country.replace(/\s/g, '')}`)
+        .style('fill', 'gray')
+        .moveToFront();
+
+}
+
+d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+        this.parentNode.appendChild(this);
+    });
+};
+
+function onMouseOut(d){
+    tool_tip.transition()
+        .duration(500)
+        .style('opacity', 0);
+
+    country_hover.transition()
+        .duration(200)
+        .style("opacity", 0);
+
+    d3.selectAll(`.${d.Country.replace(/\s/g, '')}`)
+        .style('fill', 'lightGray');
 }
 
 function onYearSelect(){

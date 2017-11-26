@@ -13,6 +13,10 @@ select{
     margin-right: 2em;
 }
 
+#scaleSelect {
+    margin: 0.5rem;
+}
+
 div.plot{
     min-width: 600px;
     max-height: 800px;
@@ -21,6 +25,7 @@ div.plot{
 .country{
     display: inline-block;
     opacity: .7;
+    transition: height 1000ms;
 }
 
 .country:hover{
@@ -35,6 +40,15 @@ div.plot{
 
 .row {
     padding-bottom: 1em;
+}
+
+svg.ghost{
+    margin-top: 2em;
+}
+
+.ghost{
+    fill: lightGray;
+    z-index: 1;
 }
 
 div.tooltip {
@@ -57,6 +71,7 @@ div.tooltip {
 .crop{
     background-image: url('cereal.jpeg');
     background-size: 100px;
+    transition: height 1000ms;
 }
 
 .Sugarcane{

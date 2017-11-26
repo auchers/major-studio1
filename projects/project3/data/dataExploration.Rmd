@@ -155,7 +155,7 @@ glimpse(top_crops)
 
 glimpse(country_data)
 
-final_crop_data <- right_join(country_data, top_crops, by= c ("Country" = "Area", "Time" = "Year"))
+final_crop_data <- right_join(country_data, merged_top_crops, by= c ("Country" = "Area", "Time" = "Year"))
 
 View(final_crop_data[final_crop_data$Time >= 2004,])
 
