@@ -107,9 +107,9 @@ function updateData(){
     //get data ready
     // filter the data to the selected year
     var agDataF = _.filter(agData, function(d){return ((+d.Time === year) && d.hasOwnProperty(m) && !(d[m] === "..") ); });
-    agDataF = _.sortBy(agDataF, function(d){ return +d[m]; }); // sort by metric of choice
-    agDataF = _.reverse(agDataF);
+    // agDataF = _.reverse(agDataF);
     grouped = _.groupBy(agDataF, function(d){ return d.Country; });
+    grouped = _.sortBy(grouped, function(d){ return +d[0][m]; }); // sort by metric of choice
     grouped = _.values(grouped);
     console.log(grouped);
 
@@ -128,7 +128,7 @@ function display(data) {
 
     let ghostX = d3.scaleLinear()
         .domain([d3.min(metricArray), d3.max(metricArray)])
-        .range([width-r, r]);
+        .range([r, width-r]);
 
     /*Width of Bars*/
     divW = width/(data.length);
@@ -191,7 +191,7 @@ function display(data) {
         .transition().duration(1000)
         .attr('x', 0)
         .attr('y', 6*r)
-        .text(Math.round(d3.max(metricArray)));
+        .text(Math.round(d3.min(metricArray)));
 
     // metric minimum label
     ghostAxis.append('text')
@@ -200,7 +200,7 @@ function display(data) {
         .transition().duration(1000)
         .attr('x', width)
         .attr('y', 6*r)
-        .text(Math.round(d3.min(metricArray)));
+        .text(Math.round(d3.max(metricArray)));
 
     /* Finish Plotting Ghost Axis*/
 }
