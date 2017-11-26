@@ -6,7 +6,7 @@ var metricMapping = {
     // 'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
-var agData, divW, gdp, metricArray;
+var agData, grouped, divW, gdp, metricArray;
 
 var countries, crops;
 
@@ -109,7 +109,7 @@ function updateData(){
     var agDataF = _.filter(agData, function(d){return ((+d.Time === year) && d.hasOwnProperty(m) && !(d[m] === "..") ); });
     agDataF = _.sortBy(agDataF, function(d){ return +d[m]; }); // sort by metric of choice
     agDataF = _.reverse(agDataF);
-    var grouped = _.groupBy(agDataF, function(d){ return d.Country; });
+    grouped = _.groupBy(agDataF, function(d){ return d.Country; });
     grouped = _.values(grouped);
     console.log(grouped);
 
@@ -145,7 +145,8 @@ function display(data) {
         .attr('data-FertilizerConsumpPerHA', function(d){ return d[0].FertilizerConsumpPerHA})
         .attr('data-FoodDeficit', function(d){ return d[0].FoodDeficit})
         .attr('data-IncomeShareLowest20', function(d){ return d[0].IncomeShareLowest20})
-        .style('width', divW);
+        .style('width', divW)
+        .on('click', onClick);
 
     group.exit().remove();
 
@@ -209,7 +210,7 @@ function scale(){
         .duration(750);
 
     if (scaleSelect.property('checked')){
-        console.log('checked!');
+        // console.log('checked!');
 
         var heightScale = d3.scaleLog()
             .domain([d3.min(gdp), d3.max(gdp)])
@@ -227,7 +228,7 @@ function scale(){
             });
 
     } else{
-        console.log('unchecked!');
+        // console.log('unchecked!');
 
         d3.selectAll('.country')
             .style('height', height);
@@ -237,6 +238,46 @@ function scale(){
                 // console.log('changing crop height');
                 return ((height) * d.percentOfSubtotal); })
     }
+}
+
+function onClick(d, i, nodes){
+    console.log('in click');
+
+    // select all but node selected
+    var toRemove = d3.selectAll('.country')
+        .filter(function(x){ return d[0].Country != x[0].Country; });
+
+    // if this is the only one there then return the others
+    if (toRemove._groups[0].length === 0){
+        // first remove svg from previous click drilldowns
+        d3.select('.drilldown').remove();
+
+        // display all bars
+        display(grouped);
+
+     // otherwise, remove others and plot drilldown
+    }else {
+        console.log(d);
+
+        let drilldown = plot.append('svg')
+            .attr('class', 'drilldown')
+            .attr('height', height)
+            .attr('width', width-divW);
+
+        let dWidth = drilldown.node().getBoundingClientRect().width;
+
+        drilldown.append('text')
+            .attr('class', 'drilldownHeader')
+            .attr('text-anchor', 'middle')
+            .attr('x', (dWidth)/2)
+            .attr('y', '5%')
+            .text(d[0].Country);
+
+        toRemove.remove();
+    }
+
+    // console.log(toRemove);
+    // console.log(toRemove._groups[0].length);
 }
 
 function onMouseover(d){
@@ -266,12 +307,6 @@ function onMouseover(d){
 
 }
 
-d3.selection.prototype.moveToFront = function() {
-    return this.each(function(){
-        this.parentNode.appendChild(this);
-    });
-};
-
 function onMouseOut(d){
     tool_tip.transition()
         .duration(500)
@@ -298,3 +333,9 @@ function onMetricSelect(){
     console.log(metric);
     updateData();
 }
+
+d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+        this.parentNode.appendChild(this);
+    });
+};
