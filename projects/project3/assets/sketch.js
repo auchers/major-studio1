@@ -119,54 +119,76 @@ function updateData(){
         metricArray.push(+d[0][m]);
     });
 
-    display(grouped);
+    displayBars(grouped);
+    drawGhostCircles(grouped);
+
 }
 
-function display(data) {
-    /*Ghost Axis Setup*/
-    var r = 7;
-
-    let ghostX = d3.scaleLinear()
-        .domain([d3.min(metricArray), d3.max(metricArray)])
-        .range([width-r, r]);
-
+function displayBars(data) {
     /*Width of Bars*/
-    divW = width/(data.length);
+    divW = width / (data.length);
 
     /* Begin Plotting Bars*/
     var group = plot.selectAll('div')
-        .data(data, function(d){return d.Country; });
+        .data(data, function (d) {
+            return d.Country;
+        });
 
     countries = group.enter()
         .append('div')
-        .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} country`; })
+        .attr('class', function (d) {
+            return `${d[0].Country.replace(/\s/g, '')} country`;
+        })
         .merge(group)
-        .attr('data-AgriValuePerWorker', function(d){ return d[0].AgriValuePerWorker})
-        .attr('data-FertilizerConsumpPerHA', function(d){ return d[0].FertilizerConsumpPerHA})
-        .attr('data-FoodDeficit', function(d){ return d[0].FoodDeficit})
-        .attr('data-IncomeShareLowest20', function(d){ return d[0].IncomeShareLowest20})
+        .attr('data-AgriValuePerWorker', function (d) {
+            return d[0].AgriValuePerWorker
+        })
+        .attr('data-FertilizerConsumpPerHA', function (d) {
+            return d[0].FertilizerConsumpPerHA
+        })
+        .attr('data-FoodDeficit', function (d) {
+            return d[0].FoodDeficit
+        })
+        .attr('data-IncomeShareLowest20', function (d) {
+            return d[0].IncomeShareLowest20
+        })
         .style('width', divW)
         .on('click', onClick);
 
     group.exit().remove();
 
     crops = countries.selectAll('div')
-        .data(function(d){return d;})
+        .data(function (d) {
+            return d;
+        })
         .enter()
         .append('div')
-        .attr('class', function(d){
+        .attr('class', function (d) {
             var item = d.Item.replace(/\s/g, '').split(',')[0].split('(')[0];
-            return `${item} crop`; })
+            return `${item} crop`;
+        })
         .merge(countries)
         .style('width', divW)
-        .on("mouseover", function(d){ onMouseover(d); })
-        .on('mouseout', function(d){ onMouseOut(d); });
+        .on("mouseover", function (d) {
+            onMouseover(d);
+        })
+        .on('mouseout', function (d) {
+            onMouseOut(d);
+        });
 
     crops.exit().remove();
     scale();
     /* Finish Plotting Bars*/
+}
 
+function drawGhostCircles(data){
     /* Begin Plotting Ghost Axis*/
+    var r = 7;
+
+    let ghostX = d3.scaleLinear()
+        .domain([d3.min(metricArray), d3.max(metricArray)])
+        .range([width-r, r]);
+
     var ghostCircles = ghostAxis.selectAll('circle')
         .data(data);
 
@@ -253,11 +275,17 @@ function onClick(d, i, nodes){
         d3.select('.drilldown').remove();
 
         // display all bars
-        display(grouped);
+        displayBars(grouped);
+        // remove highlight on ghost dot
+        d3.select(`circle.${d[0].Country.replace(/\s/g, '')}`)
+            .classed('active', false);
 
      // otherwise, remove others and plot drilldown
     }else {
-        console.log(d);
+        console.log(d[0].Country);
+
+        d3.select(`circle.${d[0].Country.replace(/\s/g, '')}`)
+            .classed('active',true);
 
         let drilldown = plot.append('svg')
             .attr('class', 'drilldown')
@@ -302,7 +330,7 @@ function onMouseover(d){
         .style("left", (d3.event.pageX - divW) + "px");
 
     d3.select(`circle.${d.Country.replace(/\s/g, '')}`)
-        .style('fill', 'gray')
+        .classed('hover', true)
         .moveToFront();
 
 }
@@ -317,7 +345,7 @@ function onMouseOut(d){
         .style("opacity", 0);
 
     d3.selectAll(`.${d.Country.replace(/\s/g, '')}`)
-        .style('fill', 'lightGray');
+        .classed('hover', false);
 }
 
 function onYearSelect(){

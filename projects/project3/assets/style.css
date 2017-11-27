@@ -51,6 +51,10 @@ svg.ghost{
     z-index: 1;
 }
 
+.ghost.active, circle.hover{
+    fill: gray;
+}
+
 div.tooltip {
     position: absolute;
     text-align: left;
