@@ -17,12 +17,12 @@ Upon clicking on a country, a country specific pane will reveal itself allowing 
 Created by Aucher Serr in collaboration with the 2017-2018 MSDV cohort and the UNDP. Data presented comes from the following sources:
 
 * *Research and Motiviation for this projext:* 
-    Odusola, Ayodele, Giovanni Andrea Cornia, Haroon Bhorat, and Pedro Conceição, eds. _Income Inequality Trends in Sub-Saharan Africa: Divergence, Determinants and Consequences._ New York: United Nations Development Programme, 2017. [africa.undp.org](africa.undp.org).
+    Odusola, Ayodele, Giovanni Andrea Cornia, Haroon Bhorat, and Pedro Conceição, eds. _Income Inequality Trends in Sub-Saharan Africa: Divergence, Determinants and Consequences._ New York: United Nations Development Programme, 2017. __[africa.undp.org](africa.undp.org)__.
 
 * *Metrics on human welfare and development from:*     
     “DataBank | The World Bank.” Accessed November 7, 2017. __[http://databank.worldbank.org/data/home.aspx](http://databank.worldbank.org/data/home.aspx)__.
 
 * *Crop distributions for each country from:* 
-    “FAOSTAT.” Food and Agriculture Organization of the United Nations. Accessed November 7, 2017. [http://www.fao.org/faostat/en/#data](http://www.fao.org/faostat/en/#data).
+    “FAOSTAT.” Food and Agriculture Organization of the United Nations. Accessed November 7, 2017. __[http://www.fao.org/faostat/en/#data](http://www.fao.org/faostat/en/#data)__.
 
 
