@@ -42,7 +42,7 @@ d3.select('.controls')
 var ghostAxis = d3.select('.plot')
     .append('svg')
     .attr('class', 'ghost')
-    .style('height','50px')
+    .style('height','75px')
     .style('width', '100%');
 
 // create main scatterplot svg
@@ -56,7 +56,7 @@ var width = plot.node().offsetWidth;
 var height = plot.node().offsetHeight;
 
 var titleHeight = title.node().offsetHeight;
-var controlHeight = metricSelect.node().offsetHeight;
+var ghostAxisHeight = ghostAxis.node().getBoundingClientRect().height;
 
 console.log(`width: ${width} height: ${height}`);
 
@@ -188,7 +188,7 @@ function drawGhostCircles(data){
 
     let ghostX = d3.scaleLinear()
         .domain([d3.min(metricArray), d3.max(metricArray)])
-        .range([width-r, r]);
+        .range([r, width-r]);
 
     var ghostCircles = ghostAxis.selectAll('circle')
         .data(data);
@@ -229,8 +229,8 @@ function drawGhostCircles(data){
 }
 
 function scale(){
-    var t = d3.transition()
-        .duration(750);
+    // var t = d3.transition()
+    //     .duration(750);
 
     if (scaleSelect.property('checked')){
         // console.log('checked!');
@@ -326,7 +326,7 @@ function onMouseover(d){
         .style("opacity", .9);
     country_hover.text(`${d.Country} - ${Math.round(d[m])}`)
         // .attr("transform", "translate(0,480)")
-        .style("top", (height+titleHeight+controlHeight + 100) + 'px')
+        .style("top", (titleHeight + ghostAxisHeight + ghostAxisHeight/3) + 'px')
         // .style("top", '90%')
         .style("left", (d3.event.pageX - divW) + "px");
 
