@@ -39,17 +39,17 @@ d3.select('.controls')
     .attr('for', 'scaleSelect')
     .text('scale by gdp (log)');
 
+var ghostAxis = d3.select('.plot')
+    .append('svg')
+    .attr('class', 'ghost')
+    .style('height','50px')
+    .style('width', '100%');
+
 // create main scatterplot svg
 var plot = d3.select('.plot')
     .append('div')
     .attr('class', 'plot')
     .style('height','70%')
-    .style('width', '100%');
-
-var ghostAxis = d3.select('.plot')
-    .append('svg')
-    .attr('class', 'ghost')
-    .style('height','100px')
     .style('width', '100%');
 
 var width = plot.node().offsetWidth;
