@@ -43,12 +43,15 @@ div.plot{
 }
 
 svg.ghost{
-    margin-top: 2em;
 }
 
 .ghost{
     fill: lightGray;
     z-index: 1;
+}
+
+.ghost.active, circle.hover{
+    fill: gray;
 }
 
 div.tooltip {
