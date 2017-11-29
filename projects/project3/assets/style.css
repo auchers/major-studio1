@@ -13,13 +13,17 @@ select{
     margin-right: 2em;
 }
 
+/*svg:not(:root){*/
+    /*overflow: visible;*/
+/*}*/
+
 #scaleSelect {
     margin: 0.5rem;
 }
 
 div.plot{
     min-width: 600px;
-    max-height: 800px;
+    height: 70%;
 }
 
 .country{
