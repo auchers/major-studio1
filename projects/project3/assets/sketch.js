@@ -6,6 +6,53 @@ var metricMapping = {
     // 'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
+var imageMapping = {
+    "Sugarcane": 'sugarcane-1.jpeg',
+    "Cassava":'cassava.jpg',
+    "Rice": 'RicePaddy.jpg',
+    "Rootsandtubers": 'rootsTubers.png',
+    "Maize": 'maize.jpg',
+    "Coconuts": 'coconuts.jpg',
+    "Bananas": 'bananas.jpg',
+    "Millet": 'millet.jpg',
+    "Barley": 'millet.jpg',
+    "Yams": 'yams.jpg',
+    "Sweetpotatoes": 'yams.jpg',
+    "Plantainsandothers": 'plantains.jpeg',
+    "Sorghum": 'sorghum.jpg',
+    "Cereals": 'cereal.jpeg',
+    "Fonio": 'cereal.jpeg',
+    "Groundnuts": 'groundnuts.jpg',
+    "Sunflowerseed": 'groundnuts.jpg',
+    "Tomatoes":'tomatos.jpeg',
+    "Cashewnuts": 'cashew-seed.jpg',
+    "Potatoes": 'potatoes.jpg',
+    "Vegetables": 'Vegetables.jpg',
+    "Oil": 'oil.jpg',
+    "Onions": 'onion.jpg',
+    "Taro": 'taro.jpg',
+    "Cabbagesandotherbrassicas": 'cabbage.jpg',
+    "Cowpeas": 'cowpea.jpg',
+    "Peas": 'cowpea.jpg',
+    "Beans": 'cowpea.jpg',
+    "Pulses":'cowpea.jpg',
+    "Mangoes": 'mango.jpg',
+    "Fruit": 'mango.jpg',
+    "Oranges": 'mango.jpg',
+    "Apples": 'mango.jpg',
+    "Watermelons": 'mango.jpg',
+    "Grapes": 'mango.jpg',
+    "Pineapples": 'mango.jpg',
+    "Dates": 'dates.jpg',
+    "Wheat": 'wheat.jpeg',
+    "Seedcotton": 'cotton.jpg',
+    "Cottonseed": 'cotton.jpg',
+    "Cocoa": 'cocoa.jpg',
+    "Coffee": 'cocoa.jpg',
+    "Cottonlint": 'cocoa.jpg',
+    "Rubber": 'rubber.jpg'
+};
+
 var agData, data, divW, gdp, metricArray;
 
 var heightScale, crops;
@@ -240,12 +287,13 @@ function drawGhostCircles(){
 }
 
 function scale(){
-    crops.transition()
-        .duration(2000)
-        .attr('height', function(d){
+    //todo transition differently depending on whether scaling up or down
+    crops.attr('height', function(d){
             return (scaleSelect.property('checked')) ? (heightScale(d.GDP) * d.percentOfSubtotal):
                 (height * d.percentOfSubtotal);
         })
+        .transition()
+        .duration(2000)
         .attr('y', function (d,i){
             // reinitializing to full height for first element in each country
             if (i === 0) {y = height;}
