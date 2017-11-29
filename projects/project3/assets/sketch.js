@@ -6,7 +6,7 @@ var metricMapping = {
     // 'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
-var agData, grouped, divW, gdp, metricArray;
+var agData, data, divW, gdp, metricArray;
 
 // var countries, crops;
 
@@ -32,7 +32,7 @@ var scaleSelect = d3.select('.controls')
     .append('input')
     .attr('id', 'scaleSelect')
     .attr('type', 'checkbox')
-    .on('change', scale);
+    .on('change', displayBars); //TODO create separate scale function for better transition
 
 d3.select('.controls')
     .append('label')
@@ -73,12 +73,12 @@ var country_hover = d3.select('body')
     .style('opacity', 0);
 
 // get data
-d3.json('data/cropdata.json', function(err, data){
-    agData = data;
+d3.json('data/cropdata.json', function(err, d){
+    agData = d;
     // console.log(agData);
 
     // get array of unique years from data -- use to populate dropdown
-    var years = _.uniq(_.map(data, 'Time'));
+    var years = _.uniq(_.map(d, 'Time'));
     var metrics = Object.keys(metricMapping);
 
     yearSelect.selectAll('option')
@@ -108,24 +108,22 @@ function updateData(){
     // filter the data to the selected year
     var agDataF = _.filter(agData, function(d){return ((+d.Time === year) && d.hasOwnProperty(m) && !(d[m] === "..") ); });
     // agDataF = _.reverse(agDataF);
-    grouped = _.groupBy(agDataF, function(d){ return d.Country; });
-    grouped = _.sortBy(grouped, function(d){ return +d[0][m]; }); // sort by metric of choice
-    grouped = _.values(grouped);
-    console.log(grouped);
+    data = _.groupBy(agDataF, function(d){ return d.Country; });
+    data = _.sortBy(data, function(d){ return +d[0][m]; }); // sort by metric of choice
+    data = _.values(data);
+    console.log(data);
 
     // TODO - populate this on full dataset so that we don't change scale with each filtering
-    grouped.forEach(function(d){
+    data.forEach(function(d){
         gdp.push(+d[0].GDP);
         metricArray.push(+d[0][m]);
     });
 
-    displayBars(grouped);
-    drawGhostCircles(grouped);
-
-
+    displayBars();
+    drawGhostCircles();
 }
 
-function displayBars(data) {
+function displayBars() {
     /*Width of Bars*/
     divW = width / (data.length);
 
@@ -134,6 +132,10 @@ function displayBars(data) {
         .paddingInner(0.05)
         // .align(0.1)
         .domain(data.map(function(d) { return d[0].Country; }));
+
+    var heightScale = d3.scaleLog()
+        .domain([d3.min(gdp), d3.max(gdp)])
+        .range([10, height]);
 
     /* Begin Plotting Bars*/
     var group = plot.selectAll('g')
@@ -157,46 +159,42 @@ function displayBars(data) {
     group.exit().remove();
     crops.exit().remove();
 
-    var y = 0;
+    let y = height;
 
+    //TODO make cleaner
     crops.enter()
         .append('rect')
         .merge(crops)
         .attr('class', function (d) {
-            console.log(d);
-            // var item = d.Item.replace(/\s/g, '').split(',')[0].split('(')[0];
-            // return `${item} crop`;
-            return 'crop';
+            let item = d.Item.replace(/\s/g, '').split(',')[0].split('(')[0];
+            return `${item} crop`;
         })
         .attr('y', function (d,i){
-            if (i == 0) {y = 0;}
-            else if (i > 0){
-                // let prevH = d3.select(this.parentNode.childNodes[i-1]).datum().percentOfSubtotal * height;
-                let prevH = d3.select(this.previousSibling).datum().percentOfSubtotal * height;
-                // console.log(i);
-                // console.log(this, this.previousSibling);
-                // console.log(d3.select(this.parentNode.childNodes[i-1]).datum());
-                y = y + prevH;
-            }
+            // reinitializing to full height for first element in each country
+            if (i === 0) {y = height;}
+            let curHeight = (scaleSelect.property('checked')) ? (heightScale(d.GDP) * d.percentOfSubtotal):
+                (height * d.percentOfSubtotal);
+                y = y - curHeight;
+            // }
             return y;
+        })
+        .attr('height', function(d){
+            return (scaleSelect.property('checked')) ? (heightScale(d.GDP) * d.percentOfSubtotal):
+                (height * d.percentOfSubtotal);
         })
         .attr('width', x.bandwidth())
         .transition()
         .duration(2000)
         .attr('x', function(d) { return x(d.Country);});
-        // .style('width', divW)
-        // .on("mouseover", function (d) {
-        //     onMouseover(d);
-        // })
-        // .on('mouseout', function (d) {
-        //     onMouseOut(d);
-        // });
 
-    scale();
+    d3.selectAll('.crop')
+        .on("mouseover", function (d) {onMouseover(d); })
+        .on('mouseout', function (d) {onMouseOut(d); });
+
     /* Finish Plotting Bars*/
 }
 
-function drawGhostCircles(data){
+function drawGhostCircles(){
     /* Begin Plotting Ghost Axis*/
     var r = 7;
 
@@ -222,6 +220,7 @@ function drawGhostCircles(data){
     ghostCircles.exit().remove();
 
     ghostAxis.selectAll('text').remove();
+
     // metric maximum label
     ghostAxis.append('text')
         .attr('class', 'ghostLabel')
@@ -242,40 +241,6 @@ function drawGhostCircles(data){
     /* Finish Plotting Ghost Axis*/
 }
 
-function scale(){
-    // var t = d3.transition()
-    //     .duration(750);
-
-    if (scaleSelect.property('checked')){
-        // console.log('checked!');
-
-        var heightScale = d3.scaleLog()
-            .domain([d3.min(gdp), d3.max(gdp)])
-            .range([10, height]);
-
-        d3.selectAll('.country')
-            // .transition().duration(2000)
-            .attr('height', function(d){
-                return heightScale(d[0].GDP);
-            });
-
-        d3.selectAll('.crop')
-            .attr('height', function(d){
-                return (heightScale(d.GDP) * d.percentOfSubtotal);
-            });
-
-    } else{
-        // console.log('unchecked!');
-
-        d3.selectAll('.country')
-            .attr('height', height);
-
-        d3.selectAll('.crop')
-            .attr('height', function(d){
-                // console.log('changing crop height');
-                return ((height) * d.percentOfSubtotal); })
-    }
-}
 
 function onClick(d, i, nodes){
     console.log('in click');
@@ -290,7 +255,7 @@ function onClick(d, i, nodes){
         d3.select('.drilldown').remove();
 
         // display all bars
-        displayBars(grouped);
+        displayBars(data);
         // remove highlight on ghost dot
         d3.select(`circle.${d[0].Country.replace(/\s/g, '')}`)
             .classed('active', false);
@@ -324,6 +289,7 @@ function onClick(d, i, nodes){
 }
 
 function onMouseover(d){
+    console.log(d);
     tool_tip.transition()
         .duration(200)
         .style("opacity", .9);

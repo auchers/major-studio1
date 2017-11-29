@@ -26,6 +26,10 @@ div.plot{
     height: 70%;
 }
 
+svg, g, rect{
+    pointer-events: all;
+}
+
 .country{
     display: inline-block;
     opacity: .7;
@@ -76,7 +80,8 @@ div.tooltip {
 }
 
 .crop{
-    background-image: url('cereal.jpeg');
+    fill: 'gray';
+    /*background-image: url('cereal.jpeg');*/
     background-size: 100px;
     transition: height 1000ms;
 }
