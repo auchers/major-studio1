@@ -8,8 +8,7 @@ var metricMapping = {
 
 var agData, data, divW, gdp, metricArray;
 
-// var countries, crops;
-
+var heightScale, crops;
 // set starting values
 var year = 2010,
     metric = 'Worker Productivity',
@@ -32,7 +31,7 @@ var scaleSelect = d3.select('.controls')
     .append('input')
     .attr('id', 'scaleSelect')
     .attr('type', 'checkbox')
-    .on('change', displayBars); //TODO create separate scale function for better transition
+    .on('change', scale);
 
 d3.select('.controls')
     .append('label')
@@ -133,38 +132,41 @@ function displayBars() {
         // .align(0.1)
         .domain(data.map(function(d) { return d[0].Country; }));
 
-    var heightScale = d3.scaleLog()
+    heightScale = d3.scaleLog()
         .domain([d3.min(gdp), d3.max(gdp)])
         .range([10, height]);
 
     /* Begin Plotting Bars*/
-    var group = plot.selectAll('g')
+    var countryData = plot.selectAll('g')
         .data(data, function (d) {
             return d.Country;
         });
 
-    var countries = group.enter()
+    var countries = countryData.enter()
         .append('g')
-        .merge(group)
+        .merge(countryData)
         .attr('class', function (d) {return `${d[0].Country.replace(/\s/g, '')} country`;})
         .attr('data-AgriValuePerWorker', function (d) {return d[0].AgriValuePerWorker; })
         .attr('data-FertilizerConsumpPerHA', function (d) {return d[0].FertilizerConsumpPerHA; })
         .attr('data-FoodDeficit', function (d) { return d[0].FoodDeficit; });
-    //     .attr("transform", function (d) { return `translate(${x(d[0].Country)},0)`; });
+
+    countries.transition()
+            .duration(2000)
+            .attr("transform", function (d) { return `translate(${x(d[0].Country)},0)`; });
         // .on('click', onClick);
 
-    crops = countries.selectAll('rect')
+    var cropData = countries.selectAll('rect')
         .data(function (d) { return d;});
 
-    group.exit().remove();
-    crops.exit().remove();
+    countryData.exit().remove();
+    cropData.exit().remove();
 
     let y = height;
 
     //TODO make cleaner
-    crops.enter()
+    crops = cropData.enter()
         .append('rect')
-        .merge(crops)
+        .merge(cropData)
         .attr('class', function (d) {
             let item = d.Item.replace(/\s/g, '').split(',')[0].split('(')[0];
             return `${item} crop`;
@@ -183,12 +185,9 @@ function displayBars() {
                 (height * d.percentOfSubtotal);
         })
         .attr('width', x.bandwidth())
-        .transition()
-        .duration(2000)
-        .attr('x', function(d) { return x(d.Country);});
+        .attr('x', 0);
 
-    d3.selectAll('.crop')
-        .on("mouseover", function (d) {onMouseover(d); })
+    crops.on("mouseover", function (d) {onMouseover(d); })
         .on('mouseout', function (d) {onMouseOut(d); });
 
     /* Finish Plotting Bars*/
@@ -241,6 +240,26 @@ function drawGhostCircles(){
     /* Finish Plotting Ghost Axis*/
 }
 
+function scale(){
+    console.log('in scale function');
+
+    crops.transition()
+        .duration(2000)
+        .attr('height', function(d){
+            return (scaleSelect.property('checked')) ? (heightScale(d.GDP) * d.percentOfSubtotal):
+                (height * d.percentOfSubtotal);
+        })
+        .attr('y', function (d,i){
+            console.log(i);
+            // reinitializing to full height for first element in each country
+            if (i === 0) {y = height;}
+            let curHeight = (scaleSelect.property('checked')) ? (heightScale(d.GDP) * d.percentOfSubtotal):
+                (height * d.percentOfSubtotal);
+            y = y - curHeight;
+            // }
+            return y;
+        });
+}
 
 function onClick(d, i, nodes){
     console.log('in click');
