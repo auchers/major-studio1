@@ -9,6 +9,7 @@ var metricMapping = {
 var agData, data, divW, gdp, metricArray;
 
 var heightScale, crops;
+
 // set starting values
 var year = 2010,
     metric = 'Worker Productivity',
@@ -74,7 +75,6 @@ var country_hover = d3.select('body')
 // get data
 d3.json('data/cropdata.json', function(err, d){
     agData = d;
-    // console.log(agData);
 
     // get array of unique years from data -- use to populate dropdown
     var years = _.uniq(_.map(d, 'Time'));
@@ -129,7 +129,6 @@ function displayBars() {
     var x = d3.scaleBand()
         .rangeRound([0, width])
         .paddingInner(0.05)
-        // .align(0.1)
         .domain(data.map(function(d) { return d[0].Country; }));
 
     heightScale = d3.scaleLog()
@@ -241,8 +240,6 @@ function drawGhostCircles(){
 }
 
 function scale(){
-    console.log('in scale function');
-
     crops.transition()
         .duration(2000)
         .attr('height', function(d){
@@ -250,7 +247,6 @@ function scale(){
                 (height * d.percentOfSubtotal);
         })
         .attr('y', function (d,i){
-            console.log(i);
             // reinitializing to full height for first element in each country
             if (i === 0) {y = height;}
             let curHeight = (scaleSelect.property('checked')) ? (heightScale(d.GDP) * d.percentOfSubtotal):
@@ -281,8 +277,6 @@ function onClick(d, i, nodes){
 
      // otherwise, remove others and plot drilldown
     }else {
-        console.log(d[0].Country);
-
         d3.select(`circle.${d[0].Country.replace(/\s/g, '')}`)
             .classed('active',true);
 
@@ -302,13 +296,9 @@ function onClick(d, i, nodes){
 
         toRemove.remove();
     }
-
-    // console.log(toRemove);
-    // console.log(toRemove._groups[0].length);
 }
 
 function onMouseover(d){
-    console.log(d);
     tool_tip.transition()
         .duration(200)
         .style("opacity", .9);
@@ -349,9 +339,7 @@ function onMouseOut(d){
 }
 
 function onYearSelect(){
-    console.log(this);
     year = +d3.select(this).property('value');
-    // console.log(d3.select(this));
     console.log(`year changed to ${year}`);
     updateData();
 }
