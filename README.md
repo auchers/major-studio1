@@ -2,7 +2,7 @@
 
 ### Agricultural Crop Profiles in Sub-Saharan Africa
 
-[![preview.png](preview.png)](https://auchers.github.io/major-studio1/projects/project3/)
+[![preview.png](preview.png)](https://auchers.github.io/major-studio1/final_project)
 
 ### Abstract
 This project aims to explore the effect of agriculture investment and productivity on the welfare and equitable share of resources in Africa. In this initial version, each country is represented by a vertical bar subdivided into one of the country's top 10 crops. The height of each crop is proportional to the share that crop holds out of the top 10 crops for that country. 

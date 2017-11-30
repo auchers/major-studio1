@@ -1,0 +1,168 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library('dplyr')
+library('jsonlite')
+library('readr')
+options(scipen=999)
+
+data <- read.csv('Project 3 Data (1)/33165b1a-c572-4ad1-89ac-6a488a71c0af_Data.csv')
+glimpse(data)
+
+meta<- read.csv('Project 3 Prelim Data2 (1)/718a0a51-7e31-4851-bce7-4403cc3e4913_Country - Metadata.csv')
+View(meta)
+```
+
+```{r}
+# get region
+merged <- merge(data, meta, by.x = 'Country.Code', by.y = 'Code')
+merged <- merged[merged$Region == 'Sub-Saharan Africa',]
+summary(merged)
+glimpse(merged)
+
+# test<- merged %>% select(Country.Name, Country.Code, Time)
+
+country_data <- merged %>%
+  select(Country.Name, Country.Code, Time, Agricultural.irrigated.land....of.total.agricultural.land...AG.LND.IRIG.AG.ZS., Agricultural.machinery..tractors..AG.AGR.TRAC.NO., Agricultural.machinery..tractors.per.100.sq..km.of.arable.land..AG.LND.TRAC.ZS., Agriculture.value.added.per.worker..constant.2010.US....EA.PRD.AGRI.KD., Agricultural.land....of.land.area...AG.LND.AGRI.ZS., Agriculture..value.added..annual...growth...NV.AGR.TOTL.KD.ZG., Depth.of.the.food.deficit..kilocalories.per.person.per.day...SN.ITK.DFCT., Food.exports....of.merchandise.exports...TX.VAL.FOOD.ZS.UN., Food.imports....of.merchandise.imports...TM.VAL.FOOD.ZS.UN., Fertilizer.consumption....of.fertilizer.production...AG.CON.FERT.PT.ZS., Fertilizer.consumption..kilograms.per.hectare.of.arable.land...AG.CON.FERT.ZS., Rural.poverty.gap.at.national.poverty.lines......SI.POV.RUGP., Employment.in.agriculture....of.total.employment...SL.AGR.EMPL.ZS., Rural.population....of.total.population...SP.RUR.TOTL.ZS.,
+Income.share.held.by.lowest.10...SI.DST.FRST.10.,
+Income.share.held.by.lowest.20...SI.DST.FRST.20.,
+Account..income..poorest.40.....ages.15....ts...WP_time_10.8.,
+GDP..current.US....NY.GDP.MKTP.CD.,
+Population..total..SP.POP.TOTL.
+) %>%
+  rename(AgriValuePerWorker = Agriculture.value.added.per.worker..constant.2010.US....EA.PRD.AGRI.KD.,
+        RuralPovGap = Rural.poverty.gap.at.national.poverty.lines......SI.POV.RUGP., 
+        RuralPopPerc = Rural.population....of.total.population...SP.RUR.TOTL.ZS.,
+        FoodDeficit = Depth.of.the.food.deficit..kilocalories.per.person.per.day...SN.ITK.DFCT.,
+        IrrigatedLandPerc = Agricultural.irrigated.land....of.total.agricultural.land...AG.LND.IRIG.AG.ZS.,
+        TractorsNum = Agricultural.machinery..tractors..AG.AGR.TRAC.NO.,
+        TractorsRel = Agricultural.machinery..tractors.per.100.sq..km.of.arable.land..AG.LND.TRAC.ZS.,
+        FoodExportsP = Food.exports....of.merchandise.exports...TX.VAL.FOOD.ZS.UN.,
+        FoodImportsP = Food.imports....of.merchandise.imports...TM.VAL.FOOD.ZS.UN., 
+        FertilizerConsump = Fertilizer.consumption....of.fertilizer.production...AG.CON.FERT.PT.ZS., 
+        FertilizerConsumpPerHA = Fertilizer.consumption..kilograms.per.hectare.of.arable.land...AG.CON.FERT.ZS.,
+        EmployInAg = Employment.in.agriculture....of.total.employment...SL.AGR.EMPL.ZS.,
+        Country = Country.Name, 
+        IncomeShareLowest10 = Income.share.held.by.lowest.10...SI.DST.FRST.10., 
+        IncomeShareLowest20 = Income.share.held.by.lowest.20...SI.DST.FRST.20., 
+        Population_total = Population..total..SP.POP.TOTL.,
+        GDP = GDP..current.US....NY.GDP.MKTP.CD.
+        )
+#TODO: add more variabel aliases
+
+glimpse(country_data)
+country_data$Time = as.numeric(country_data$Time)
+```
+
+# Top Crops per Country
+```{r}
+options(scipen=999)
+crops <- read.csv('CpC2.csv')
+# summary(crops)
+crops <- crops[order(crops$Area, crops$Year, -crops$Value, crops$Item),]
+View(crops)
+# grouped_crops <- group_by(crops, crops$Area, crops$Year)
+
+# gets the total number of crops for each country/year
+grouped_summary <- crops %>%
+  group_by(Area, Year) %>%
+  summarise(totalValue = sum(Value, na.rm= TRUE))
+
+# add total column to full data
+merged_crops <- left_join(crops, grouped_summary, by= c("Area", "Year"))
+
+# calculate % of total
+merged_crops$percentOfTotal<- merged_crops$Value/merged_crops$totalValue
+
+# View(grouped_summary)
+View(merged_crops)
+
+top_crops <- merged_crops %>%
+  group_by(Area, Year) %>%
+  filter(row_number() ==1) %>%
+  select(Area, Year, Unit, Value, Item, totalValue, percentOfTotal)
+
+View(top_crops)
+glimpse(top_crops)
+```
+
+blending both datasources together
+```{r}
+# country_data$Time = as.integer(country_data$Time)
+top_crops$Year = as.factor(top_crops$Year)
+
+View(top_crops)
+View(country_data)
+
+final_data <- left_join(country_data, top_crops, by= c ("Country" = "Area", "Time" = "Year"))
+
+View(final_data[final_data$Time >= 2004,])
+
+final_data <- final_data %>% 
+  filter(Time >= 2004) %>%
+  toJSON() %>%
+  write_lines('agdata.json')
+
+
+View(final_data)
+
+```
+
+getting crop distribution for each country
+```{r}
+crops <- read.csv('CpC2.csv')
+# summary(crops)
+# crops <- crops[order(crops$Area, crops$Year, crops$Item),]
+# View(crops)
+# grouped_crops <- group_by(crops, crops$Area, crops$Year)
+
+# gets the total number of crops for each country/year
+grouped_summary <- crops %>%
+  group_by(Area, Year) %>%
+  summarise(totalValue = sum(Value, na.rm= TRUE))
+
+View(grouped_summary)
+
+# add total column to full data
+merged_crops <- left_join(crops, grouped_summary, by= c("Area", "Year"))
+
+# calculate % of total
+merged_crops$percentOfTotal<- merged_crops$Value/merged_crops$totalValue
+merged_crops = merged_crops[order(merged_crops$Area, merged_crops$Year, -merged_crops$percentOfTotal),]
+
+# View(grouped_summary)
+# View(merged_crops)
+
+# get top 10 crops
+top_crops <- merged_crops %>%
+  group_by(Area, Year) %>%
+  filter(row_number() <= 10) %>%
+  select(Area, Year, Unit, Value, Item, totalValue, percentOfTotal)
+
+top_crops_top_summary <- top_crops %>%
+  group_by(Area, Year) %>%
+  summarise(subtotalValue = sum(Value, na.rm= TRUE))
+
+merged_top_crops<- left_join(top_crops, top_crops_top_summary, by = c("Area", "Year"))
+merged_top_crops$percentOfSubtotal<- merged_top_crops$Value/merged_top_crops$subtotalValue
+
+View(merged_top_crops)
+top_crops$Year = as.factor(top_crops$Year)
+glimpse(top_crops)
+
+glimpse(country_data)
+
+final_crop_data <- right_join(country_data, merged_top_crops, by= c ("Country" = "Area", "Time" = "Year"))
+
+View(final_crop_data[final_crop_data$Time >= 2004,])
+
+final_crop_data <- final_crop_data %>% 
+  filter(Time >= 2004) %>%
+  toJSON() %>%
+  write_lines('cropdata.json')
+
+```
+

@@ -1,0 +1,219 @@
+body{
+    font-family: 'Raleway', sans-serif;
+}
+
+.container{
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
+select{
+    border: none;
+    background-color: transparent;
+    margin-right: 2em;
+}
+
+#scaleSelect {
+    margin: 0.5rem;
+}
+
+div.plot{
+    min-width: 600px;
+    max-height: 800px;
+    position: relative;
+}
+
+.country{
+    display: inline-block;
+    opacity: .7;
+    transition-property: height, left, top;
+    transition-duration: 1000ms;
+}
+
+.country:hover{
+    opacity: 1;
+}
+
+.crop:hover{
+    border-width: 2px;
+    border-color: #fefefe;
+    border-style: solid;
+}
+
+.row {
+    padding-bottom: 1em;
+}
+
+svg.ghost{
+}
+
+.ghost{
+    fill: lightGray;
+    z-index: 1;
+}
+
+.ghost.active, circle.hover{
+    fill: gray;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    /*width: 60px;*/
+    /*height: 28px;*/
+    padding: 2px;
+    font: 12px sans-serif;
+    background: #fefefe;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.label{
+    position: absolute;
+}
+
+.crop{
+    background-image: url('originalPhotos/cereal.jpeg');
+    background-size: 100px;
+    transition: height 1000ms;
+}
+
+.Sugarcane{
+    background-image: url('originalPhotos/sugarcane-1.jpeg');
+    background-size: 200px;
+}
+
+.Cassava{
+    background-image: url('originalPhotos/cassava.jpg');
+    background-size: 200px;
+}
+
+.Rice{
+    background-image: url('originalPhotos/RicePaddy.jpg');
+}
+
+.Rootsandtubers{
+    background-image: url('originalPhotos/rootsTubers.png');
+    background-size: 200px;
+}
+
+.Maize{
+    background-image: url('originalPhotos/maize.jpg');
+    background-size: 150px;
+}
+
+.Coconuts{
+    background-image: url('originalPhotos/coconuts.jpg');
+    background-size: 150px;
+}
+
+.Bananas {
+    background-image: url('originalPhotos/bananas.jpg');
+    background-size: 100px;
+}
+
+.Millet, .Barley {
+    background-image: url('originalPhotos/millet.jpg');
+    background-size: 200px;
+}
+
+.Yams, .Sweetpotatoes{
+    background-image: url('originalPhotos/yams.jpg');
+    background-size: 150px;
+}
+
+.Plantainsandothers {
+    background-image: url('originalPhotos/plantains.jpeg');
+    background-size: 150px;
+}
+
+.Sorghum {
+    background-image: url('originalPhotos/sorghum.jpg');
+    background-size: 500px;
+}
+
+.Cereals, .Fonio {
+    background-image: url('originalPhotos/cereal.jpeg');
+    background-size: 100px;
+}
+
+.Groundnuts, .Sunflowerseed {
+    background-image: url('originalPhotos/groundnuts.jpg');
+    background-size: 80px;
+}
+
+.Tomatoes {
+    background-image: url('originalPhotos/tomatos.jpeg');
+    background-size: 100px;
+}
+
+.Cashewnuts {
+    background-image: url('originalPhotos/cashew-seed.jpg');
+    background-size: 200px;
+}
+
+.Potatoes {
+    background-image: url('originalPhotos/potatoes.jpg');
+    background-size: 100px;
+}
+
+.Vegetables {
+    background-image: url('originalPhotos/Vegetables.jpg');
+    background-size: 100px;
+}
+
+.Oil {
+    background-image: url('originalPhotos/oil.jpg');
+    background-size: 100px;
+}
+
+.Onions {
+    background-image: url('originalPhotos/onion.jpg');
+    background-size: 100px;
+}
+
+.Taro {
+    background-image: url('originalPhotos/taro.jpg');
+    background-size: 200px;
+}
+
+.Cabbagesandotherbrassicas {
+    background-image: url('originalPhotos/cabbage.jpg');
+    background-size: 200px;
+}
+
+.Cowpeas, .Peas, .Beans, .Pulses {
+    background-image: url('originalPhotos/cowpea.jpg');
+    background-size: 80px;
+}
+
+.Mangoes, .Fruit, .Oranges, .Apples, .Watermelons, .Grapes, .Pineapples {
+    background-image: url('originalPhotos/mango.jpg');
+    background-size: 100px;
+}
+
+.Dates {
+    background-image: url('originalPhotos/dates.jpg');
+    background-size: 100px;
+}
+
+.Wheat {
+    background-image: url('originalPhotos/wheat.jpeg');
+    background-size: 100px;
+}
+
+.Seedcotton, .Cottonseed  {
+    background-image: url('originalPhotos/cotton.jpg');
+    background-size: 100px;
+}
+
+.Cocoa, .Coffee, .Cottonlint {
+    background-image: url('originalPhotos/cocoa.jpg');
+    background-size: 100px;
+}
+
+.Rubber {
+    background-image: url('originalPhotos/rubber.jpg');
+    background-size: 200px;
+}

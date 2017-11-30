@@ -298,13 +298,14 @@ function onClick(d, i, nodes){
     var toRemove = d3.selectAll('.country')
         .filter(function(x){ return d[0].Country != x[0].Country; });
 
-    // if this is the only one there then return the others
-    if (toRemove._groups[0].length === 0){
+    if (toRemove._groups[0].length === 0){ // bringing the full view back
+
         // first remove svg from previous click drilldowns
         d3.select('.drilldown').remove();
 
         // display all bars
         displayBars(grouped);
+
         // remove highlight on ghost dot
         d3.select(`circle.${d[0].Country.replace(/\s/g, '')}`)
             .classed('active', false);
@@ -312,6 +313,9 @@ function onClick(d, i, nodes){
      // otherwise, remove others and plot drilldown
     }else {
         console.log(d[0].Country);
+
+        d3.select(this)
+            .style('left', '10px');
 
         d3.select(`circle.${d[0].Country.replace(/\s/g, '')}`)
             .classed('active',true);
