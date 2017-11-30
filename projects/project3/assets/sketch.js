@@ -1,8 +1,29 @@
 
 var metricMapping = {
-    'Worker Productivity': "AgriValuePerWorker",
-    'Food Deficit': "FoodDeficit",
-    'Fertilizer Consumption': 'FertilizerConsumpPerHA'
+    'Worker Productivity': {
+        "dataName": "AgriValuePerWorker",
+        "fullName": "Agriculture value added per worker (constant 2010 US$)",
+        "unit_long": "US$",
+        "unit": "$",
+        "description": "Agriculture value added per worker is a measure of agricultural productivity. Value added in agriculture measures the output of the agricultural sector (ISIC divisions 1-5) less the value of intermediate inputs. Agriculture comprises value added from forestry, hunting, and fishing as well as cultivation of crops and livestock production. Data are in constant 2010 U.S. dollars.",
+        "source": "Derived from World Bank national accounts files and Food and Agriculture Organization, Production Yearbook and data files."
+    },
+    'Food Deficit': {
+        "dataName": "FoodDeficit",
+        "fullName": "Depth of the food deficit (kilocalories per person per day)",
+        "unit_long": "kilocalories per person per day",
+        "unit": "kcal",
+        "description": "The depth of the food deficit indicates how many calories would be needed to lift the undernourished from their status, everything else being constant. The average intensity of food deprivation of the undernourished, estimated as the difference between the average dietary energy requirement and the average dietary energy consumption of the undernourished population (food-deprived), is multiplied by the number of undernourished to provide an estimate of the total food deficit in the country, which is then normalized by the total population.",
+        "source":  "Food and Agriculture Organization, Food Security Statistics."
+    },
+    'Fertilizer Consumption': {
+        "dataName": 'FertilizerConsumpPerHA',
+        "fullName": "Fertilizer consumption (kilograms per hectare of arable land)",
+        "unit_long": "kilograms per hectare of arable land",
+        "unit": "kg",
+        "description": "Fertilizer consumption measures the quantity of plant nutrients used per unit of arable land. Fertilizer products cover nitrogenous, potash, and phosphate fertilizers (including ground rock phosphate). Traditional nutrients--animal and plant manures--are not included. For the purpose of data dissemination, FAO has adopted the concept of a calendar year (January to December). Some countries compile fertilizer data on a calendar year basis, while others are on a split-year basis. Arable land includes land defined by the FAO as land under temporary crops (double-cropped areas are counted once), temporary meadows for mowing or for pasture, land under market or kitchen gardens, and land temporarily fallow. Land abandoned as a result of shifting cultivation is excluded.",
+        "source": "Food and Agriculture Organization, electronic files and web site."
+    }
     // 'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
@@ -67,10 +88,10 @@ var tool_tip = d3.select('body')
     .style('opacity', 0);
 
 // create country label -- later move it to location of hover
-var country_hover = d3.select('body')
-    .append('div')
-    .attr('class', 'label')
-    .style('opacity', 0);
+// var country_hover = d3.select('body')
+//     .append('div')
+//     .attr('class', 'label')
+//     .style('opacity', 0);
 
 // get data
 d3.json('data/cropdata.json', function(err, data){
@@ -100,17 +121,24 @@ d3.json('data/cropdata.json', function(err, data){
 });
 
 function updateData(){
+    // initialize 2 arrays in order to find extrema for this data subset
     gdp = [];
     metricArray = [];
 
-    m = metricMapping[metric];
-    //get data ready
+    // get column name
+    m = metricMapping[metric].dataName;
+
     // filter the data to the selected year
     var agDataF = _.filter(agData, function(d){return ((+d.Time === year) && d.hasOwnProperty(m) && !(d[m] === "..") ); });
-    agDataF = _.sortBy(agDataF, function(d){ return +d[m]; }); // sort by metric of choice
+
+    // reverse to get the crops in order form smallest to largest %
     agDataF = _.reverse(agDataF);
+
+    // group by country
     grouped = _.groupBy(agDataF, function(d){ return d.Country; });
-    grouped = _.values(grouped);
+
+    // to get countries in ascending order of metric
+    grouped = _.sortBy(grouped, function(d){ return + d[0][m]; });
     console.log(grouped);
 
     // TODO - populate this on full dataset so that we don't change scale with each filtering
@@ -121,7 +149,6 @@ function updateData(){
 
     displayBars(grouped);
     drawGhostCircles(grouped);
-
 }
 
 function displayBars(data) {
@@ -131,6 +158,7 @@ function displayBars(data) {
     var x = d3.scaleBand()
         .rangeRound([0, width])
         .paddingInner(0.05)
+        .paddingOuter(0)
         .domain(data.map(function(d) { return d[0].Country; }));
 
     /* Begin Plotting Bars*/
@@ -174,10 +202,11 @@ function displayBars(data) {
 function drawGhostCircles(data){
     /* Begin Plotting Ghost Axis*/
     var r = 7;
+    var barPadding = 10; // to make it line up with the bars below
 
     let ghostX = d3.scaleLinear()
         .domain([d3.min(metricArray), d3.max(metricArray)])
-        .range([width-r, r]);
+        .range([r + barPadding, width - r - barPadding]);
 
     var ghostCircles = ghostAxis.selectAll('circle')
         .data(data);
@@ -201,57 +230,55 @@ function drawGhostCircles(data){
     ghostAxis.append('text')
         .attr('class', 'ghostLabel')
         .transition().duration(1000)
-        .attr('x', 0)
-        .attr('y', 6*r)
-        .text(Math.round(d3.max(metricArray)));
+        .attr('x', barPadding)
+        .attr('y', 6 * r)
+        .text(function(){
+            // determine whether the metric comes before or after the value
+           return (metric === 'Worker Productivity') ?
+               metricMapping[metric].unit + Math.round(d3.min(metricArray)) :
+                Math.round(d3.min(metricArray)) + ' ' + metricMapping[metric].unit ;
+        });
+
 
     // metric minimum label
     ghostAxis.append('text')
         .attr('class', 'ghostLabel')
         .attr('text-anchor', 'end')
         .transition().duration(1000)
-        .attr('x', width)
-        .attr('y', 6*r)
-        .text(Math.round(d3.min(metricArray)));
+        .attr('x', width - barPadding)
+        .attr('y', 6 * r)
+        .text(function(){
+            // determine whether the metric comes before or after the value
+            return (metric === 'Worker Productivity') ?
+                metricMapping[metric].unit + Math.round(d3.max(metricArray)) :
+                Math.round(d3.max(metricArray)) + ' ' + metricMapping[metric].unit ;
+        });
 
     /* Finish Plotting Ghost Axis*/
 }
 
 function scale(){
-    var t = d3.transition()
-        .duration(750);
-
     if (scaleSelect.property('checked')){
-        // console.log('checked!');
 
         var heightScale = d3.scaleLog()
             .domain([d3.min(gdp), d3.max(gdp)])
             .range([10, height]);
 
         d3.selectAll('.country')
-            // .transition().duration(2000)
-            .style('height', function(d){
-                return heightScale(d[0].GDP);
-            })
-            .style('top', function (d){ return height - heightScale(d[0].GDP); }
-            );
+            .style('height', function(d){return heightScale(d[0].GDP);})
+            .style('top', function (d){ return height - heightScale(d[0].GDP); });
 
         d3.selectAll('.crop')
-            .style('height', function(d){
-                return (heightScale(d.GDP) * d.percentOfSubtotal);
-            });
+            .style('height', function(d){ return (heightScale(d.GDP) * d.percentOfSubtotal);});
 
     } else{
-        // console.log('unchecked!');
 
         d3.selectAll('.country')
             .style('height', height)
             .style('top', 0);
 
         d3.selectAll('.crop')
-            .style('height', function(d){
-                // console.log('changing crop height');
-                return ((height) * d.percentOfSubtotal); })
+            .style('height', function(d){ return ((height) * d.percentOfSubtotal); })
     }
 }
 
@@ -305,20 +332,26 @@ function onMouseover(d){
     tool_tip.transition()
         .duration(200)
         .style("opacity", .9);
-    tool_tip.html(
-            `<h5>${d.Item} (${Math.round(d.percentOfTotal * 100)}% total crops)</h5>
-            <br> 
-            <h6> ${metric}: ${Math.round(d[m])}</h6>
-            ${d.Time}`)
+
+    tool_tip.html(function(){
+        let formattedMetric = (metric === 'Worker Productivity') ?
+            metricMapping[metric].unit + Math.round(d[m]) :
+            Math.round(d[m]) + ' ' + metricMapping[metric].unit;
+
+           return `<h4>${d.Country}</h4>
+            <h5>${d.Item} (${Math.round(d.percentOfTotal * 100)}% total crops)</h5>
+            <h6> ${metric}: ${formattedMetric}</h6>
+            ${d.Time}`;
+        })
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
 
-    country_hover.transition()
-        .duration(200)
-        .style("opacity", .9);
-    country_hover.text(`${d.Country} - ${Math.round(d[m])}`)
-        .style("top", (height+titleHeight+controlHeight + 100) + 'px')
-        .style("left", (d3.event.pageX - divW) + "px");
+    // country_hover.transition()
+    //     .duration(200)
+    //     .style("opacity", .9);
+    // country_hover.text(`${d.Country} - ${Math.round(d[m])}`)
+    //     .style("top", (height+titleHeight+controlHeight + 100) + 'px')
+    //     .style("left", (d3.event.pageX - divW) + "px");
 
     d3.select(`circle.${d.Country.replace(/\s/g, '')}`)
         .classed('hover', true)
@@ -331,9 +364,9 @@ function onMouseOut(d){
         .duration(500)
         .style('opacity', 0);
 
-    country_hover.transition()
-        .duration(200)
-        .style("opacity", 0);
+    // country_hover.transition()
+    //     .duration(200)
+    //     .style("opacity", 0);
 
     d3.selectAll(`.${d.Country.replace(/\s/g, '')}`)
         .classed('hover', false);
