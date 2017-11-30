@@ -128,55 +128,45 @@ function displayBars(data) {
     /*Width of Bars*/
     divW = width / (data.length);
 
-    /* Begin Plotting Bars*/
-    var group = plot.selectAll('div')
-        .data(data, function (d) {
-            return d.Country;
-        });
+    var x = d3.scaleBand()
+        .rangeRound([0, width])
+        .paddingInner(0.05)
+        .domain(data.map(function(d) { return d[0].Country; }));
 
-    countries = group.enter()
+    /* Begin Plotting Bars*/
+    var countryData = plot.selectAll('div.country')
+        .data(data, function (d) { return d[0].Country; });
+
+    countries = countryData.enter()
         .append('div')
-        .attr('class', function (d) {
-            return `${d[0].Country.replace(/\s/g, '')} country`;
-        })
-        .merge(group)
-        .attr('data-AgriValuePerWorker', function (d) {
-            return d[0].AgriValuePerWorker
-        })
-        .attr('data-FertilizerConsumpPerHA', function (d) {
-            return d[0].FertilizerConsumpPerHA
-        })
-        .attr('data-FoodDeficit', function (d) {
-            return d[0].FoodDeficit
-        })
-        .attr('data-IncomeShareLowest20', function (d) {
-            return d[0].IncomeShareLowest20
-        })
-        .style('width', divW)
+        .merge(countryData)
+        .attr('class', function (d) { return `${d[0].Country.replace(/\s/g, '')} country`;})
+        .style('position', 'absolute')
+        .style('left',function(d){ return `${x(d[0].Country)}px`;})
+        .attr('data-AgriValuePerWorker', function (d) { return d[0].AgriValuePerWorker; })
+        .attr('data-FertilizerConsumpPerHA', function (d) {return d[0].FertilizerConsumpPerHA; })
+        .attr('data-FoodDeficit', function (d) { return d[0].FoodDeficit; })
+        .attr('data-IncomeShareLowest20', function (d) { return d[0].IncomeShareLowest20; })
+        .style('width', x.bandwidth())
         .on('click', onClick);
 
-    group.exit().remove();
+    countryData.exit().remove();
 
-    crops = countries.selectAll('div')
-        .data(function (d) {
-            return d;
-        })
-        .enter()
+    var cropData = countries.selectAll('div')
+        .data(function (d) { return d;});
+
+    crops = cropData.enter()
         .append('div')
+        .merge(cropData)
         .attr('class', function (d) {
             var item = d.Item.replace(/\s/g, '').split(',')[0].split('(')[0];
             return `${item} crop`;
         })
-        .merge(countries)
-        .style('width', divW)
-        .on("mouseover", function (d) {
-            onMouseover(d);
-        })
-        .on('mouseout', function (d) {
-            onMouseOut(d);
-        });
+        .style('width', x.bandwidth())
+        .on("mouseover", function (d) { onMouseover(d);})
+        .on('mouseout', function (d) { onMouseOut(d);});
 
-    crops.exit().remove();
+    cropData.exit().remove();
     scale();
     /* Finish Plotting Bars*/
 }
@@ -242,7 +232,9 @@ function scale(){
             // .transition().duration(2000)
             .style('height', function(d){
                 return heightScale(d[0].GDP);
-            });
+            })
+            .style('top', function (d){ return height - heightScale(d[0].GDP); }
+            );
 
         d3.selectAll('.crop')
             .style('height', function(d){
@@ -253,7 +245,8 @@ function scale(){
         // console.log('unchecked!');
 
         d3.selectAll('.country')
-            .style('height', height);
+            .style('height', height)
+            .style('top', 0);
 
         d3.selectAll('.crop')
             .style('height', function(d){
@@ -324,9 +317,7 @@ function onMouseover(d){
         .duration(200)
         .style("opacity", .9);
     country_hover.text(`${d.Country} - ${Math.round(d[m])}`)
-        // .attr("transform", "translate(0,480)")
         .style("top", (height+titleHeight+controlHeight + 100) + 'px')
-        // .style("top", '90%')
         .style("left", (d3.event.pageX - divW) + "px");
 
     d3.select(`circle.${d.Country.replace(/\s/g, '')}`)
