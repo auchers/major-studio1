@@ -27,9 +27,11 @@ var metricMapping = {
     // 'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
-var agData, grouped, divW, gdp, metricArray;
+var agData, data, divW, gdp, metricArray;
 
-var countries, crops;
+var width, height, ghostHeight;
+
+var countries, crops, x;
 
 // set starting values
 var year = 2010,
@@ -41,30 +43,24 @@ var title = d3.select('.title')
     .text('Agricultural Crop Profiles of Countries in Sub-Saharan Africa');
 
 // create year dropdown
-var yearSelect = d3.select('.controls')
+var yearSelect = d3.select('.year')
     .append('select')
     .on('change', onYearSelect);
 
-var metricSelect = d3.select('.controls')
+var metricSelect = d3.select('.metric')
     .append('select')
     .on('change', onMetricSelect);
 
-var scaleSelect = d3.select('.controls')
+var scaleSelect = d3.select('.scale')
     .append('input')
     .attr('id', 'scaleSelect')
     .attr('type', 'checkbox')
     .on('change', scale);
 
-d3.select('.controls')
+d3.select('.scale')
     .append('label')
     .attr('for', 'scaleSelect')
     .text('scale by gdp (log)');
-
-var ghostAxis = d3.select('.plot')
-    .append('svg')
-    .attr('class', 'ghost')
-    .style('height','75px')
-    .style('width', '100%');
 
 // create main scatterplot svg
 var plot = d3.select('.plot')
@@ -73,13 +69,11 @@ var plot = d3.select('.plot')
     .style('height','70%')
     .style('width', '100%');
 
-var width = plot.node().offsetWidth;
-var height = plot.node().offsetHeight;
-
-// var titleHeight = title.node().offsetHeight;
-var ghostHeight = ghostAxis.node().getBoundingClientRect().height;
-
-console.log(`width: ${width} height: ${height} ghostHeight: ${ghostHeight}`);
+var ghostAxis = d3.select('.plot')
+    .append('svg')
+    .attr('class', 'ghost')
+    .style('height','75px')
+    .style('width', '100%');
 
 // create tooltip -- later move it to location of hover
 var tool_tip = d3.select('body')
@@ -87,19 +81,26 @@ var tool_tip = d3.select('body')
     .attr('class', 'tooltip')
     .style('opacity', 0);
 
-// create country label -- later move it to location of hover
-// var country_hover = d3.select('body')
-//     .append('div')
-//     .attr('class', 'label')
-//     .style('opacity', 0);
+
+setup();
+
+// get svg widths and heights
+function setup(){
+    width = plot.node().offsetWidth;
+    height = plot.node().offsetHeight;
+
+    ghostHeight = ghostAxis.node().getBoundingClientRect().height;
+
+    console.log(`width: ${width} height: ${height} ghostHeight: ${ghostHeight}`);
+}
 
 // get data
-d3.json('data/cropdata.json', function(err, data){
-    agData = data;
+d3.json('data/cropdata.json', function(err, dat){
+    agData = dat;
     // console.log(agData);
 
     // get array of unique years from data -- use to populate dropdown
-    var years = _.uniq(_.map(data, 'Time'));
+    var years = _.uniq(_.map(dat, 'Time'));
     var metrics = Object.keys(metricMapping);
 
     yearSelect.selectAll('option')
@@ -135,27 +136,27 @@ function updateData(){
     agDataF = _.reverse(agDataF);
 
     // group by country
-    grouped = _.groupBy(agDataF, function(d){ return d.Country; });
+    data = _.groupBy(agDataF, function(d){ return d.Country; });
 
     // to get countries in ascending order of metric
-    grouped = _.sortBy(grouped, function(d){ return + d[0][m]; });
-    console.log(grouped);
+    data = _.sortBy(data, function(d){ return + d[0][m]; });
+    console.log(data);
 
     // TODO - populate this on full dataset so that we don't change scale with each filtering
-    grouped.forEach(function(d){
+    data.forEach(function(d){
         gdp.push(+d[0].GDP);
         metricArray.push(+d[0][m]);
     });
 
-    displayBars(grouped);
-    drawGhostCircles(grouped);
+    displayBars();
+    drawGhostCircles();
 }
 
-function displayBars(data) {
+function displayBars() {
     /*Width of Bars*/
     divW = width / (data.length);
 
-    var x = d3.scaleBand()
+    x = d3.scaleBand()
         .rangeRound([0, width])
         .paddingInner(0.05)
         .paddingOuter(0)
@@ -199,7 +200,7 @@ function displayBars(data) {
     /* Finish Plotting Bars*/
 }
 
-function drawGhostCircles(data){
+function drawGhostCircles(){
     /* Begin Plotting Ghost Axis*/
     var r = 7;
     var barPadding = 10; // to make it line up with the bars below
@@ -209,22 +210,26 @@ function drawGhostCircles(data){
         .domain([d3.min(metricArray), d3.max(metricArray)])
         .range([r + barPadding, width - r - barPadding]);
 
-    var ghostCircles = ghostAxis.selectAll('circle')
+    var ghostCirclesData = ghostAxis.selectAll('circle')
         .data(data);
 
-    ghostCircles.enter()
+    var ghostCircles = ghostCirclesData.enter()
         .append('circle')
-        .merge(ghostCircles)
+        .merge(ghostCirclesData)
         .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} ghost`; })
-        .attr(`d_${m}`, function(d){ return `${d[0][m]}_${ghostX(d[0][m])}`; })
-        .transition()
+        .attr(`d_${m}`, function(d){ return `${d[0][m]}_${ghostX(d[0][m])}`; });
+
+    ghostCircles.transition()
         .duration(2000)
         .attr('cx', function(d){ return ghostX(d[0][m]); })
         .attr('cy', ghostHeight - 6 * r)
         .attr('r', r)
         .style('opacity', 0.7);
 
-    ghostCircles.exit().remove();
+    ghostCircles.on('mouseover', function(d) {countryHoverOn(d[0].Country);})
+        .on('mouseout', function(d) {countryHoverOff(d[0].Country);});
+
+    ghostCirclesData.exit().remove();
     ghostAxis.selectAll('text').remove();
 
     // metric maximum label
@@ -259,9 +264,24 @@ function drawGhostCircles(data){
     ghostAxis.append('text')
         .attr('class', 'ghostLabel')
         .transition().duration(1000)
-        .attr('x', barPadding)
-        .attr('y', ghostHeight - 9 * r)
+        .attr('text-anchor', 'middle')
+        .attr('x', width/2)
+        .attr('y', textY)
         .text(`${metric} (${metricMapping[metric].unit_long}) -->`);
+
+    // put in country codes as axes
+    var countryCodes = ghostAxis.selectAll('text.countryCode')
+        .data(data);
+
+    countryCodes.enter()
+        .append('text')
+        .merge(countryCodes)
+        .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} countryCode`; })
+        .attr('x', function(d) {return x(d[0].Country); })
+        .attr('y', r * 2)
+        .text(function(d){ return d[0]["Country.Code"]});
+
+    countryCodes.exit().remove();
 
     /* Finish Plotting Ghost Axis*/
 }
@@ -304,7 +324,7 @@ function onClick(d, i, nodes){
         d3.select('.drilldown').remove();
 
         // display all bars
-        displayBars(grouped);
+        displayBars();
 
         // remove highlight on ghost dot
         d3.select(`circle.${d[0].Country.replace(/\s/g, '')}`)
@@ -341,35 +361,26 @@ function onClick(d, i, nodes){
     // console.log(toRemove._groups[0].length);
 }
 
-function onMouseover(d){
+function onMouseover(d) {
     tool_tip.transition()
         .duration(200)
         .style("opacity", .9);
 
-    tool_tip.html(function(){
+    tool_tip.html(function () {
         let formattedMetric = (metric === 'Worker Productivity') ?
             metricMapping[metric].unit + Math.round(d[m]) :
             Math.round(d[m]) + ' ' + metricMapping[metric].unit;
 
-           return `<h4>${d.Country}</h4>
+        return `<h4>${d.Country}</h4>
             <h5>${d.Item} (${Math.round(d.percentOfTotal * 100)}% total crops)</h5>
             <h6> ${metric}: ${formattedMetric}</h6>
             ${d.Time}`;
-        })
+    })
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
 
-    // country_hover.transition()
-    //     .duration(200)
-    //     .style("opacity", .9);
-    // country_hover.text(`${d.Country} - ${Math.round(d[m])}`)
-    //     .style("top", (height+titleHeight+controlHeight + 100) + 'px')
-    //     .style("left", (d3.event.pageX - divW) + "px");
-
-    d3.select(`circle.${d.Country.replace(/\s/g, '')}`)
-        .classed('hover', true)
-        .moveToFront();
-
+    countryHoverOn(d.Country);
+    d3.selectAll(`.${d.Country.replace(/\s/g, '')}`).moveToFront();
 }
 
 function onMouseOut(d){
@@ -377,18 +388,23 @@ function onMouseOut(d){
         .duration(500)
         .style('opacity', 0);
 
-    // country_hover.transition()
-    //     .duration(200)
-    //     .style("opacity", 0);
+    countryHoverOff(d.Country);
+}
 
-    d3.selectAll(`.${d.Country.replace(/\s/g, '')}`)
+function countryHoverOn (country){
+    return d3.selectAll(`.${country.replace(/\s/g, '')}`)
+        .classed('hover', true)
+        // .moveToFront();
+}
+
+function countryHoverOff(country){
+    d3.selectAll(`.${country.replace(/\s/g, '')}`)
         .classed('hover', false);
 }
 
 function onYearSelect(){
     console.log(this);
     year = +d3.select(this).property('value');
-    // console.log(d3.select(this));
     console.log(`year changed to ${year}`);
     updateData();
 }
@@ -404,3 +420,9 @@ d3.selection.prototype.moveToFront = function() {
         this.parentNode.appendChild(this);
     });
 };
+
+window.addEventListener("resize", function(){
+    setup();
+    displayBars();
+    drawGhostCircles();
+});

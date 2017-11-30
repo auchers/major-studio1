@@ -1,11 +1,12 @@
 body{
-    /*font-family: 'Raleway', sans-serif;*/
-    font-family: ProximaNova,sans-serif;
+    font-family: 'Raleway', sans-serif;
+
+    /*font-family: ProximaNova,sans-serif;*/
     letter-spacing: .5px;
 }
 
-text{
-    text-transform: uppercase;
+text.countryCode{
+    font-size: smaller;
 }
 
 .container{
@@ -31,12 +32,12 @@ div.plot{
 
 .country{
     display: inline-block;
-    opacity: .7;
+    opacity: .6;
     transition-property: height, left, top;
     transition-duration: 1000ms;
 }
 
-.country:hover{
+.country:hover, .country.hover{
     opacity: 1;
 }
 
@@ -44,6 +45,7 @@ div.plot{
     border-width: 2px;
     border-color: #fefefe;
     border-style: solid;
+    padding: 1em;
 }
 
 .row {
