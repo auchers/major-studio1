@@ -3,7 +3,7 @@ var metricMapping = {
     'Worker Productivity': {
         "dataName": "AgriValuePerWorker",
         "fullName": "Agriculture value added per worker (constant 2010 US$)",
-        "unit_long": "US$",
+        "unit_long": "constant 2010 US$",
         "unit": "$",
         "description": "Agriculture value added per worker is a measure of agricultural productivity. Value added in agriculture measures the output of the agricultural sector (ISIC divisions 1-5) less the value of intermediate inputs. Agriculture comprises value added from forestry, hunting, and fishing as well as cultivation of crops and livestock production. Data are in constant 2010 U.S. dollars.",
         "source": "Derived from World Bank national accounts files and Food and Agriculture Organization, Production Yearbook and data files."
@@ -63,7 +63,7 @@ d3.select('.controls')
 var ghostAxis = d3.select('.plot')
     .append('svg')
     .attr('class', 'ghost')
-    .style('height','50px')
+    .style('height','75px')
     .style('width', '100%');
 
 // create main scatterplot svg
@@ -76,10 +76,10 @@ var plot = d3.select('.plot')
 var width = plot.node().offsetWidth;
 var height = plot.node().offsetHeight;
 
-var titleHeight = title.node().offsetHeight;
-var controlHeight = metricSelect.node().offsetHeight;
+// var titleHeight = title.node().offsetHeight;
+var ghostHeight = ghostAxis.node().getBoundingClientRect().height;
 
-console.log(`width: ${width} height: ${height}`);
+console.log(`width: ${width} height: ${height} ghostHeight: ${ghostHeight}`);
 
 // create tooltip -- later move it to location of hover
 var tool_tip = d3.select('body')
@@ -203,6 +203,7 @@ function drawGhostCircles(data){
     /* Begin Plotting Ghost Axis*/
     var r = 7;
     var barPadding = 10; // to make it line up with the bars below
+    let textY = ghostHeight - 2 * r;
 
     let ghostX = d3.scaleLinear()
         .domain([d3.min(metricArray), d3.max(metricArray)])
@@ -219,26 +220,26 @@ function drawGhostCircles(data){
         .transition()
         .duration(2000)
         .attr('cx', function(d){ return ghostX(d[0][m]); })
-        .attr('cy', 3*r)
+        .attr('cy', ghostHeight - 6 * r)
         .attr('r', r)
         .style('opacity', 0.7);
 
     ghostCircles.exit().remove();
-
     ghostAxis.selectAll('text').remove();
+
     // metric maximum label
     ghostAxis.append('text')
         .attr('class', 'ghostLabel')
         .transition().duration(1000)
         .attr('x', barPadding)
-        .attr('y', 6 * r)
+        .attr('y', textY)
         .text(function(){
             // determine whether the metric comes before or after the value
-           return (metric === 'Worker Productivity') ?
+            let formattedMetric = (metric === 'Worker Productivity') ?
                metricMapping[metric].unit + Math.round(d3.min(metricArray)) :
                 Math.round(d3.min(metricArray)) + ' ' + metricMapping[metric].unit ;
+           return formattedMetric;
         });
-
 
     // metric minimum label
     ghostAxis.append('text')
@@ -246,13 +247,21 @@ function drawGhostCircles(data){
         .attr('text-anchor', 'end')
         .transition().duration(1000)
         .attr('x', width - barPadding)
-        .attr('y', 6 * r)
+        .attr('y', textY)
         .text(function(){
             // determine whether the metric comes before or after the value
             return (metric === 'Worker Productivity') ?
                 metricMapping[metric].unit + Math.round(d3.max(metricArray)) :
                 Math.round(d3.max(metricArray)) + ' ' + metricMapping[metric].unit ;
         });
+
+    // mame of metric
+    ghostAxis.append('text')
+        .attr('class', 'ghostLabel')
+        .transition().duration(1000)
+        .attr('x', barPadding)
+        .attr('y', ghostHeight - 9 * r)
+        .text(`${metric} (${metricMapping[metric].unit_long}) -->`);
 
     /* Finish Plotting Ghost Axis*/
 }
