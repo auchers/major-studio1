@@ -1,5 +1,11 @@
 body{
-    font-family: 'Raleway', sans-serif;
+    /*font-family: 'Raleway', sans-serif;*/
+    font-family: ProximaNova,sans-serif;
+    letter-spacing: .5px;
+}
+
+text{
+    text-transform: uppercase;
 }
 
 .container{
@@ -74,146 +80,146 @@ div.tooltip {
 }
 
 .crop{
-    background-image: url('originalPhotos/cereal.jpeg');
+    background-image: url('cereal.jpg');
     background-size: 100px;
     transition: height 1000ms;
 }
 
 .Sugarcane{
-    background-image: url('originalPhotos/sugarcane-1.jpeg');
+    background-image: url('sugarcane-1.jpg');
     background-size: 200px;
 }
 
 .Cassava{
-    background-image: url('originalPhotos/cassava.jpg');
+    background-image: url('cassava.jpg');
     background-size: 200px;
 }
 
 .Rice{
-    background-image: url('originalPhotos/RicePaddy.jpg');
+    background-image: url('RicePaddy.jpg');
 }
 
 .Rootsandtubers{
-    background-image: url('originalPhotos/rootsTubers.png');
+    background-image: url('rootsTubers.jpg');
     background-size: 200px;
 }
 
 .Maize{
-    background-image: url('originalPhotos/maize.jpg');
+    background-image: url('maize.jpg');
     background-size: 150px;
 }
 
 .Coconuts{
-    background-image: url('originalPhotos/coconuts.jpg');
+    background-image: url('coconuts.jpg');
     background-size: 150px;
 }
 
 .Bananas {
-    background-image: url('originalPhotos/bananas.jpg');
+    background-image: url('bananas.jpg');
     background-size: 100px;
 }
 
 .Millet, .Barley {
-    background-image: url('originalPhotos/millet.jpg');
+    background-image: url('millet.jpg');
     background-size: 200px;
 }
 
 .Yams, .Sweetpotatoes{
-    background-image: url('originalPhotos/yams.jpg');
+    background-image: url('yams.jpg');
     background-size: 150px;
 }
 
 .Plantainsandothers {
-    background-image: url('originalPhotos/plantains.jpeg');
+    background-image: url('plantains.jpg');
     background-size: 150px;
 }
 
 .Sorghum {
-    background-image: url('originalPhotos/sorghum.jpg');
+    background-image: url('sorghum.jpg');
     background-size: 500px;
 }
 
 .Cereals, .Fonio {
-    background-image: url('originalPhotos/cereal.jpeg');
+    background-image: url('cereal.jpg');
     background-size: 100px;
 }
 
 .Groundnuts, .Sunflowerseed {
-    background-image: url('originalPhotos/groundnuts.jpg');
+    background-image: url('groundnuts.jpg');
     background-size: 80px;
 }
 
 .Tomatoes {
-    background-image: url('originalPhotos/tomatos.jpeg');
+    background-image: url('tomatos.jpg');
     background-size: 100px;
 }
 
 .Cashewnuts {
-    background-image: url('originalPhotos/cashew-seed.jpg');
+    background-image: url('cashew-seed.jpg');
     background-size: 200px;
 }
 
 .Potatoes {
-    background-image: url('originalPhotos/potatoes.jpg');
+    background-image: url('potatoes.jpg');
     background-size: 100px;
 }
 
 .Vegetables {
-    background-image: url('originalPhotos/Vegetables.jpg');
+    background-image: url('Vegetables.jpg');
     background-size: 100px;
 }
 
 .Oil {
-    background-image: url('originalPhotos/oil.jpg');
+    background-image: url('oil.jpg');
     background-size: 100px;
 }
 
 .Onions {
-    background-image: url('originalPhotos/onion.jpg');
+    background-image: url('onion.jpg');
     background-size: 100px;
 }
 
 .Taro {
-    background-image: url('originalPhotos/taro.jpg');
+    background-image: url('taro.jpg');
     background-size: 200px;
 }
 
 .Cabbagesandotherbrassicas {
-    background-image: url('originalPhotos/cabbage.jpg');
+    background-image: url('cabbage.jpg');
     background-size: 200px;
 }
 
 .Cowpeas, .Peas, .Beans, .Pulses {
-    background-image: url('originalPhotos/cowpea.jpg');
+    background-image: url('cowpea.jpg');
     background-size: 80px;
 }
 
 .Mangoes, .Fruit, .Oranges, .Apples, .Watermelons, .Grapes, .Pineapples {
-    background-image: url('originalPhotos/mango.jpg');
+    background-image: url('mango.jpg');
     background-size: 100px;
 }
 
 .Dates {
-    background-image: url('originalPhotos/dates.jpg');
+    background-image: url('dates.jpg');
     background-size: 100px;
 }
 
 .Wheat {
-    background-image: url('originalPhotos/wheat.jpeg');
+    background-image: url('wheat.jpg');
     background-size: 100px;
 }
 
 .Seedcotton, .Cottonseed  {
-    background-image: url('originalPhotos/cotton.jpg');
+    background-image: url('cotton.jpg');
     background-size: 100px;
 }
 
 .Cocoa, .Coffee, .Cottonlint {
-    background-image: url('originalPhotos/cocoa.jpg');
+    background-image: url('cocoa.jpg');
     background-size: 100px;
 }
 
 .Rubber {
-    background-image: url('originalPhotos/rubber.jpg');
+    background-image: url('rubber.jpg');
     background-size: 200px;
 }
