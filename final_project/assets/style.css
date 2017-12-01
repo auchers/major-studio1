@@ -1,8 +1,12 @@
 body{
     font-family: 'Raleway', sans-serif;
-
+    background-color: rgba(185,185,185,0.25);
     /*font-family: ProximaNova,sans-serif;*/
     letter-spacing: .5px;
+}
+
+p{
+    margin-bottom: 0;
 }
 
 text.countryCode{
@@ -37,22 +41,22 @@ div.plot{
     transition-duration: 1000ms;
 }
 
-.country:hover, .country.hover{
+.country:hover, .hover{
     opacity: 1;
+}
+
+.countryCode{
+    fill: black;
 }
 
 .crop:hover{
     border-width: 2px;
     border-color: #fefefe;
     border-style: solid;
-    padding: 1em;
 }
 
 .row {
     padding-bottom: 1em;
-}
-
-svg.ghost{
 }
 
 .ghost{
@@ -67,14 +71,12 @@ svg.ghost{
 div.tooltip {
     position: absolute;
     text-align: left;
-    /*width: 60px;*/
-    /*height: 28px;*/
-    padding: 2px;
     font: 12px sans-serif;
     background: #fefefe;
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
+    padding: 1em;
 }
 
 .label{

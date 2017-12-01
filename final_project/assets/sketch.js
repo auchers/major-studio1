@@ -154,11 +154,15 @@ function updateData(){
 
 function displayBars() {
     /*Width of Bars*/
+
+    // for the cases where displayBars is called from a metric change
+    d3.select('.drilldown').remove();
+
     divW = width / (data.length);
 
     x = d3.scaleBand()
         .rangeRound([0, width])
-        .paddingInner(0.05)
+        .paddingInner(0.06)
         .paddingOuter(0)
         .domain(data.map(function(d) { return d[0].Country; }));
 
@@ -279,7 +283,8 @@ function drawGhostCircles(){
         .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} countryCode`; })
         .attr('x', function(d) {return x(d[0].Country); })
         .attr('y', r * 2)
-        .text(function(d){ return d[0]["Country.Code"]});
+        .text(function(d){ return d[0]["Country.Code"]})
+        .attr('opacity', 0);
 
     countryCodes.exit().remove();
 
@@ -372,15 +377,15 @@ function onMouseover(d) {
             Math.round(d[m]) + ' ' + metricMapping[metric].unit;
 
         return `<h4>${d.Country}</h4>
-            <h5>${d.Item} (${Math.round(d.percentOfTotal * 100)}% total crops)</h5>
-            <h6> ${metric}: ${formattedMetric}</h6>
-            ${d.Time}`;
+            <p><b>Crop:</b> ${d.Item} (${Math.round(d.percentOfTotal * 100)}% total crops)</p>
+            <p><b>${metric}:</b> ${formattedMetric}</p>
+            <p><b>Year:</b> ${d.Time}</p>`;
     })
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
 
     countryHoverOn(d.Country);
-    d3.selectAll(`.${d.Country.replace(/\s/g, '')}`).moveToFront();
+    d3.selectAll(`.ghost.${d.Country.replace(/\s/g, '')}`).moveToFront();
 }
 
 function onMouseOut(d){
