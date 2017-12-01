@@ -233,8 +233,9 @@ function drawGhostCircles(){
     /* Begin Plotting Ghost Axis*/
     var r = 7;
     var barPadding = 10; // to make it line up with the bars below
-    let textY = ghostHeight - 2 * r;
+    let textY = ghostHeight - r;
 
+    // x scale for ghost circles
     let ghostX = d3.scaleLinear()
         .domain([d3.min(metricArray), d3.max(metricArray)])
         .range([r + barPadding, width - r - barPadding]);
@@ -262,7 +263,7 @@ function drawGhostCircles(){
     ghostCirclesData.exit().remove();
     ghostAxis.selectAll('text').remove();
 
-    // metric maximum label
+    // metric minimum label
     ghostAxis.append('text')
         .attr('class', 'ghostLabel')
         .transition().duration(1000)
@@ -276,7 +277,7 @@ function drawGhostCircles(){
            return formattedMetric;
         });
 
-    // metric minimum label
+    // metric maximum label
     ghostAxis.append('text')
         .attr('class', 'ghostLabel')
         .attr('text-anchor', 'end')
@@ -299,7 +300,7 @@ function drawGhostCircles(){
         .attr('y', textY)
         .text(`${metric} (${metricMapping[metric].unit_long}) -->`);
 
-    // put in country codes as axes
+    // put in country name on axis
     var countryCodes = ghostAxis.selectAll('text.countryCode')
         .data(data);
 
@@ -309,7 +310,7 @@ function drawGhostCircles(){
         .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} countryCode`; })
         .attr('x', function(d) {return x(d[0].Country); })
         .attr('y', r * 2)
-        .text(function(d){ return d[0]["Country.Code"]})
+        .text(function(d){ return d[0]["Country"]})
         .attr('opacity', 0);
 
     countryCodes.exit().remove();
