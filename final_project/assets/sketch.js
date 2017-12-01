@@ -38,9 +38,8 @@ var scaleMapping = {
     },
     "Arable Land": {
         "dataName": "ArableLandHectares",
-        "scaleType": "Log"
-    },
-    "reset": null
+        "scaleType": "Linear"
+    }
 };
 
 var agData, data, divW, metricArray;
@@ -54,7 +53,8 @@ var countries, crops, x;
 // set starting values
 var year = 2010,
     metric = 'Worker Productivity',
-    m; // current underlying metric
+    m, // current underlying metric
+    curScale = 'reset'; // current scale choice
 
 var title = d3.select('.title')
     .append('h2')
@@ -318,10 +318,10 @@ function drawGhostCircles(){
 }
 
 function scale(){
-    let curScale = scaleMapping[this.innerHTML];
-    console.log(curScale);
+    // if there is no button push, or it is the same as the previous push, reset the bars
+    curScale = ((curScale === scaleMapping[this.innerHTML]) || (scaleMapping[this.innerHTML] === undefined)) ? 'reset' : scaleMapping[this.innerHTML];
 
-    if ((this.innerHTML === scales[scales.length-1]) || (this.innerHTML === undefined)) {
+    if (curScale === 'reset') { // resetting bars to full height
         d3.selectAll('.country')
             .style('height', height)
             .style('top', 0);
@@ -329,21 +329,20 @@ function scale(){
         d3.selectAll('.crop')
             .style('height', function(d){ return ((height) * d.percentOfSubtotal); });
     }
-    else{
+    else{ // scaling the bars by the button choice
         let scaleType = 'scale'+curScale.scaleType;
-        curScale = scaleMapping[this.innerHTML].dataName;
-        console.log(curScale);
+        let curData = curScale.dataName; // column name corresponding to the scale choice
 
         var heightScale = d3[scaleType]()
-            .domain([d3.min(window[curScale]), d3.max(window[curScale])])
+            .domain([d3.min(window[curData]), d3.max(window[curData])])
             .range([10, height]);
 
         d3.selectAll('.country')
-            .style('height', function(d){return heightScale(d[0][curScale]);})
-            .style('top', function (d){ return height - heightScale(d[0][curScale]); });
+            .style('height', function(d){return heightScale(d[0][curData]);})
+            .style('top', function (d){ return height - heightScale(d[0][curData]); });
 
         d3.selectAll('.crop')
-            .style('height', function(d){ return (heightScale(d[curScale]) * d.percentOfSubtotal);});
+            .style('height', function(d){ return (heightScale(d[curData]) * d.percentOfSubtotal);});
     }
 }
 

@@ -51,6 +51,7 @@ button.scale{
     border-radius: 0;
     border-color: #200b13;
     color: #200b13;
+    font-size: smaller;
 }
 
 .crop:hover{
