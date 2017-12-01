@@ -27,7 +27,25 @@ var metricMapping = {
     // 'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
-var agData, data, divW, gdp, metricArray;
+var scaleMapping = {
+    "GDP (log)": {
+        "dataName": "GDP",
+        "scaleType": "Log"
+    },
+    "Land Area": {
+        "dataName": "LandAreaSqMeters",
+        "scaleType": "Linear"
+    },
+    "Arable Land": {
+        "dataName": "ArableLandHectares",
+        "scaleType": "Log"
+    },
+    "reset": null
+};
+
+var agData, data, divW, metricArray;
+
+var GDP, LandAreaSqMeters, ArableLandHectares;
 
 var width, height, ghostHeight;
 
@@ -51,16 +69,28 @@ var metricSelect = d3.select('.metric')
     .append('select')
     .on('change', onMetricSelect);
 
-var scaleSelect = d3.select('.scale')
-    .append('input')
-    .attr('id', 'scaleSelect')
-    .attr('type', 'checkbox')
-    .on('change', scale);
+//todo: take out once buttons work
+var scaleSelect = d3.select('.scale');
 
-d3.select('.scale')
-    .append('label')
-    .attr('for', 'scaleSelect')
-    .text('scale by gdp (log)');
+var metrics = Object.keys(metricMapping);
+var scales = Object.keys(scaleMapping);
+
+// map metric options to dropdown options
+metricSelect.selectAll('option')
+    .data(metrics)
+    .enter()
+    .append('option')
+    .text(function(d){ return d; })
+    .property("selected", function(d){ return d === metric; }); //sets defaults value;
+
+// map scale options to buttons
+scaleSelect.selectAll('button')
+    .data(scales)
+    .enter()
+    .append('button')
+    .attr('class', function(d) { return `btn btn-outline-info scale ${d}`; })
+    .html(function(d){ return d; })
+    .on('click', scale);
 
 // create main scatterplot svg
 var plot = d3.select('.plot')
@@ -81,11 +111,10 @@ var tool_tip = d3.select('body')
     .attr('class', 'tooltip')
     .style('opacity', 0);
 
-
-setup();
+getWidthandHeight();
 
 // get svg widths and heights
-function setup(){
+function getWidthandHeight(){
     width = plot.node().offsetWidth;
     height = plot.node().offsetHeight;
 
@@ -97,12 +126,11 @@ function setup(){
 // get data
 d3.json('data/cropdata.json', function(err, dat){
     agData = dat;
-    // console.log(agData);
 
     // get array of unique years from data -- use to populate dropdown
     var years = _.uniq(_.map(dat, 'Time'));
-    var metrics = Object.keys(metricMapping);
 
+    // Fill in years drop down
     yearSelect.selectAll('option')
         .data(years)
         .enter()
@@ -110,21 +138,16 @@ d3.json('data/cropdata.json', function(err, dat){
         .text(function(d){ return d; })
         .property("selected", function(d){ return +d === year; }); //sets defaults value
 
-    metricSelect.selectAll('option')
-        .data(metrics)
-        .enter()
-        .append('option')
-        .text(function(d){ return d; })
-        .property("selected", function(d){ return d === metric; }); //sets defaults value;
-
     // display plot
     updateData();
 });
 
 function updateData(){
-    // initialize 2 arrays in order to find extrema for this data subset
-    gdp = [];
-    metricArray = [];
+    // initialize arrays in order to find extrema for this data subset
+    ArableLandHectares = []; // for scale
+    LandAreaSqMeters = []; // for scale
+    GDP = [];   // for scale
+    metricArray = []; // for x axis (ghost circles)
 
     // get column name
     m = metricMapping[metric].dataName;
@@ -144,7 +167,9 @@ function updateData(){
 
     // TODO - populate this on full dataset so that we don't change scale with each filtering
     data.forEach(function(d){
-        gdp.push(+d[0].GDP);
+        ArableLandHectares.push(+d[0].ArableLandHectares);
+        LandAreaSqMeters.push(+d[0].LandAreaSqMeters);
+        GDP.push(+d[0].GDP);
         metricArray.push(+d[0][m]);
     });
 
@@ -231,7 +256,8 @@ function drawGhostCircles(){
         .style('opacity', 0.7);
 
     ghostCircles.on('mouseover', function(d) {countryHoverOn(d[0].Country);})
-        .on('mouseout', function(d) {countryHoverOff(d[0].Country);});
+        .on('mouseout', function(d) {countryHoverOff(d[0].Country);})
+        .on('click', onClick);
 
     ghostCirclesData.exit().remove();
     ghostAxis.selectAll('text').remove();
@@ -292,27 +318,32 @@ function drawGhostCircles(){
 }
 
 function scale(){
-    if (scaleSelect.property('checked')){
+    let curScale = scaleMapping[this.innerHTML];
+    console.log(curScale);
 
-        var heightScale = d3.scaleLog()
-            .domain([d3.min(gdp), d3.max(gdp)])
-            .range([10, height]);
-
-        d3.selectAll('.country')
-            .style('height', function(d){return heightScale(d[0].GDP);})
-            .style('top', function (d){ return height - heightScale(d[0].GDP); });
-
-        d3.selectAll('.crop')
-            .style('height', function(d){ return (heightScale(d.GDP) * d.percentOfSubtotal);});
-
-    } else{
-
+    if ((this.innerHTML === scales[scales.length-1]) || (this.innerHTML === undefined)) {
         d3.selectAll('.country')
             .style('height', height)
             .style('top', 0);
 
         d3.selectAll('.crop')
-            .style('height', function(d){ return ((height) * d.percentOfSubtotal); })
+            .style('height', function(d){ return ((height) * d.percentOfSubtotal); });
+    }
+    else{
+        let scaleType = 'scale'+curScale.scaleType;
+        curScale = scaleMapping[this.innerHTML].dataName;
+        console.log(curScale);
+
+        var heightScale = d3[scaleType]()
+            .domain([d3.min(window[curScale]), d3.max(window[curScale])])
+            .range([10, height]);
+
+        d3.selectAll('.country')
+            .style('height', function(d){return heightScale(d[0][curScale]);})
+            .style('top', function (d){ return height - heightScale(d[0][curScale]); });
+
+        d3.selectAll('.crop')
+            .style('height', function(d){ return (heightScale(d[curScale]) * d.percentOfSubtotal);});
     }
 }
 
@@ -337,9 +368,7 @@ function onClick(d, i, nodes){
 
      // otherwise, remove others and plot drilldown
     }else {
-        console.log(d[0].Country);
-
-        d3.select(this)
+        d3.select(`.country.${d[0].Country.replace(/\s/g,'')}`)
             .style('left', '10px');
 
         d3.select(`circle.${d[0].Country.replace(/\s/g, '')}`)
@@ -427,7 +456,7 @@ d3.selection.prototype.moveToFront = function() {
 };
 
 window.addEventListener("resize", function(){
-    setup();
+    getWidthandHeight();
     displayBars();
     drawGhostCircles();
 });

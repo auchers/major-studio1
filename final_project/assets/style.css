@@ -1,6 +1,7 @@
 body{
     font-family: 'Raleway', sans-serif;
     background-color: rgba(185,185,185,0.25);
+    fill: #200b13;
     /*font-family: ProximaNova,sans-serif;*/
     letter-spacing: .5px;
 }
@@ -45,8 +46,11 @@ div.plot{
     opacity: 1;
 }
 
-.countryCode{
-    fill: black;
+button.scale{
+    margin: .5em;
+    border-radius: 0;
+    border-color: #200b13;
+    color: #200b13;
 }
 
 .crop:hover{
@@ -60,7 +64,7 @@ div.plot{
 }
 
 .ghost{
-    fill: lightGray;
+    fill: #aeaeae;
     z-index: 1;
 }
 

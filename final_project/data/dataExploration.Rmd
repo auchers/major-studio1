@@ -9,11 +9,11 @@ library('jsonlite')
 library('readr')
 options(scipen=999)
 
-data <- read.csv('Project 3 Data (1)/33165b1a-c572-4ad1-89ac-6a488a71c0af_Data.csv')
+data <- read.csv('Final Data (2)/922eab52-9d82-4d4b-bfab-1017397b64e7_Data.csv')
 glimpse(data)
 
-meta<- read.csv('Project 3 Prelim Data2 (1)/718a0a51-7e31-4851-bce7-4403cc3e4913_Country - Metadata.csv')
-View(meta)
+meta<- read.csv('Final Data (2)/922eab52-9d82-4d4b-bfab-1017397b64e7_Country - Metadata.csv')
+glimpse(meta)
 ```
 
 ```{r}
@@ -31,7 +31,10 @@ Income.share.held.by.lowest.10...SI.DST.FRST.10.,
 Income.share.held.by.lowest.20...SI.DST.FRST.20.,
 Account..income..poorest.40.....ages.15....ts...WP_time_10.8.,
 GDP..current.US....NY.GDP.MKTP.CD.,
-Population..total..SP.POP.TOTL.
+Population..total..SP.POP.TOTL., 
+Arable.land..hectares...AG.LND.ARBL.HA.,
+Land.area..sq..km...AG.LND.TOTL.K2.,
+GINI.index..World.Bank.estimate...SI.POV.GINI.
 ) %>%
   rename(AgriValuePerWorker = Agriculture.value.added.per.worker..constant.2010.US....EA.PRD.AGRI.KD.,
         RuralPovGap = Rural.poverty.gap.at.national.poverty.lines......SI.POV.RUGP., 
@@ -49,66 +52,15 @@ Population..total..SP.POP.TOTL.
         IncomeShareLowest10 = Income.share.held.by.lowest.10...SI.DST.FRST.10., 
         IncomeShareLowest20 = Income.share.held.by.lowest.20...SI.DST.FRST.20., 
         Population_total = Population..total..SP.POP.TOTL.,
-        GDP = GDP..current.US....NY.GDP.MKTP.CD.
+        GDP = GDP..current.US....NY.GDP.MKTP.CD.,
+        ArableLandHectares = Arable.land..hectares...AG.LND.ARBL.HA.,
+        LandAreaSqMeters = Land.area..sq..km...AG.LND.TOTL.K2.,
+        Gini = GINI.index..World.Bank.estimate...SI.POV.GINI.
         )
 #TODO: add more variabel aliases
 
 glimpse(country_data)
 country_data$Time = as.numeric(country_data$Time)
-```
-
-# Top Crops per Country
-```{r}
-options(scipen=999)
-crops <- read.csv('CpC2.csv')
-# summary(crops)
-crops <- crops[order(crops$Area, crops$Year, -crops$Value, crops$Item),]
-View(crops)
-# grouped_crops <- group_by(crops, crops$Area, crops$Year)
-
-# gets the total number of crops for each country/year
-grouped_summary <- crops %>%
-  group_by(Area, Year) %>%
-  summarise(totalValue = sum(Value, na.rm= TRUE))
-
-# add total column to full data
-merged_crops <- left_join(crops, grouped_summary, by= c("Area", "Year"))
-
-# calculate % of total
-merged_crops$percentOfTotal<- merged_crops$Value/merged_crops$totalValue
-
-# View(grouped_summary)
-View(merged_crops)
-
-top_crops <- merged_crops %>%
-  group_by(Area, Year) %>%
-  filter(row_number() ==1) %>%
-  select(Area, Year, Unit, Value, Item, totalValue, percentOfTotal)
-
-View(top_crops)
-glimpse(top_crops)
-```
-
-blending both datasources together
-```{r}
-# country_data$Time = as.integer(country_data$Time)
-top_crops$Year = as.factor(top_crops$Year)
-
-View(top_crops)
-View(country_data)
-
-final_data <- left_join(country_data, top_crops, by= c ("Country" = "Area", "Time" = "Year"))
-
-View(final_data[final_data$Time >= 2004,])
-
-final_data <- final_data %>% 
-  filter(Time >= 2004) %>%
-  toJSON() %>%
-  write_lines('agdata.json')
-
-
-View(final_data)
-
 ```
 
 getting crop distribution for each country
