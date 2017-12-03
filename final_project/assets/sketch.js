@@ -51,14 +51,10 @@ var width, height, ghostHeight;
 var countries, crops, x;
 
 // set starting values
-var year = 2010,
+var year = 2014,
     metric = 'Worker Productivity',
     m, // current underlying metric
     curScale = 'reset'; // current scale choice
-
-var title = d3.select('.title')
-    .append('h2')
-    .text('Agricultural Crop Profiles of Countries in Sub-Saharan Africa');
 
 // create year dropdown
 var yearSelect = d3.select('.year')
