@@ -65,7 +65,6 @@ var metricSelect = d3.select('.metric')
     .append('select')
     .on('change', onMetricSelect);
 
-//todo: take out once buttons work
 var scaleSelect = d3.select('.scale');
 
 var metrics = Object.keys(metricMapping);
@@ -282,9 +281,10 @@ function drawGhostCircles(){
         .attr('y', textY)
         .text(function(){
             // determine whether the metric comes before or after the value
-            return (metric === 'Worker Productivity') ?
+            let formattedMetric = (metric === 'Worker Productivity') ?
                 metricMapping[metric].unit + Math.round(d3.max(metricArray)) :
-                Math.round(d3.max(metricArray)) + ' ' + metricMapping[metric].unit ;
+                Math.round(d3.max(metricArray)) + ' ' + metricMapping[metric].unit;
+            return formattedMetric;
         });
 
     // mame of metric
@@ -350,7 +350,8 @@ function onClick(d, i, nodes){
     var toRemove = d3.selectAll('.country')
         .filter(function(x){ return d[0].Country != x[0].Country; });
 
-    if (toRemove._groups[0].length === 0){ // bringing the full view back
+
+    if ((toRemove._groups[0].length < 2)){ // bringing the full view back
 
         // first remove svg from previous click drilldowns
         d3.select('.drilldown').remove();
@@ -359,9 +360,10 @@ function onClick(d, i, nodes){
         displayBars();
 
         // remove highlight on ghost dot
-        d3.select(`circle.${d[0].Country.replace(/\s/g, '')}`)
+        d3.selectAll('circle')
             .classed('active', false);
 
+        console.log(d[0].Country);
      // otherwise, remove others and plot drilldown
     }else {
         d3.select(`.country.${d[0].Country.replace(/\s/g,'')}`)

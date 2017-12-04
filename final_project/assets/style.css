@@ -73,7 +73,7 @@ circle.ghost{
 }
 
 .ghost.active, circle.hover{
-    fill: gray;
+    fill: #200b13;
 }
 
 div.tooltip {
