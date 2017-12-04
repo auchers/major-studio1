@@ -23,9 +23,16 @@ text.countryCode{
 }
 
 select{
-    border: none;
     background-color: transparent;
     margin-right: 2em;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    border: 1px solid;
+    padding: 6px;
+    font-size: smaller;
+    color: #200b13;
+
+
 }
 
 #scaleSelect {
@@ -99,6 +106,11 @@ div.tooltip {
     background-image: url('cereal.jpg');
     background-size: 100px;
     transition: height 1000ms;
+}
+
+.drilldownHeader{
+    font-size: 500%;
+    opacity: .7;
 }
 
 .Sugarcane{

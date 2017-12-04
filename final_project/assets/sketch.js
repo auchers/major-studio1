@@ -1,3 +1,6 @@
+//todo: filtering on all values
+//todo: scaling doesn't work on null values
+//todo: keep selected height on resort
 
 var metricMapping = {
     'Worker Productivity': {
@@ -67,10 +70,8 @@ var metricSelect = d3.select('.metric')
 
 var scaleSelect = d3.select('.scale');
 
-var metrics = Object.keys(metricMapping);
-var scales = Object.keys(scaleMapping);
-
 // map metric options to dropdown options
+var metrics = Object.keys(metricMapping);
 metricSelect.selectAll('option')
     .data(metrics)
     .enter()
@@ -79,6 +80,7 @@ metricSelect.selectAll('option')
     .property("selected", function(d){ return d === metric; }); //sets defaults value;
 
 // map scale options to buttons
+var scales = Object.keys(scaleMapping);
 scaleSelect.selectAll('button')
     .data(scales)
     .enter()
@@ -91,14 +93,15 @@ scaleSelect.selectAll('button')
 var plot = d3.select('.plot')
     .append('div')
     .attr('class', 'plot')
-    .style('height','70%')
+    .style('height','65%')
     .style('width', '100%');
 
 var ghostAxis = d3.select('.plot')
     .append('svg')
     .attr('class', 'ghost')
     .style('height','75px')
-    .style('width', '100%');
+    .style('width', '100%')
+    .style('overflow', 'visible');
 
 // create tooltip -- later move it to location of hover
 var tool_tip = d3.select('body')
@@ -220,7 +223,7 @@ function displayBars() {
         .on('mouseout', function (d) { onMouseOut(d);});
 
     cropData.exit().remove();
-    scale();
+    scale(false);
     /* Finish Plotting Bars*/
 }
 
@@ -228,7 +231,7 @@ function drawGhostCircles(){
     /* Begin Plotting Ghost Axis*/
     var r = 7;
     var barPadding = 10; // to make it line up with the bars below
-    let textY = ghostHeight - r;
+    let textY = ghostHeight - 2*r;
 
     // x scale for ghost circles
     let ghostX = d3.scaleLinear()
@@ -294,7 +297,7 @@ function drawGhostCircles(){
         .attr('text-anchor', 'middle')
         .attr('x', width/2)
         .attr('y', textY)
-        .text(`${metric} (${metricMapping[metric].unit_long}) -->`);
+        .text(`${metric} (${metricMapping[metric].unit_long})`);
 
     // put in country name on axis
     var countryCodes = ghostAxis.selectAll('text.countryCode')
@@ -314,9 +317,12 @@ function drawGhostCircles(){
     /* Finish Plotting Ghost Axis*/
 }
 
-function scale(){
+function scale(isReScaled = true){
     // if there is no button push, or it is the same as the previous push, reset the bars
-    curScale = ((curScale === scaleMapping[this.innerHTML]) || (scaleMapping[this.innerHTML] === undefined)) ? 'reset' : scaleMapping[this.innerHTML];
+    if (isReScaled) {
+        curScale = ((curScale === scaleMapping[this.innerHTML]) || (scaleMapping[this.innerHTML] === undefined))
+            ? 'reset' : scaleMapping[this.innerHTML];
+    }
 
     if (curScale === 'reset') { // resetting bars to full height
         d3.selectAll('.country')
@@ -383,7 +389,7 @@ function onClick(d, i, nodes){
             .attr('class', 'drilldownHeader')
             .attr('text-anchor', 'middle')
             .attr('x', (dWidth)/2)
-            .attr('y', '5%')
+            .attr('y', '50%')
             .text(d[0].Country);
 
         toRemove.remove();
