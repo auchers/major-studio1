@@ -151,7 +151,15 @@ function updateData(){
     m = metricMapping[metric].dataName;
 
     // filter the data to the selected year
-    var agDataF = _.filter(agData, function(d){return ((+d.Time === year) && d.hasOwnProperty(m) && !(d[m] === "..") ); });
+    var agDataF = _.filter(agData, function(d){
+        let isFullData = true;
+        // checks to make sure country has data for each metric
+        metrics.forEach(function(curM, i){
+            if (!d[metricMapping[curM].dataName] || d[metricMapping[curM].dataName] === "..") isFullData = false;
+        });
+
+        return ((+d.Time === year) && isFullData);
+    });
 
     // reverse to get the crops in order form smallest to largest %
     agDataF = _.reverse(agDataF);
@@ -318,11 +326,12 @@ function drawGhostCircles(){
 }
 
 function scale(isReScaled = true){
-    // if there is no button push, or it is the same as the previous push, reset the bars
-    if (isReScaled) {
+    if (isReScaled) { // case when a scale button is pushed
+        // if there is no button push, or it is the same as the previous push, reset the bars
         curScale = ((curScale === scaleMapping[this.innerHTML]) || (scaleMapping[this.innerHTML] === undefined))
             ? 'reset' : scaleMapping[this.innerHTML];
     }
+    // otherwise, keep the last scale value (because it is being called from the end of displayBars()
 
     if (curScale === 'reset') { // resetting bars to full height
         d3.selectAll('.country')
