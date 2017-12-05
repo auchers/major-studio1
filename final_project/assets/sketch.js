@@ -29,15 +29,18 @@ var metricMapping = {
 var scaleMapping = {
     "GDP (log)": {
         "dataName": "GDP",
-        "scaleType": "Log"
+        "scaleType": "Log",
+        "description": "[in current US$]"
     },
     "Land Area": {
         "dataName": "LandAreaSqMeters",
-        "scaleType": "Linear"
+        "scaleType": "Linear",
+        'description': "[in sq. meters]"
     },
     "Arable Land": {
         "dataName": "ArableLandHectares",
-        "scaleType": "Linear"
+        "scaleType": "Linear",
+        "description": "[in hectares]"
     }
 };
 
@@ -76,7 +79,6 @@ metricSelect.selectAll('option')
     .text(function(d){ return d; })
     .property("selected", function(d){ return d === metric; }); //sets defaults value;
 
-//todo: keep actie on button push so that people know to reclick to release scale
 // map scale options to buttons
 var scales = Object.keys(scaleMapping);
 scaleSelect.selectAll('button')
@@ -86,6 +88,19 @@ scaleSelect.selectAll('button')
     .attr('class', function(d) { return `btn btn-outline-info scale ${d}`; })
     .html(function(d){ return d; })
     .on('click', scale);
+
+// create hover info on buttons to tell about their metric
+//<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
+// Tooltip with HTML
+// </button>
+
+d3.selectAll('button.scale')
+    .attr('data-toggle', 'tooltip')
+    .attr('data-html', 'true')
+    .attr('data-placement', "top")
+    .attr('title', function(d){
+        return scaleMapping[d].description;
+    });
 
 // create main scatterplot svg
 var plot = d3.select('.plot')
@@ -303,7 +318,13 @@ function drawGhostCircles(){
         .attr('text-anchor', 'middle')
         .attr('x', width/2)
         .attr('y', textY)
-        .text(`${metric} (${metricMapping[metric].unit_long})`);
+        .text(`${metric} (${metricMapping[metric].unit_long})`)
+        // todo: change to make hover work
+        .attr('data-toggle', 'tooltip')
+        .attr('data-html', 'true')
+        .attr('data-placement', "top")
+        .attr('title',metricMapping[metric].description);
+
 
     // put in country name on axis
     var countryCodes = ghostAxis.selectAll('text.countryCode')
@@ -329,6 +350,7 @@ function scale(isReScaled = true){
         curScale = ((curScale === scaleMapping[this.innerHTML]) || (scaleMapping[this.innerHTML] === undefined))
             ? 'reset' : scaleMapping[this.innerHTML];
 
+        //todo: bug with active when clicking on multiple buttons after each other
         // add active class when button is active
         d3.select(this).classed("active", d3.select(this).classed("active") ? false : true);
     }
@@ -485,3 +507,7 @@ window.addEventListener("resize", function(){
     displayBars();
     drawGhostCircles();
 });
+
+// $(function () {
+//     $('[data-toggle="tooltip"]').tooltip()
+// })

@@ -66,6 +66,7 @@ country_data$Time = as.numeric(country_data$Time)
 getting crop distribution for each country
 ```{r}
 crops <- read.csv('CpC2.csv')
+glimpse(crops)
 # summary(crops)
 # crops <- crops[order(crops$Area, crops$Year, crops$Item),]
 # View(crops)
