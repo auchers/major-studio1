@@ -1,7 +1,3 @@
-//todo: filtering on all values
-//todo: scaling doesn't work on null values
-//todo: keep selected height on resort
-
 var metricMapping = {
     'Worker Productivity': {
         "dataName": "AgriValuePerWorker",
@@ -59,6 +55,7 @@ var year = 2014,
     m, // current underlying metric
     curScale = 'reset'; // current scale choice
 
+//todo: add arrows to dropdown
 // create year dropdown
 var yearSelect = d3.select('.year')
     .append('select')
@@ -79,6 +76,7 @@ metricSelect.selectAll('option')
     .text(function(d){ return d; })
     .property("selected", function(d){ return d === metric; }); //sets defaults value;
 
+//todo: keep actie on button push so that people know to reclick to release scale
 // map scale options to buttons
 var scales = Object.keys(scaleMapping);
 scaleSelect.selectAll('button')
@@ -150,9 +148,10 @@ function updateData(){
     // get column name
     m = metricMapping[metric].dataName;
 
-    // filter the data to the selected year
+    // filter the data to the selected year and with all the sorting metrics
     var agDataF = _.filter(agData, function(d){
         let isFullData = true;
+
         // checks to make sure country has data for each metric
         metrics.forEach(function(curM, i){
             if (!d[metricMapping[curM].dataName] || d[metricMapping[curM].dataName] === "..") isFullData = false;
@@ -171,7 +170,6 @@ function updateData(){
     data = _.sortBy(data, function(d){ return + d[0][m]; });
     console.log(data);
 
-    // TODO - populate this on full dataset so that we don't change scale with each filtering
     data.forEach(function(d){
         ArableLandHectares.push(+d[0].ArableLandHectares);
         LandAreaSqMeters.push(+d[0].LandAreaSqMeters);
@@ -330,6 +328,9 @@ function scale(isReScaled = true){
         // if there is no button push, or it is the same as the previous push, reset the bars
         curScale = ((curScale === scaleMapping[this.innerHTML]) || (scaleMapping[this.innerHTML] === undefined))
             ? 'reset' : scaleMapping[this.innerHTML];
+
+        // add active class when button is active
+        d3.select(this).classed("active", d3.select(this).classed("active") ? false : true);
     }
     // otherwise, keep the last scale value (because it is being called from the end of displayBars()
 
@@ -398,8 +399,19 @@ function onClick(d, i, nodes){
             .attr('class', 'drilldownHeader')
             .attr('text-anchor', 'middle')
             .attr('x', (dWidth)/2)
-            .attr('y', '50%')
+            .attr('y', '30%')
             .text(d[0].Country);
+
+        drilldown.append('text')
+            .attr('class', 'drilldownContent')
+            .attr('text-anchor', 'middle')
+            .attr('x', (dWidth)/2)
+            .attr('y', '40%')
+            .html(
+                `GDP: $${d[0].GDP}
+                Gini: ${d[0].Gini}
+                `
+            );
 
         toRemove.remove();
     }
@@ -438,7 +450,7 @@ function onMouseOut(d){
     countryHoverOff(d.Country);
 }
 
-function countryHoverOn (country){
+function countryHoverOn(country){
     return d3.selectAll(`.${country.replace(/\s/g, '')}`)
         .classed('hover', true)
         // .moveToFront();
