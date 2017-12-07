@@ -22,25 +22,43 @@ var metricMapping = {
         "unit": "kg",
         "description": "Fertilizer consumption measures the quantity of plant nutrients used per unit of arable land. Fertilizer products cover nitrogenous, potash, and phosphate fertilizers (including ground rock phosphate). Traditional nutrients--animal and plant manures--are not included. For the purpose of data dissemination, FAO has adopted the concept of a calendar year (January to December). Some countries compile fertilizer data on a calendar year basis, while others are on a split-year basis. Arable land includes land defined by the FAO as land under temporary crops (double-cropped areas are counted once), temporary meadows for mowing or for pasture, land under market or kitchen gardens, and land temporarily fallow. Land abandoned as a result of shifting cultivation is excluded.",
         "source": "Food and Agriculture Organization, electronic files and web site."
+    },
+    'Gini':{
+        "dataName": 'Gini',
+        "fullName": "Income Inequality Coeficient (Gini)",
+        "unit_long": "",
+        "unit": "",
+        "description": "",
+        "source": "UNDP HDI Site"
     }
+
     // 'Income Share of Lowest 20%':'IncomeShareLowest20'
 };
 
 var scaleMapping = {
-    "GDP (log)": {
-        "dataName": "GDP",
+    // "GDP (log)": {
+    //     "dataName": "GDP",
+    //     "scaleType": "Log",
+    //     "description": "[in current US$]"
+    // },
+    // "Land Area": {
+    //     "dataName": "LandAreaSqMeters",
+    //     "scaleType": "Linear",
+    //     'description': "[in sq. meters]"
+    // },
+    "Worker Productivity": {
+        "dataName": "AgriValuePerWorker",
         "scaleType": "Log",
-        "description": "[in current US$]"
+        "description": "[in US$]"
     },
-    "Land Area": {
-        "dataName": "LandAreaSqMeters",
+    'Gini': {
+        "dataName": 'Gini',
         "scaleType": "Linear",
-        'description': "[in sq. meters]"
+        'description': ""
     },
-    "Arable Land": {
-        "dataName": "ArableLandHectares",
-        "scaleType": "Linear",
-        "description": "[in hectares]"
+    'Rural Poverty': {
+        "dataName": 'RuralPovGap',
+        "scaleType": "Linear"
     }
 };
 
@@ -89,10 +107,8 @@ scaleSelect.selectAll('button')
     .html(function(d){ return d; })
     .on('click', scale);
 
-// create hover info on buttons to tell about their metric
-//<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
-// Tooltip with HTML
-// </button>
+// initialize arrays in order to find extrema for this data subset
+scales.forEach(function(d){ scaleMapping[d].data = []; });
 
 d3.selectAll('button.scale')
     .attr('data-toggle', 'tooltip')
@@ -109,7 +125,7 @@ var plot = d3.select('.plot')
     .style('height','65%')
     .style('width', '100%');
 
-var ghostAxis = d3.select('.plot')
+var ghostAxis = d3.select('.svg')
     .append('svg')
     .attr('class', 'ghost')
     .style('height','75px')
@@ -155,9 +171,6 @@ d3.json('data/cropdata.json', function(err, dat){
 
 function updateData(){
     // initialize arrays in order to find extrema for this data subset
-    ArableLandHectares = []; // for scale
-    LandAreaSqMeters = []; // for scale
-    GDP = [];   // for scale
     metricArray = []; // for x axis (ghost circles)
 
     // get column name
@@ -186,9 +199,10 @@ function updateData(){
     console.log(data);
 
     data.forEach(function(d){
-        ArableLandHectares.push(+d[0].ArableLandHectares);
-        LandAreaSqMeters.push(+d[0].LandAreaSqMeters);
-        GDP.push(+d[0].GDP);
+        scales.forEach(function(i){
+            let dataName = scaleMapping[i].dataName;
+            scaleMapping[i].data.push(+d[0][dataName]);
+        });
         metricArray.push(+d[0][m]);
     });
 
@@ -252,12 +266,14 @@ function drawGhostCircles(){
     /* Begin Plotting Ghost Axis*/
     var r = 7;
     var barPadding = 10; // to make it line up with the bars below
-    let textY = ghostHeight - 2*r;
+    let tallTickHeight = 30;
 
     // x scale for ghost circles
     let ghostX = d3.scaleLinear()
         .domain([d3.min(metricArray), d3.max(metricArray)])
         .range([r + barPadding, width - r - barPadding]);
+
+    let axis = d3.axisBottom(ghostX);
 
     var ghostCirclesData = ghostAxis.selectAll('circle')
         .data(data);
@@ -271,7 +287,7 @@ function drawGhostCircles(){
     ghostCircles.transition()
         .duration(2000)
         .attr('cx', function(d){ return ghostX(d[0][m]); })
-        .attr('cy', ghostHeight - 6 * r)
+        .attr('cy', r)
         .attr('r', r)
         .style('opacity', 0.7);
 
@@ -281,43 +297,63 @@ function drawGhostCircles(){
 
     ghostCirclesData.exit().remove();
     ghostAxis.selectAll('text').remove();
+    ghostAxis.selectAll('g').remove();
+
+    // call axis
+    let g = ghostAxis.append('g')
+        .attr('class', 'ghostAxis')
+        .attr("transform", `translate(0, ${3*r})`);
+
+    // g.call(axis);
+
+    // min tick mark
+    let min = g.append('g')
+        .attr('class', 'tick')
+        .attr("transform", `translate(${ghostX.range()[0]-r} ,0)`);
+
+    min.append('line')
+        .attr('y2', tallTickHeight);
 
     // metric minimum label
-    ghostAxis.append('text')
+    min.append('text')
         .attr('class', 'ghostLabel')
         .transition().duration(1000)
-        .attr('x', barPadding)
-        .attr('y', textY)
+        .attr("transform", `translate(5, ${tallTickHeight * .7})`)
         .text(function(){
             // determine whether the metric comes before or after the value
-            let formattedMetric = (metric === 'Worker Productivity') ?
+            return (metric === 'Worker Productivity') ?
                metricMapping[metric].unit + Math.round(d3.min(metricArray)) :
                 Math.round(d3.min(metricArray)) + ' ' + metricMapping[metric].unit ;
-           return formattedMetric;
         });
 
+    // max tick mark
+    let max = g.append('g')
+        .attr('class', 'tick')
+        .attr("transform", `translate(${ghostX.range()[1]+r} ,0)`);
+
+    max.append('line')
+        .attr('y2', tallTickHeight);
+
     // metric maximum label
-    ghostAxis.append('text')
+    max.append('text')
         .attr('class', 'ghostLabel')
         .attr('text-anchor', 'end')
         .transition().duration(1000)
-        .attr('x', width - barPadding)
-        .attr('y', textY)
+        .attr("transform", `translate(-5, ${tallTickHeight * .7})`)
         .text(function(){
             // determine whether the metric comes before or after the value
-            let formattedMetric = (metric === 'Worker Productivity') ?
+            return (metric === 'Worker Productivity') ?
                 metricMapping[metric].unit + Math.round(d3.max(metricArray)) :
                 Math.round(d3.max(metricArray)) + ' ' + metricMapping[metric].unit;
-            return formattedMetric;
         });
 
     // mame of metric
-    ghostAxis.append('text')
+    g.append('text')
         .attr('class', 'ghostLabel')
         .transition().duration(1000)
         .attr('text-anchor', 'middle')
         .attr('x', width/2)
-        .attr('y', textY)
+        .attr('y', tallTickHeight)
         .text(`${metric} (${metricMapping[metric].unit_long})`)
         // todo: change to make hover work
         .attr('data-toggle', 'tooltip')
@@ -368,8 +404,10 @@ function scale(isReScaled = true){
         let scaleType = 'scale'+curScale.scaleType;
         let curData = curScale.dataName; // column name corresponding to the scale choice
 
+        console.log(curScale.data);
+
         var heightScale = d3[scaleType]()
-            .domain([d3.min(window[curData]), d3.max(window[curData])])
+            .domain([d3.min(curScale.data), d3.max(curScale.data)])
             .range([10, height]);
 
         d3.selectAll('.country')

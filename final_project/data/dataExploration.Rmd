@@ -7,6 +7,7 @@ output: html_notebook
 library('dplyr')
 library('jsonlite')
 library('readr')
+library('tidyr')
 options(scipen=999)
 
 data <- read.csv('Final Data (2)/922eab52-9d82-4d4b-bfab-1017397b64e7_Data.csv')
@@ -33,8 +34,8 @@ Account..income..poorest.40.....ages.15....ts...WP_time_10.8.,
 GDP..current.US....NY.GDP.MKTP.CD.,
 Population..total..SP.POP.TOTL., 
 Arable.land..hectares...AG.LND.ARBL.HA.,
-Land.area..sq..km...AG.LND.TOTL.K2.,
-GINI.index..World.Bank.estimate...SI.POV.GINI.
+Land.area..sq..km...AG.LND.TOTL.K2.
+# GINI.index..World.Bank.estimate...SI.POV.GINI.
 ) %>%
   rename(AgriValuePerWorker = Agriculture.value.added.per.worker..constant.2010.US....EA.PRD.AGRI.KD.,
         RuralPovGap = Rural.poverty.gap.at.national.poverty.lines......SI.POV.RUGP., 
@@ -54,13 +55,42 @@ GINI.index..World.Bank.estimate...SI.POV.GINI.
         Population_total = Population..total..SP.POP.TOTL.,
         GDP = GDP..current.US....NY.GDP.MKTP.CD.,
         ArableLandHectares = Arable.land..hectares...AG.LND.ARBL.HA.,
-        LandAreaSqMeters = Land.area..sq..km...AG.LND.TOTL.K2.,
-        Gini = GINI.index..World.Bank.estimate...SI.POV.GINI.
+        LandAreaSqMeters = Land.area..sq..km...AG.LND.TOTL.K2.
+        # Gini = GINI.index..World.Bank.estimate...SI.POV.GINI.
         )
 #TODO: add more variabel aliases
 
 glimpse(country_data)
 country_data$Time = as.numeric(country_data$Time)
+```
+
+adding gini scores
+```{r}
+gini <- read_csv('Income inequality, Gini coefficient.csv', skip = 1)
+gini <- rename(gini, '2010' = 'X2010')
+gini <- rename(gini, '2011' = 'X2011')
+gini <- rename(gini, '2012' = 'X2012')
+gini <- rename(gini, '2013' = 'X2013')
+gini <- rename(gini, '2014' = 'X2014')
+gini <- rename(gini, '2015' = 'X2015')
+head(gini)
+glimpse(gini)
+
+gini_new <- gather(gini,'Time', 'Gini', 3: 13, na.rm = TRUE)
+gini_new$Time = as.numeric(gini_new$Time)
+gini_new$Country = as.character(gini_new$Country)
+gini_new = gini_new %>% select('Country', 'Time', 'Gini')
+
+# head(gini_new)
+
+country_data$Time = as.numeric(country_data$Time)
+country_data$Country = as.character(country_data$Country)
+
+# head(country_data)
+country_data_with_gini <- left_join(country_data, gini_new, by = c("Country", "Time"))
+# View(country_data_with_gini)
+country_data <- country_data_with_gini
+
 ```
 
 getting crop distribution for each country
@@ -104,16 +134,16 @@ merged_top_crops$percentOfSubtotal<- merged_top_crops$Value/merged_top_crops$sub
 
 View(merged_top_crops)
 top_crops$Year = as.factor(top_crops$Year)
-glimpse(top_crops)
+glimpse(merged_top_crops)
 
 glimpse(country_data)
 
 final_crop_data <- right_join(country_data, merged_top_crops, by= c ("Country" = "Area", "Time" = "Year"))
 
-View(final_crop_data[final_crop_data$Time >= 2004,])
+View(final_crop_data[final_crop_data$Time >= 2010,])
 
 final_crop_data <- final_crop_data %>% 
-  filter(Time >= 2004) %>%
+  filter(Time >= 2010) %>%
   toJSON() %>%
   write_lines('cropdata.json')
 

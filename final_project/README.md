@@ -21,3 +21,6 @@ By hovering over a segment, you can see additional information, such as the shar
 - Crop distributions for each country from: 
 
     “FAOSTAT.” Food and Agriculture Organization of the United Nations. Accessed November 7, 2017. http://www.fao.org/faostat/en/#data.
+    
+- Gini Scores for each country from: 
+    “Human Development Data (1990-2015) | Human Development Reports.” Accessed December 5, 2017. http://hdr.undp.org/en/data#.

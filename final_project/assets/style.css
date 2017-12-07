@@ -7,9 +7,14 @@ body{
 }
 
 img{
+    /*width: 2em;*/
     width: 2em;
     height: 2em;
-    display: block;
+    display: inline-block;
+}
+
+p{
+    display: inline-block;
 }
 
 text.countryCode{
@@ -33,18 +38,17 @@ select{
     color: #200b13;
 }
 
-/*div.metric:after {*/
-    /*content: '\f078';*/
-    /*font: normal normal normal 17px/1 FontAwesome;*/
-    /*color: #0ebeff;*/
-    /*right: 11px;*/
-    /*top: 6px;*/
-    /*height: 34px;*/
-    /*padding: 15px 0px 0px 8px;*/
-    /*border-left: 1px solid #0ebeff;*/
-    /*position: absolute;*/
-    /*pointer-events: none;*/
+/*.ghostAxis>path{*/
+    /*display: none;*/
 /*}*/
+
+.ghostAxis{
+    color: #200b13;
+}
+
+.ghostAxis>g>line{
+    stroke: #200b13;
+}
 
 #scaleSelect {
     margin: 0.5rem;
