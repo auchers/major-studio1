@@ -38,9 +38,6 @@ select{
     color: #200b13;
 }
 
-/*.ghostAxis>path{*/
-    /*display: none;*/
-/*}*/
 
 .ghostAxis{
     color: #200b13;
@@ -71,6 +68,16 @@ div.plot{
     opacity: 1;
 }
 
+.countryLabel{
+    transform: rotate(-90deg);
+    transform-origin: left;
+    position: absolute;
+    letter-spacing: normal;
+    font-weight: 400;
+    transition-property: height, left, top, opacity;
+    transition-duration: 1000ms;
+}
+
 button.scale{
     margin: .5em;
     border-radius: 0;
@@ -80,8 +87,8 @@ button.scale{
 }
 
 .crop:hover{
-    border-width: 2px;
-    border-color: rgba(185,185,185,0.25);
+    border-width: 3px;
+    border-color: #fefefe;
     border-style: solid;
 }
 

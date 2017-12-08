@@ -2,7 +2,7 @@ var metricMapping = {
     'Worker Productivity': {
         "dataName": "AgriValuePerWorker",
         "fullName": "Agriculture value added per worker (constant 2010 US$)",
-        "unit_long": "constant 2010 US$",
+        "unit_long": "(constant 2010 US$)",
         "unit": "$",
         "description": "Agriculture value added per worker is a measure of agricultural productivity. Value added in agriculture measures the output of the agricultural sector (ISIC divisions 1-5) less the value of intermediate inputs. Agriculture comprises value added from forestry, hunting, and fishing as well as cultivation of crops and livestock production. Data are in constant 2010 U.S. dollars.",
         "source": "Derived from World Bank national accounts files and Food and Agriculture Organization, Production Yearbook and data files."
@@ -10,7 +10,7 @@ var metricMapping = {
     'Food Deficit': {
         "dataName": "FoodDeficit",
         "fullName": "Depth of the food deficit (kilocalories per person per day)",
-        "unit_long": "kilocalories per person per day",
+        "unit_long": "(kilocalories per person per day)",
         "unit": "kcal",
         "description": "The depth of the food deficit indicates how many calories would be needed to lift the undernourished from their status, everything else being constant. The average intensity of food deprivation of the undernourished, estimated as the difference between the average dietary energy requirement and the average dietary energy consumption of the undernourished population (food-deprived), is multiplied by the number of undernourished to provide an estimate of the total food deficit in the country, which is then normalized by the total population.",
         "source":  "Food and Agriculture Organization, Food Security Statistics."
@@ -18,7 +18,7 @@ var metricMapping = {
     'Fertilizer Consumption': {
         "dataName": 'FertilizerConsumpPerHA',
         "fullName": "Fertilizer consumption (kilograms per hectare of arable land)",
-        "unit_long": "kilograms per hectare of arable land",
+        "unit_long": "(kilograms per hectare of arable land)",
         "unit": "kg",
         "description": "Fertilizer consumption measures the quantity of plant nutrients used per unit of arable land. Fertilizer products cover nitrogenous, potash, and phosphate fertilizers (including ground rock phosphate). Traditional nutrients--animal and plant manures--are not included. For the purpose of data dissemination, FAO has adopted the concept of a calendar year (January to December). Some countries compile fertilizer data on a calendar year basis, while others are on a split-year basis. Arable land includes land defined by the FAO as land under temporary crops (double-cropped areas are counted once), temporary meadows for mowing or for pasture, land under market or kitchen gardens, and land temporarily fallow. Land abandoned as a result of shifting cultivation is excluded.",
         "source": "Food and Agriculture Organization, electronic files and web site."
@@ -55,16 +55,15 @@ var scaleMapping = {
         "dataName": 'Gini',
         "scaleType": "Linear",
         'description': ""
-    },
-    'Rural Poverty': {
-        "dataName": 'RuralPovGap',
-        "scaleType": "Linear"
     }
+    // ,
+    // 'Rural Poverty': {
+    //     "dataName": 'RuralPovGap',
+    //     "scaleType": "Linear"
+    // }
 };
 
-var agData, data, divW, metricArray;
-
-var GDP, LandAreaSqMeters, ArableLandHectares;
+var agData, data, metricArray;
 
 var width, height, ghostHeight;
 
@@ -216,8 +215,6 @@ function displayBars() {
     // for the cases where displayBars is called from a metric change
     d3.select('.drilldown').remove();
 
-    divW = width / (data.length);
-
     x = d3.scaleBand()
         .rangeRound([0, width])
         .paddingInner(0.06)
@@ -354,28 +351,12 @@ function drawGhostCircles(){
         .attr('text-anchor', 'middle')
         .attr('x', width/2)
         .attr('y', tallTickHeight)
-        .text(`${metric} (${metricMapping[metric].unit_long})`)
+        .text(`${metric} ${metricMapping[metric].unit_long}`)
         // todo: change to make hover work
         .attr('data-toggle', 'tooltip')
         .attr('data-html', 'true')
         .attr('data-placement', "top")
         .attr('title',metricMapping[metric].description);
-
-
-    // put in country name on axis
-    var countryCodes = ghostAxis.selectAll('text.countryCode')
-        .data(data);
-
-    countryCodes.enter()
-        .append('text')
-        .merge(countryCodes)
-        .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} countryCode`; })
-        .attr('x', function(d) {return x(d[0].Country); })
-        .attr('y', r * 2)
-        .text(function(d){ return d[0]["Country"]})
-        .attr('opacity', 0);
-
-    countryCodes.exit().remove();
 
     /* Finish Plotting Ghost Axis*/
 }
@@ -388,11 +369,13 @@ function scale(isReScaled = true){
 
         //todo: bug with active when clicking on multiple buttons after each other
         // add active class when button is active
-        d3.select(this).classed("active", d3.select(this).classed("active") ? false : true);
+        // d3.select(this).classed("active", d3.select(this).classed("active") ? false : true);
     }
     // otherwise, keep the last scale value (because it is being called from the end of displayBars()
 
     if (curScale === 'reset') { // resetting bars to full height
+        d3.selectAll('.countryLabel').remove();
+
         d3.selectAll('.country')
             .style('height', height)
             .style('top', 0);
@@ -403,12 +386,12 @@ function scale(isReScaled = true){
     else{ // scaling the bars by the button choice
         let scaleType = 'scale'+curScale.scaleType;
         let curData = curScale.dataName; // column name corresponding to the scale choice
-
-        console.log(curScale.data);
+        let labelDist = 5;
 
         var heightScale = d3[scaleType]()
             .domain([d3.min(curScale.data), d3.max(curScale.data)])
             .range([10, height]);
+
 
         d3.selectAll('.country')
             .style('height', function(d){return heightScale(d[0][curData]);})
@@ -416,7 +399,35 @@ function scale(isReScaled = true){
 
         d3.selectAll('.crop')
             .style('height', function(d){ return (heightScale(d[curData]) * d.percentOfSubtotal);});
+
+        // setTimeout(callCountryLabels();
+
+        // setTimeout(function(){
+            callCountryLabels();
+            d3.selectAll('.countryLabel')
+                .style('bottom', function (d){ return (heightScale(d[0][curData])); });
+        // }, 1000);
+
+
     }
+}
+
+function callCountryLabels(){
+
+    var labelData = plot.selectAll('.countryLabel')
+        .data(data, function (d) { return d[0].Country; });
+
+    countryLabels = labelData.enter()
+        .append('div')
+        .merge(labelData)
+        .attr('class', function (d) { return `${d[0].Country.replace(/\s/g, '')} countryLabel`;})
+        .attr('text-anchor', 'start')
+        .style('left',function(d){ return `${x(d[0].Country) + x.bandwidth()/2}px`;})
+        .style('opacity', 0)
+        .text(function(d){ return d[0].Country; })
+        .style('opacity', 1);
+
+    labelData.exit().remove();
 }
 
 function onClick(d, i, nodes){
@@ -451,7 +462,7 @@ function onClick(d, i, nodes){
         let drilldown = plot.append('svg')
             .attr('class', 'drilldown')
             .attr('height', height)
-            .attr('width', width-divW);
+            .attr('width', width- x.bandwidth());
 
         let dWidth = drilldown.node().getBoundingClientRect().width;
 
@@ -462,16 +473,16 @@ function onClick(d, i, nodes){
             .attr('y', '30%')
             .text(d[0].Country);
 
-        drilldown.append('text')
-            .attr('class', 'drilldownContent')
-            .attr('text-anchor', 'middle')
-            .attr('x', (dWidth)/2)
-            .attr('y', '40%')
-            .html(
-                `GDP: $${d[0].GDP}
-                Gini: ${d[0].Gini}
-                `
-            );
+        // drilldown.append('text')
+        //     .attr('class', 'drilldownContent')
+        //     .attr('text-anchor', 'middle')
+        //     .attr('x', (dWidth)/2)
+        //     .attr('y', '40%')
+        //     .html(
+        //         `GDP: $${d[0].GDP}
+        //         Gini: ${d[0].Gini}
+        //         `
+        //     );
 
         toRemove.remove();
     }
@@ -491,9 +502,11 @@ function onMouseover(d) {
             Math.round(d[m]) + ' ' + metricMapping[metric].unit;
 
         return `<h4>${d.Country}</h4>
-            <p><b>Crop:</b> ${d.Item} (${Math.round(d.percentOfTotal * 100)}% total crops)</p>
-            <p><b>${metric}:</b> ${formattedMetric}</p>
-            <p><b>Year:</b> ${d.Time}</p>`;
+            <div><b>${d.Item} (${Math.round(d.percentOfTotal * 100)}% of total crops)</b></div>
+            <br>
+            <p>${metric}: ${formattedMetric}</p>
+            <br>
+            <p>Gini: ${d.Gini}</p>`;
     })
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
