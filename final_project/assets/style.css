@@ -6,6 +6,28 @@ body{
     letter-spacing: .5px;
 }
 
+.titleContainer{
+    height: 100%;
+    background-color: rgb(237, 237, 237);
+}
+
+.subtitle{
+    column-count: 2;
+    column-gap: 2em;
+}
+
+.stickySentence{
+    position: sticky;
+    text-anchor: middle;
+    top: 25%;
+    left: 50%;
+    background-color: rgb(237, 237, 237);
+    z-index: 3;
+    padding: 1em;
+    text-align: center;
+    opacity: .8;
+}
+
 img{
     /*width: 2em;*/
     width: 2em;
@@ -47,7 +69,7 @@ select{
     stroke: #200b13;
 }
 
-#scaleSelect {
+#scaleSelect, select {
     margin: 0.5rem;
 }
 
@@ -74,8 +96,9 @@ div.plot{
     position: absolute;
     letter-spacing: normal;
     font-weight: 400;
-    transition-property: height, left, top, opacity;
+    transition-property: height, left, bottom, opacity;
     transition-duration: 1000ms;
+    white-space: nowrap;
 }
 
 button.scale{

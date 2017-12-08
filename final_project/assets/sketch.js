@@ -65,7 +65,7 @@ var scaleMapping = {
 
 var agData, data, metricArray;
 
-var width, height, ghostHeight;
+var width, height, fullSVGheight, ghostHeight;
 
 var countries, crops, x;
 
@@ -142,7 +142,8 @@ getWidthandHeight();
 // get svg widths and heights
 function getWidthandHeight(){
     width = plot.node().offsetWidth;
-    height = plot.node().offsetHeight;
+    fullSVGheight = plot.node().offsetHeight;
+    height = fullSVGheight * 0.9;
 
     ghostHeight = ghostAxis.node().getBoundingClientRect().height;
 
@@ -230,6 +231,7 @@ function displayBars() {
         .merge(countryData)
         .attr('class', function (d) { return `${d[0].Country.replace(/\s/g, '')} country`;})
         .style('position', 'absolute')
+        .style('transform', `translate(0px, ${fullSVGheight - height}px)`)
         .style('left',function(d){ return `${x(d[0].Country)}px`;})
         .attr('data-AgriValuePerWorker', function (d) { return d[0].AgriValuePerWorker; })
         .attr('data-FertilizerConsumpPerHA', function (d) {return d[0].FertilizerConsumpPerHA; })
@@ -416,6 +418,7 @@ function callCountryLabels(){
 
     var labelData = plot.selectAll('.countryLabel')
         .data(data, function (d) { return d[0].Country; });
+        // .style('opacity', 0);
 
     countryLabels = labelData.enter()
         .append('div')
@@ -423,7 +426,6 @@ function callCountryLabels(){
         .attr('class', function (d) { return `${d[0].Country.replace(/\s/g, '')} countryLabel`;})
         .attr('text-anchor', 'start')
         .style('left',function(d){ return `${x(d[0].Country) + x.bandwidth()/2}px`;})
-        .style('opacity', 0)
         .text(function(d){ return d[0].Country; })
         .style('opacity', 1);
 
@@ -435,7 +437,7 @@ function onClick(d, i, nodes){
 
     // select all but node selected
     var toRemove = d3.selectAll('.country')
-        .filter(function(x){ return d[0].Country != x[0].Country; });
+        .filter(function(x){ return d[0].Country !== x[0].Country; });
 
 
     if ((toRemove._groups[0].length < 2)){ // bringing the full view back
@@ -453,6 +455,7 @@ function onClick(d, i, nodes){
         console.log(d[0].Country);
      // otherwise, remove others and plot drilldown
     }else {
+        d3.selectAll('.countryLabel').remove();
         d3.select(`.country.${d[0].Country.replace(/\s/g,'')}`)
             .style('left', '10px');
 
