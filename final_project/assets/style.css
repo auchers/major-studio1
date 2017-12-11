@@ -11,7 +11,7 @@ body{
 }
 
 .subtitleContainer{
-    height: 80%;
+    /*height: 80%;*/
 }
 
 .subtitle{
@@ -76,10 +76,21 @@ select{
     margin: 0.5rem;
 }
 
+div.plotContainer{
+    position:relative;
+    height: 600vh;
+}
+
+div.break{
+    height: 80vh;
+}
+
+
 div.plot{
     min-width: 600px;
     max-height: 800px;
-    position: relative;
+    position: sticky;
+    top: 15%;
 }
 
 .country{
@@ -87,7 +98,6 @@ div.plot{
     opacity: .6;
     transition: height 1s, left 2s, top 1s;
     /*transition-duration: 1500ms;*/
-    /*todo: figure out how to make transition smoother*/
 }
 
 .country:hover, .hover{
