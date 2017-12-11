@@ -28,7 +28,30 @@ body{
     z-index: 3;
     padding: 1em;
     text-align: center;
+    visibility: collapse;
+    opacity: 0;
+}
+
+.stickySentence.active{
+    visibility: visible;
     opacity: .8;
+    transition: opacity 2s;
+}
+
+div.plotContainer{
+    position:relative;
+    height: 600vh;
+}
+
+div.break{
+    height: 80vh;
+}
+
+div.plot{
+    min-width: 600px;
+    max-height: 800px;
+    position: sticky;
+    top: 23%;
 }
 
 img{
@@ -76,22 +99,7 @@ select{
     margin: 0.5rem;
 }
 
-div.plotContainer{
-    position:relative;
-    height: 600vh;
-}
 
-div.break{
-    height: 80vh;
-}
-
-
-div.plot{
-    min-width: 600px;
-    max-height: 800px;
-    position: sticky;
-    top: 15%;
-}
 
 .country{
     display: inline-block;

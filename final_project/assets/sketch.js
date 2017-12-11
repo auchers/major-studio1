@@ -86,7 +86,7 @@ d3.selectAll('button.scale')
 var plot = d3.select('.plotContainer')
     .append('div')
     .attr('class', 'plot')
-    .style('height','65vh')
+    .style('height','75vh')
     .style('width', '100%');
 
 var ghostAxis = d3.select('.svg')
