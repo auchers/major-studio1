@@ -473,27 +473,53 @@ function countryHoverOff(country){
 
 
 body.on("mousewheel", function() {
-        newScrollTop = body.node().scrollTop;
-        console.log(newScrollTop / WINDOW_HEIGHT);
+        newScrollTop = body.node().scrollTop / WINDOW_HEIGHT;
+        console.log(newScrollTop);
     });
 
-// var render = function() {
-//     if (scrollTop !== newScrollTop) {
-//         scrollTop = newScrollTop;
-//
-//         var hourHandRotate = hourHandRotation(scrollTop)
-//         hourLayer.attr('transform', translate + ' rotate(' + hourHandRotate + ')')
-//
-//         var minuteHandRotate = minuteHandRotation(scrollTop)
-//         minuteLayer.attr('transform', translate + ' rotate(' + minuteHandRotate + ')')
-//
-//         currentScrollTop.text(scrollTop)
-//     }
-//
-//     window.requestAnimationFrame(render)
-// };
-//
-// window.requestAnimationFrame(render);
+// var phase = 0;
+// TODO set beginning of scales
+
+var render = function() {
+    if (scrollTop !== newScrollTop) {
+        scrollTop = newScrollTop;
+
+        if (scrollTop < 2){ // PHASE 1: Full bars based on crop subtotals
+            d3.selectAll('.stickySentence').classed('active', false);
+
+            // set headline to phase 1 explanation midway through full scroll length
+            (scrollTop < 0.5)? d3.select(`.stickySentence.phase0`).classed('active', true):
+                d3.select(`.stickySentence.phase1`).classed('active', true);
+
+            // set crop heights to subtotals
+        }
+        else if (scrollTop >= 2 && scrollTop < 3){ // PHASE 2: Full bars based on crop totals
+            d3.selectAll('.stickySentence').classed('active', false);
+            d3.select(`.stickySentence.phase2`).classed('active', true);
+
+            // set crop heights (other than other) to subtotals * crop transition scale
+            // set other to transition crop scale
+        }
+        else if (scrollTop >= 3 && scrollTop < 4){ // PHASE 3: Bars rescaled to worker productivity
+            d3.selectAll('.stickySentence').classed('active', false);
+            d3.select(`.stickySentence.phase3`).classed('active', true);
+
+            // set country bar max to max times productivity transition scale
+            // set crops to % of totals of new (scaled) max
+
+        }
+        else if (scrollTop >= 4 ){ // PHASE 4: exploration phase
+            d3.selectAll('.stickySentence').classed('active', false);
+            d3.select(`.stickySentence.phase4`).classed('active', true);
+
+            // go to default interactive sort
+        }
+    }
+
+    window.requestAnimationFrame(render)
+};
+
+window.requestAnimationFrame(render);
 
 window.addEventListener("resize", function(){
     getWidthandHeight();
