@@ -16,9 +16,9 @@ body{
     /*height: 80%;*/
 }
 
-.subtitle{
+.subtitle>p{
     column-count: 2;
-    column-gap: 2em;
+    /*column-gap: 2em;*/
 }
 
 .stickySentence{
@@ -28,21 +28,27 @@ body{
     left: 50%;
     background-color: rgb(237, 237, 237);
     z-index: 3;
-    padding: 1em;
     text-align: center;
     visibility: collapse;
+    height: 0;
     opacity: 0;
 }
 
 .stickySentence.active{
+    height: auto;
+    padding: 1em;
     visibility: visible;
     opacity: .8;
     transition: opacity 2s;
 }
 
+h4.stickySentence{
+    top: 7%;
+}
+
 div.plotContainer{
     position:relative;
-    height: 500vh;
+    height: 600vh;
 }
 
 div.break{
@@ -65,6 +71,19 @@ img{
 
 p{
     display: inline-block;
+    letter-spacing: normal;
+}
+
+a{
+    color: #17a2b8;
+}
+
+.introHover:hover{
+    font-weight: bolder;
+}
+
+.sourcesInfo{
+    text-align: right;
 }
 
 text.countryCode{
@@ -100,8 +119,6 @@ select{
 #scaleSelect, select {
     margin: 0.5rem;
 }
-
-
 
 .country{
     display: inline-block;

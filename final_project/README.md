@@ -10,17 +10,17 @@ By hovering over a segment, you can see additional information, such as the shar
 
 ### References
 
-- Research and Motiviation for this projext: 
+- Research and Motivation for this project: 
     
     Odusola, Ayodele, Giovanni Andrea Cornia, Haroon Bhorat, and Pedro Conceição, eds. _Income Inequality Trends in Sub-Saharan Africa: Divergence, Determinants and Consequences._ New York: United Nations Development Programme, 2017. africa.undp.org.
 
-- Metrics on human welfare and development from: 
+- Metrics on Human Welfare and Development from: 
     
     “DataBank | The World Bank.” Accessed November 7, 2017. __http://databank.worldbank.org/data/home.aspx.__
 
-- Crop distributions for each country from: 
+- Crop distributions from: 
 
     “FAOSTAT.” Food and Agriculture Organization of the United Nations. Accessed November 7, 2017. http://www.fao.org/faostat/en/#data.
     
-- Gini Scores for each country from: 
+- Gini Scores from: 
     “Human Development Data (1990-2015) | Human Development Reports.” Accessed December 5, 2017. http://hdr.undp.org/en/data#.

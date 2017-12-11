@@ -13,7 +13,7 @@ var scaleMapping ={
         "source": "Derived from World Bank national accounts files and Food and Agriculture Organization, Production Yearbook and data files."
     },
     'Gini': {
-        "dataName": 'avgGini',
+        "dataName": 'Gini',
         "scaleType": "Linear",
         'description': "",
         "unit_long": "",
@@ -159,6 +159,7 @@ function updateData(){
     });
 
     // create scale for each metric
+    // todo: reverse gini scale
     scales.forEach(function(i){
         let scaleType = 'scale'+scaleMapping[i].scaleType;
         scaleMapping[i].scale = d3[scaleType]()
@@ -327,13 +328,17 @@ function scale(){
             .style('height', fullSVGheight)
             .style('top', 0);
 
-        d3.selectAll('.crop')
-            .style('height', function(d){ return ((fullSVGheight) * d.percentOfTotal); });
+        if (scrollTop < phases["phase1"].end){
+            d3.selectAll('.crop')
+                .style('height', function(d){ return ((fullSVGheight) * d.percentOfSubtotal); });
+        } else {
+            d3.selectAll('.crop')
+                .style('height', function(d){ return ((fullSVGheight) * d.percentOfTotal); });
+        }
+
     }
     else{ // scaling the bars by the button choice
         let curData = curScale.dataName; // column name corresponding to the scale choice
-        // let labelDist = 5;
-
         let heightScale = curScale.scale;
 
         d3.selectAll('.country')
@@ -487,15 +492,17 @@ body.on("mousewheel", function() {
 
 var phases = {
     "phase0": {"start": 0, "end": 0.5},
-    "phase1": {"start": 0.5, "end": 2},
-    "phase2": {"start": 2, "end": 3},
-    "phase3": {"start": 3, "end": 4},
-    "phase4": {"start": 4, "end": 5}
+    "phase1": {"start": 0.5, "end": 1.5},
+    "phase2": {"start": 1.5, "end": 2.5},
+    "phase3": {"start": 3.5, "end": 4.5},
+    "phase4": {"start": 4.5, "end": 5}
 };
 
+// subsections change
 var cropTransitionScale = d3.scaleLinear()
     .domain([phases["phase2"].start, phases["phase2"].end]);
 
+// full bars change
 var countryTransitionScale = d3.scaleLinear()
     .domain([phases["phase3"].start, phases["phase3"].end]);
 
@@ -503,13 +510,18 @@ var render = function() {
     if (scrollTop !== newScrollTop) {
         scrollTop = newScrollTop;
 
+        tool_tip
+            .style('opacity', 0);
+
         // PHASE 1: Full bars based on crop subtotals
         if (scrollTop < phases["phase1"].end){
             d3.selectAll('.stickySentence').classed('active', false);
 
             // set headline to phase 1 explanation midway through full scroll length
-            (scrollTop < phases["phase0"].end)? d3.select(`.stickySentence.phase0`).classed('active', true):
-                d3.select(`.stickySentence.phase1`).classed('active', true);
+            (scrollTop < phases["phase0"].end)? d3.selectAll(`.stickySentence.phase0`).classed('active', true):
+                d3.selectAll(`.stickySentence.phase1`).classed('active', true);
+
+            d3.selectAll('.countryLabel').remove();
 
             d3.selectAll('.country')
                 .style('transform', `translate(0px, 0px)`)
@@ -528,7 +540,9 @@ var render = function() {
         // PHASE 2: Full bars based on crop totals
         else if (scrollTop >= phases["phase2"].start && scrollTop < phases["phase2"].end){
             d3.selectAll('.stickySentence').classed('active', false);
-            d3.select(`.stickySentence.phase2`).classed('active', true);
+            d3.selectAll(`.stickySentence.phase2`).classed('active', true);
+
+            d3.selectAll('.countryLabel').remove();
 
             // set crop heights (other than other) to subtotals * crop transition scale
             // set other to transition crop scale
@@ -558,47 +572,57 @@ var render = function() {
         // PHASE 3: Bars rescaled to worker productivity
         else if (scrollTop >= phases["phase3"].start && scrollTop < phases["phase3"].end){
             d3.selectAll('.stickySentence').classed('active', false);
-            d3.select(`.stickySentence.phase3`).classed('active', true);
+            d3.selectAll(`.stickySentence.phase3`).classed('active', true);
 
             // set country bar max to max times productivity transition scale
             // set crops to % of totals of new (scaled) max
-            let heightScale = scaleMapping['Worker Productivity'].scale;
+            let heightScale = scaleMapping[metric].scale;
+            let curData = scaleMapping[metric].dataName; // column name corresponding to the scale choice
+            // let heightScale = curScale.scale;
 
             d3.selectAll('.country')
                 .style('height', function(d){
                     // set range for scroll triggered transition
                     countryTransitionScale
-                        .range([1, d[0].AgriValuePerWorker / heightScale.domain()[1]]);
+                        .range([1, d[0][curData] / heightScale.domain()[1]]);
 
                     return plotHeight * countryTransitionScale(scrollTop);
                 })
                 .style('top', function (d){
                     // set range for scroll triggered transition
                     countryTransitionScale
-                        .range([1, d[0].AgriValuePerWorker / heightScale.domain()[1]]);
+                        .range([1, d[0][curData] / heightScale.domain()[1]]);
 
-                    return fullSVGheight - (plotHeight * countryTransitionScale(scrollTop));
+                    return fullSVGheight - ((plotHeight+10) * countryTransitionScale(scrollTop));
+                    // plotHeight + 10 because need to account for original heightScale range that sets the min at 10
                 });
 
             d3.selectAll('.crop')
                 .style('height', function(d){
                     countryTransitionScale
-                        .range([1, d.AgriValuePerWorker / heightScale.domain()[1]]);
+                        .range([1, d[curData] / heightScale.domain()[1]]);
+
                     return plotHeight * countryTransitionScale(scrollTop) * d.percentOfTotal;
                 });
 
-            // callCountryLabels();
-            // d3.selectAll('.countryLabel')
-            //     .style('bottom', function (d){ return (heightScale(d[0][curData])); });
+            callCountryLabels();
+            d3.selectAll('.countryLabel')
+                .style('bottom', function (d){ return (heightScale(d[0][curData])); })
+                .style('opacity', function(d){
+                    countryTransitionScale
+                        .range([0, 1]);
 
-
+                    return countryTransitionScale(scrollTop);
+                });
         }
 
         // PHASE 4: exploration phase
         else if (scrollTop >= phases["phase4"].start ){
             d3.selectAll('.stickySentence').classed('active', false);
-            d3.select(`.stickySentence.phase4`).classed('active', true);
+            d3.selectAll(`.stickySentence.phase4`).classed('active', true);
 
+            curScale = scaleMapping[metric];
+            scale();
             // go to default interactive sort
         }
     }
