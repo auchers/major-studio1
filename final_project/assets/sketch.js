@@ -27,17 +27,32 @@ var scaleMapping ={
 
 };
 
+var WINDOW_HEIGHT;
+
 var agData, data;
 
-var width, height, fullSVGheight, ghostHeight;
+var width, plotHeight, fullSVGheight, ghostHeight;
 
 var countries, crops, x;
+
+var scrollTop = 0,
+    newScrollTop = 0;
 
 // set starting values
 var year = 2014,
     metric = 'Worker Productivity',
     m = scaleMapping[metric].dataName, // current underlying metric
     curScale = 'reset'; // current scale choice
+
+var plotContainer = d3.select('.plotContainer');
+var body = d3.select('body');
+
+// create main scatterplot svg
+var plot = plotContainer
+    .append('div')
+    .attr('class', 'plot')
+    .style('height','70vh')
+    .style('width', '100%');
 
 var scaleSelect = d3.select('.scale');
 
@@ -82,12 +97,6 @@ d3.selectAll('button.scale')
         return scaleMapping[d].description;
     });
 
-// create main scatterplot svg
-var plot = d3.select('.plotContainer')
-    .append('div')
-    .attr('class', 'plot')
-    .style('height','75vh')
-    .style('width', '100%');
 
 var ghostAxis = d3.select('.svg')
     .append('svg')
@@ -106,13 +115,21 @@ getWidthandHeight();
 
 // get svg widths and heights
 function getWidthandHeight(){
+    // window dimensions for scroll calculations
+    // WINDOW_WIDTH = window.innerWidth / 2;
+    WINDOW_HEIGHT = window.innerHeight;
+    // SCROLL_LENGTH = content.node().getBoundingClientRect().height - HEIGHT
+
+    // plot dimensions
     width = plot.node().offsetWidth;
     fullSVGheight = plot.node().offsetHeight;
-    height = fullSVGheight * 0.9;
+    plotHeight = fullSVGheight * 0.8; //todo use this to change the height of the scaled bars by more
 
     ghostHeight = ghostAxis.node().getBoundingClientRect().height;
 
-    console.log(`width: ${width} height: ${height} ghostHeight: ${ghostHeight}`);
+    console.log(`width: ${width} plotHeight: ${plotHeight} ghostHeight: ${ghostHeight}`);
+
+    //TODO: set range of scroll height scales
 }
 
 // get data
@@ -167,7 +184,6 @@ function displayBars() {
         .merge(countryData)
         .attr('class', function (d) { return `${d[0].Country.replace(/\s/g, '')} country`;})
         .style('position', 'absolute')
-        .style('transform', `translate(0px, ${fullSVGheight - height}px)`)
         .style('left',function(d){ return `${x(d[0].Country)}px`;})
         .attr('data-AgriValuePerWorker', function (d) { return d[0].AgriValuePerWorker; })
         .attr('data-FertilizerConsumpPerHA', function (d) {return d[0].FertilizerConsumpPerHA; })
@@ -295,11 +311,12 @@ function scale(){
         d3.selectAll('.countryLabel').remove();
 
         d3.selectAll('.country')
-            .style('height', height)
+            .style('transform', `translate(0px, 0px)`)
+            .style('height', fullSVGheight)
             .style('top', 0);
 
         d3.selectAll('.crop')
-            .style('height', function(d){ return ((height) * d.percentOfTotal); });
+            .style('height', function(d){ return ((fullSVGheight) * d.percentOfTotal); });
     }
     else{ // scaling the bars by the button choice
         let scaleType = 'scale'+curScale.scaleType;
@@ -308,12 +325,13 @@ function scale(){
 
         let heightScale = d3[scaleType]()
             .domain([d3.min(curScale.data), d3.max(curScale.data)])
-            .range([10, height]);
+            .range([10, plotHeight]);
 
 
         d3.selectAll('.country')
+            .style('transform', `translate(0px, ${fullSVGheight - plotHeight}px)`)
             .style('height', function(d){return heightScale(d[0][curData]);})
-            .style('top', function (d){ return height - heightScale(d[0][curData]); });
+            .style('top', function (d){ return plotHeight - heightScale(d[0][curData]); });
 
         d3.selectAll('.crop')
             .style('height', function(d){ return (heightScale(d[curData]) * d.percentOfTotal);});
@@ -378,7 +396,7 @@ function onClick(d, i, nodes){
 
         let drilldown = plot.append('svg')
             .attr('class', 'drilldown')
-            .attr('height', height)
+            .attr('height', fullSVGheight)
             .attr('width', width- x.bandwidth());
 
         let dWidth = drilldown.node().getBoundingClientRect().width;
@@ -454,14 +472,37 @@ function countryHoverOff(country){
 }
 
 
-d3.selection.prototype.moveToFront = function() {
-    return this.each(function(){
-        this.parentNode.appendChild(this);
+body.on("mousewheel", function() {
+        newScrollTop = body.node().scrollTop;
+        console.log(newScrollTop / WINDOW_HEIGHT);
     });
-};
+
+// var render = function() {
+//     if (scrollTop !== newScrollTop) {
+//         scrollTop = newScrollTop;
+//
+//         var hourHandRotate = hourHandRotation(scrollTop)
+//         hourLayer.attr('transform', translate + ' rotate(' + hourHandRotate + ')')
+//
+//         var minuteHandRotate = minuteHandRotation(scrollTop)
+//         minuteLayer.attr('transform', translate + ' rotate(' + minuteHandRotate + ')')
+//
+//         currentScrollTop.text(scrollTop)
+//     }
+//
+//     window.requestAnimationFrame(render)
+// };
+//
+// window.requestAnimationFrame(render);
 
 window.addEventListener("resize", function(){
     getWidthandHeight();
     displayBars();
     drawGhostCircles();
 });
+
+d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+        this.parentNode.appendChild(this);
+    });
+};

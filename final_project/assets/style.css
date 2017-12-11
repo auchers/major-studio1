@@ -4,6 +4,8 @@ body{
     fill: #200b13;
     /*font-family: ProximaNova,sans-serif;*/
     letter-spacing: .5px;
+    height: 100vh;
+    overflow: scroll;
 }
 
 .titleContainer{
