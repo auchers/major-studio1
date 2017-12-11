@@ -7,8 +7,11 @@ body{
 }
 
 .titleContainer{
-    height: 100%;
     background-color: rgb(237, 237, 237);
+}
+
+.subtitleContainer{
+    height: 80%;
 }
 
 .subtitle{
@@ -19,7 +22,7 @@ body{
 .stickySentence{
     position: sticky;
     text-anchor: middle;
-    top: 25%;
+    top: 5%;
     left: 50%;
     background-color: rgb(237, 237, 237);
     z-index: 3;
@@ -82,8 +85,9 @@ div.plot{
 .country{
     display: inline-block;
     opacity: .6;
-    transition-property: height, left, top;
-    transition-duration: 1000ms;
+    transition: height 1s, left 2s, top 1s;
+    /*transition-duration: 1500ms;*/
+    /*todo: figure out how to make transition smoother*/
 }
 
 .country:hover, .hover{
@@ -96,8 +100,7 @@ div.plot{
     position: absolute;
     letter-spacing: normal;
     font-weight: 400;
-    transition-property: height, left, bottom, opacity;
-    transition-duration: 1000ms;
+    transition: height 1s, left 2s, bottom 1s, opacity 2s;
     white-space: nowrap;
 }
 
@@ -295,4 +298,10 @@ div.tooltip {
 .Rubber {
     background-image: url('rubber.jpg');
     background-size: 200px;
+}
+
+.crop.Other{
+    background-color: rgba(133, 133, 133, 0.44);
+    background-image: none;
+
 }
