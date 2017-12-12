@@ -516,62 +516,83 @@ function formatNumbers(n, unit = metric){
     return (unit === 'Worker Productivity')? formatter.format(n): Math.round(n) + ' ' + scaleMapping[unit].unit;
 }
 
-body.on("mousewheel", function() {
-        newScrollTop = body.node().scrollTop / WINDOW_HEIGHT;
-    });
+/// SCROLLING BEHAVIOR DEFINED BELOW////
 
 var phases = {
     "phase0": {
         "start": 0,
-        "end": 0.5,
+        "end": 1 * WINDOW_HEIGHT,
         "text1": "Scroll Down to Explore the Data"
     },
     "phase1": {
-        "start": 0.5,
-        "end": 1.5,
+        "start": 1 * WINDOW_HEIGHT,
+        "end": 2.5 * WINDOW_HEIGHT,
         "text1": "Top 5 Crops Distribution",
         "text2": "Each vertical bar depicts 1 country in sub-Saharan Africa. The images composing the bar represent the distribution of that country's top 5 crops (by yield)."
     },
     "phase2": {
-        "start": 1.5,
-        "end": 3,
+        "start": 2.5 * WINDOW_HEIGHT,
+        "end": 4 * WINDOW_HEIGHT,
         "text1": "Top 5 Crops Out of All Crops Distribution",
         "text2": "The original top 5 crops are now rescaled to show their proportion out of total crops. Remaining 'other' crops are shown in gray."
     },
     "phase3": {
-        "start": 4,
-        "end": 5.5,
+        "start": 4 * WINDOW_HEIGHT,
+        "end": 5.5 * WINDOW_HEIGHT,
         "text1": "Scaled by Worker Productivity",
         "text2": "Each bar is now rescaled according to that country's agriculture value added per worker."
     },
     "phase4": {
-        "start": 6.5,
-        "end": 7,
+        "start": 5.5 * WINDOW_HEIGHT,
+        "end": 7 * WINDOW_HEIGHT,
         "text1": "Explore Other Indicators",
         "text2": "Click on the buttons below to see the countries shuffle into a new order. The circles underneath give a sense for the distribution of the selected metric"
     }
 };
-
+let i = 0
 for (p in phases){
     phases[p].scale = d3.scaleLinear()
         .domain([phases[p].start, phases[p].end]);
+
+    d3.select('body')
+        .append('a')
+        .attr('id', p)
+        .attr('class', 'snap')
+        .style('position', 'absolute')
+        // .text(p)
+        .style('top', function(){
+            // phase 4 stops to early to allow view of all the metrics and distributions
+            return (p === 'phase4')? phases[p].end + 100 : phases[p].end;
+        });
+
+    var nextButton = plotContainer
+        .append('button')
+        .attr('class', 'navButton phase'+i)
+        .text('Next')
+        .attr('href', '#phase'+ (i+1))
+        .style('visibility','hidden');
+
+    i++;
 }
 
 var render = function() {
+    newScrollTop = window.scrollY;
     if (scrollTop !== newScrollTop) {
         scrollTop = newScrollTop;
+
+        console.log(scrollTop / WINDOW_HEIGHT, scrollTop);
 
         tool_tip
             .style('opacity', 0);
 
         // PHASE 0: Just set text instructions for scroll
         if (scrollTop < phases["phase0"].end){
-            changeTransitionHeader('phase0');
+            changeTransitionHeader(0);
         }
 
         // PHASE 1: Full bars based on crop subtotals
         else if (scrollTop < phases["phase1"].end){
-            changeTransitionHeader('phase1');
+            changeTransitionHeader(1);
 
             d3.selectAll('.countryLabel').remove();
 
@@ -591,7 +612,7 @@ var render = function() {
 
         // PHASE 2: Full bars based on crop totals
         else if (scrollTop >= phases["phase2"].start && scrollTop < phases["phase2"].end){
-            changeTransitionHeader('phase2');
+            changeTransitionHeader(2);
             let tScale = phases['phase2'].scale;
 
             d3.selectAll('.countryLabel').remove();
@@ -623,7 +644,7 @@ var render = function() {
 
         // PHASE 3: Bars rescaled to worker productivity
         else if (scrollTop >= phases["phase3"].start && scrollTop < phases["phase3"].end){
-            changeTransitionHeader('phase3');
+            changeTransitionHeader(3);
             let tScale = phases['phase3'].scale;
 
             // set country bar max to max times productivity transition scale
@@ -670,7 +691,7 @@ var render = function() {
 
         // PHASE 4: exploration phase
         else if (scrollTop >= phases["phase4"].start ){
-            changeTransitionHeader('phase4');
+            changeTransitionHeader(4);
 
             curScale = scaleMapping[metric];
             scale();
@@ -681,22 +702,32 @@ var render = function() {
     window.requestAnimationFrame(render)
 };
 
-function changeTransitionHeader(phase){
-    let tScale = phases[phase].scale
+function changeTransitionHeader(n){
+    let tScale = phases['phase'+n].scale
         .range([0, 1]);
 
-    let phaseMiddle = (phases[phase].start + phases[phase].end)/2;
-
-    if (phase === 'phase0') tScale.range([1,0]);
+    if (n === 0) tScale.range([1,0]);
 
     d3.selectAll(`h3.stickySentence`)
-        .text(phases[phase].text1)
+        .text(phases['phase'+n].text1)
         .style('opacity', function(){return tScale(scrollTop); });
 
-    d3.selectAll('.transitionSubheader')
-        .text(function(){ return (phases[phase].text2) ? phases[phase].text2 : '';})
-        .style('opacity', function(){ return tScale(scrollTop); })
-        .style('top', phaseMiddle * WINDOW_HEIGHT);
+    // SET NEXT BUTTON
+    d3.selectAll('.navButton').style('visibility', 'hidden');
+     if (n !== 4) {
+        d3.select('.navButton.phase'+n)
+            .style('visibility', 'visible')
+    };
+
+    let phaseMiddle = (phases['phase'+n].start + phases['phase'+n].end)/2;
+    let topDist = .2;
+// todo come back to subheader
+    // d3.selectAll('.transitionSubheader')
+    //     .text(function(){ return (phases[phase].text2) ? phases[phase].text2 : '';})
+    //     .style('opacity', function(){ return tScale(scrollTop); })
+    //     .style('top', function(){
+    //         return ((scrollTop > phases[phase].start - topDist)? scrollTop + topDist : phases[phase].start)+ 'px';
+    //     });
 
 }
 
@@ -713,3 +744,16 @@ d3.selection.prototype.moveToFront = function() {
         this.parentNode.appendChild(this);
     });
 };
+
+function scrollNav() {
+    $('.navButton').click(function(){
+        //Animate
+        $('html, body').stop().animate({
+            scrollTop: $( $(this).attr('href') ).offset().top - 10
+        }, 600);
+        render();
+        return false;
+    });
+    // $('.scrollTop a').scrollTop();
+}
+scrollNav();

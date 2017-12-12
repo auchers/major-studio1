@@ -147,6 +147,13 @@ button.scale{
     font-size: smaller;
 }
 
+.navButton{
+    position: sticky;
+    top: 95%;
+    left: 50%;
+    /*z-index: -10;*/
+}
+
 .crop:hover{
     border-width: 3px;
     border-color: #fefefe;
