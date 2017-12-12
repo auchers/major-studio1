@@ -15,6 +15,7 @@ var scaleMapping ={
     'Gini': {
         "dataName": 'Gini',
         "scaleType": "Linear",
+        "fullName": "Gini Coefficient",
         'description': "",
         "unit_long": "",
         "unit": "",
@@ -175,18 +176,14 @@ function updateData(){
         scaleMapping[i].scale = d3[scaleType]()
             .domain([d3.min(scaleMapping[i].data), d3.max(scaleMapping[i].data)])
             .range([10, plotHeight]);
-
-        if (i === "Gini"){
-            scaleMapping[i].scale
-                .domain([d3.max(scaleMapping[i].data), d3.min(scaleMapping[i].data)])
-        }
     });
 
     // group by country
     data = _.groupBy(agDataF, function(d){ return d.Country; });
 
     // to get countries in ascending order of metric
-    data = _.sortBy(data, function(d){ return + d[0][m]; });
+    data = _.sortBy(data, function(d){
+        return (metric === "Gini")? -d[0][m]: +d[0][m]; }); // reverse scale for gini
     console.log(data);
 
     displayBars();
@@ -253,6 +250,9 @@ function drawGhostCircles(){
         .domain([d3.min(scaleMapping[metric].data), d3.max(scaleMapping[metric].data)])
         .range([r + barPadding, width - r - barPadding]);
 
+    // todo fix this more elegantly
+    if (metric === 'Gini') ghostX.domain([d3.max(scaleMapping[metric].data), d3.min(scaleMapping[metric].data)]);
+
     var ghostCirclesData = ghostAxis.selectAll('circle')
         .data(data);
 
@@ -265,7 +265,7 @@ function drawGhostCircles(){
     ghostCircles.transition()
         .duration(2000)
         .attr('cx', function(d){ return ghostX(d[0][m]); })
-        .attr('cy', r)
+        .attr('cy', 2*r)
         .attr('r', r)
         .style('opacity', 0.7);
 
@@ -273,14 +273,30 @@ function drawGhostCircles(){
         .on('mouseout', function(d) {countryHoverOff(d[0].Country);})
         .on('click', onClick);
 
+    var textLabelsData = ghostAxis.selectAll('text.label')
+        .data(data);
+
+    var textLabels = textLabelsData.enter()
+        .append('text')
+        .merge(textLabelsData)
+        .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} label`; })
+        .text(function(d){ return d[0][m]});
+
+    textLabels.transition()
+        .duration(2000)
+        .attr('x', function(d){ return ghostX(d[0][m]); })
+        .attr('y', 0)
+        .style('opacity', 0.7);
+
     ghostCirclesData.exit().remove();
+    textLabelsData.exit().remove();
     ghostAxis.selectAll('text').remove();
     ghostAxis.selectAll('g').remove();
 
     // call axis
     let g = ghostAxis.append('g')
         .attr('class', 'ghostAxis')
-        .attr("transform", `translate(0, ${3*r})`);
+        .attr("transform", `translate(0, ${4*r})`);
 
     // min tick mark
     let min = g.append('g')
@@ -298,8 +314,8 @@ function drawGhostCircles(){
         .text(function(){
             // determine whether the metric comes before or after the value
             return (metric === 'Worker Productivity') ?
-               scaleMapping[metric].unit + Math.round(d3.min(scaleMapping[metric].data)) :
-                Math.round(d3.min(scaleMapping[metric].data)) + ' ' + scaleMapping[metric].unit ;
+               scaleMapping[metric].unit + Math.round(ghostX.domain()[0]) :
+                Math.round(ghostX.domain()[0]) + ' ' + scaleMapping[metric].unit ;
         });
 
     // max tick mark
@@ -319,8 +335,8 @@ function drawGhostCircles(){
         .text(function(){
             // determine whether the metric comes before or after the value
             return (metric === 'Worker Productivity') ?
-                scaleMapping[metric].unit + Math.round(d3.max(scaleMapping[metric].data)) :
-                Math.round(d3.max(scaleMapping[metric].data)) + ' ' + scaleMapping[metric].unit;
+                scaleMapping[metric].unit + Math.round(ghostX.domain()[1]) :
+                Math.round(ghostX.domain()[1]) + ' ' + scaleMapping[metric].unit;
         });
 
     // mame of metric
@@ -357,19 +373,15 @@ function scale(){
         let heightScale = curScale.scale;
 
         d3.selectAll('.country')
-            // .style('transform', `translate(0px, ${fullSVGheight - plotHeight}px)`)
             .style('height', function(d){return heightScale(d[0][curData]);})
             .style('top', function (d){ return fullSVGheight - heightScale(d[0][curData]); });
 
         d3.selectAll('.crop')
             .style('height', function(d){ return (heightScale(d[curData]) * d.percentOfTotal);});
 
-        // setTimeout(function(){
             callCountryLabels();
             d3.selectAll('.countryLabel')
                 .style('bottom', function (d){ return (heightScale(d[0][curData])); });
-        // }, 1000);
-
 
     }
 }
@@ -491,7 +503,7 @@ function onMouseOut(d){
 function countryHoverOn(country){
     return d3.selectAll(`.${country.replace(/\s/g, '')}`)
         .classed('hover', true)
-        // .moveToFront();
+        .moveToFront();
 }
 
 function countryHoverOff(country){
@@ -524,11 +536,11 @@ var phases = {
     },
     "phase3": {
         "start": 4,
-        "end": 5,
+        "end": 5.5,
         "text1": "Scaled by Worker Productivity"
     },
     "phase4": {
-        "start": 5,
+        "start": 5.75,
         "end": 6,
         "text1": "Explore Other Indicators"
     }
@@ -673,10 +685,11 @@ function changeTransitionHeader(phase){
         .text(phases[phase].text1)
         .style('opacity', function(){return tScale(scrollTop); });
 
-    d3.selectAll('h4.transitionSubheader')
+    d3.selectAll('.transitionSubheader')
         .text(function(){ return (phases[phase].text2) ? phases[phase].text2 : '';})
         .style('opacity', function(){ return tScale(scrollTop); })
         .style('top', phases[phase].start * WINDOW_HEIGHT);
+
 }
 
 window.requestAnimationFrame(render);
