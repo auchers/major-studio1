@@ -44,7 +44,7 @@ body{
 
 div.plotContainer{
     position:relative;
-    height: 600vh;
+    height: 700vh;
 }
 
 div.break{
@@ -81,6 +81,7 @@ a{
 
 .sourcesInfo{
     text-align: right;
+    font-size: smaller;
 }
 
 text{
@@ -168,16 +169,16 @@ circle.ghost{
 div.tooltip {
     position: absolute;
     text-align: left;
-    font: 12px sans-serif;
+    font-size: 12px;
     background: #fefefe;
     border: 0px;
-    /*border-radius: 8px;*/
     pointer-events: none;
     padding: 1em;
 }
 
 .tooltip>p{
     margin-bottom: 0;
+    /*font-size: larger;*/
 }
 
 .label{

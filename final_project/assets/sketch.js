@@ -283,7 +283,9 @@ function drawGhostCircles(){
         .append('text')
         .merge(textLabelsData)
         .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} label`; })
-        .text(function(d){ console.log(d[0][m]); return d[0][m]});
+        .text(function(d){
+            return formatNumbers(d[0][m]);
+        });
 
     textLabels.transition()
         .duration(2000)
@@ -315,9 +317,7 @@ function drawGhostCircles(){
         .attr("transform", `translate(5, ${tallTickHeight * .7})`)
         .text(function(){
             // determine whether the metric comes before or after the value
-            return (metric === 'Worker Productivity') ?
-               scaleMapping[metric].unit + Math.round(ghostX.domain()[0]) :
-                Math.round(ghostX.domain()[0]) + ' ' + scaleMapping[metric].unit ;
+            return formatNumbers(ghostX.domain()[0]);
         });
 
     // max tick mark
@@ -336,9 +336,7 @@ function drawGhostCircles(){
         .attr("transform", `translate(-5, ${tallTickHeight * .7})`)
         .text(function(){
             // determine whether the metric comes before or after the value
-            return (metric === 'Worker Productivity') ?
-                scaleMapping[metric].unit + Math.round(ghostX.domain()[1]) :
-                Math.round(ghostX.domain()[1]) + ' ' + scaleMapping[metric].unit;
+            return formatNumbers(ghostX.domain()[1])
         });
 
     // mame of metric
@@ -474,18 +472,14 @@ function onMouseover(d) {
         .style("opacity", .9);
 
     tool_tip.html(function () {
-        let formattedMetric = (metric === 'Worker Productivity') ?
-            scaleMapping[metric].unit + Math.round(d[m]) :
-            Math.round(d[m]) + ' ' + scaleMapping[metric].unit;
-
         return `<h4>${d.Country}</h4>
             <div><b>${d.Item} (${Math.round(d.percentOfTotal * 100)}% of total crops)</b></div>
             <br>
-            <p>Worker Productivity: $${d.AgriValuePerWorker}</p>
+            <p>Worker Productivity: ${formatNumbers(d.AgriValuePerWorker, 'Worker Productivity')}</p>
             <br>
             <p>Gini: ${d.Gini}</p>
             <br>
-            <p>Fertilizer Consumption: ${d.FertilizerConsumpPerHA}</p>`;
+            <p>Fertilizer Consumption: ${formatNumbers(d.FertilizerConsumpPerHA, 'Fertilizer Consumption')}</p>`;
     })
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
@@ -513,6 +507,14 @@ function countryHoverOff(country){
         .classed('hover', false);
 }
 
+function formatNumbers(n, unit = metric){
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+
+    return (unit === 'Worker Productivity')? formatter.format(n): Math.round(n) + ' ' + scaleMapping[unit].unit;
+}
 
 body.on("mousewheel", function() {
         newScrollTop = body.node().scrollTop / WINDOW_HEIGHT;
@@ -542,8 +544,8 @@ var phases = {
         "text1": "Scaled by Worker Productivity"
     },
     "phase4": {
-        "start": 5.75,
-        "end": 6,
+        "start": 6.5,
+        "end": 7,
         "text1": "Explore Other Indicators"
     }
 };
