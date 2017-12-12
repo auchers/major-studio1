@@ -28,6 +28,16 @@ var scaleMapping ={
         "description": "Fertilizer consumption measures the quantity of plant nutrients used per unit of arable land. Fertilizer products cover nitrogenous, potash, and phosphate fertilizers (including ground rock phosphate). Traditional nutrients--animal and plant manures--are not included. For the purpose of data dissemination, FAO has adopted the concept of a calendar year (January to December). Some countries compile fertilizer data on a calendar year basis, while others are on a split-year basis. Arable land includes land defined by the FAO as land under temporary crops (double-cropped areas are counted once), temporary meadows for mowing or for pasture, land under market or kitchen gardens, and land temporarily fallow. Land abandoned as a result of shifting cultivation is excluded.",
         "source": "Food and Agriculture Organization, electronic files and web site."
     }
+    // ,
+    // 'Share of Employment in Agriculture':{
+    //     "dataName": 'EmploymentShareInAg',
+    //     "scaleType": "Linear",
+    //     "fullName": "",
+    //     "unit_long": "",
+    //     "unit": "",
+    //     "description": "",
+    //     "source": "Food and Agriculture Organization, electronic files and web site."
+    // }
 
 };
 
@@ -165,6 +175,11 @@ function updateData(){
         scaleMapping[i].scale = d3[scaleType]()
             .domain([d3.min(scaleMapping[i].data), d3.max(scaleMapping[i].data)])
             .range([10, plotHeight]);
+
+        if (i === "Gini"){
+            scaleMapping[i].scale
+                .domain([d3.max(scaleMapping[i].data), d3.min(scaleMapping[i].data)])
+        }
     });
 
     // group by country
@@ -342,9 +357,9 @@ function scale(){
         let heightScale = curScale.scale;
 
         d3.selectAll('.country')
-            .style('transform', `translate(0px, ${fullSVGheight - plotHeight}px)`)
+            // .style('transform', `translate(0px, ${fullSVGheight - plotHeight}px)`)
             .style('height', function(d){return heightScale(d[0][curData]);})
-            .style('top', function (d){ return plotHeight - heightScale(d[0][curData]); });
+            .style('top', function (d){ return fullSVGheight - heightScale(d[0][curData]); });
 
         d3.selectAll('.crop')
             .style('height', function(d){ return (heightScale(d[curData]) * d.percentOfTotal);});
@@ -487,24 +502,42 @@ function countryHoverOff(country){
 
 body.on("mousewheel", function() {
         newScrollTop = body.node().scrollTop / WINDOW_HEIGHT;
-        // console.log(newScrollTop);
     });
 
 var phases = {
-    "phase0": {"start": 0, "end": 0.5},
-    "phase1": {"start": 0.5, "end": 1.5},
-    "phase2": {"start": 1.5, "end": 2.5},
-    "phase3": {"start": 3.5, "end": 4.5},
-    "phase4": {"start": 4.5, "end": 5}
+    "phase0": {
+        "start": 0,
+        "end": 0.5,
+        "text1": "Scroll Down to Explore the Data"
+    },
+    "phase1": {
+        "start": 0.5,
+        "end": 1.5,
+        "text1": "Top 5 Crops Distribution",
+        "text2": "Each vertical bar depicts 1 country in sub-Saharan Africa. The images composing the bar represent the distribution of that country's top 5 crops (by yield)."
+    },
+    "phase2": {
+        "start": 1.5,
+        "end": 3,
+        "text1": "Top 5 Crops Out of All Crops Distribution",
+        "text2": "The original top 5 crops are now rescaled to show their proportion out of total crops. Remaining 'other' crops are shown in gray."
+    },
+    "phase3": {
+        "start": 4,
+        "end": 5,
+        "text1": "Scaled by Worker Productivity"
+    },
+    "phase4": {
+        "start": 5,
+        "end": 6,
+        "text1": "Explore Other Indicators"
+    }
 };
 
-// subsections change
-var cropTransitionScale = d3.scaleLinear()
-    .domain([phases["phase2"].start, phases["phase2"].end]);
-
-// full bars change
-var countryTransitionScale = d3.scaleLinear()
-    .domain([phases["phase3"].start, phases["phase3"].end]);
+for (p in phases){
+    phases[p].scale = d3.scaleLinear()
+        .domain([phases[p].start, phases[p].end]);
+}
 
 var render = function() {
     if (scrollTop !== newScrollTop) {
@@ -513,13 +546,14 @@ var render = function() {
         tool_tip
             .style('opacity', 0);
 
-        // PHASE 1: Full bars based on crop subtotals
-        if (scrollTop < phases["phase1"].end){
-            d3.selectAll('.stickySentence').classed('active', false);
+        // PHASE 0: Just set text instructions for scroll
+        if (scrollTop < phases["phase0"].end){
+            changeTransitionHeader('phase0');
+        }
 
-            // set headline to phase 1 explanation midway through full scroll length
-            (scrollTop < phases["phase0"].end)? d3.selectAll(`.stickySentence.phase0`).classed('active', true):
-                d3.selectAll(`.stickySentence.phase1`).classed('active', true);
+        // PHASE 1: Full bars based on crop subtotals
+        else if (scrollTop < phases["phase1"].end){
+            changeTransitionHeader('phase1');
 
             d3.selectAll('.countryLabel').remove();
 
@@ -539,8 +573,8 @@ var render = function() {
 
         // PHASE 2: Full bars based on crop totals
         else if (scrollTop >= phases["phase2"].start && scrollTop < phases["phase2"].end){
-            d3.selectAll('.stickySentence').classed('active', false);
-            d3.selectAll(`.stickySentence.phase2`).classed('active', true);
+            changeTransitionHeader('phase2');
+            let tScale = phases['phase2'].scale;
 
             d3.selectAll('.countryLabel').remove();
 
@@ -555,24 +589,24 @@ var render = function() {
                 .filter(function(d){ return d.Item !== 'Other'})
                 .style('height', function(d){
                     // set range for scale adjustment
-                    cropTransitionScale.range([1, d.subtotalValue/d.totalValue]);
+                    tScale.range([1, d.subtotalValue/d.totalValue]);
 
                     // scale the crop height by its place in scroll transition
-                    return ((fullSVGheight) * d.percentOfSubtotal * cropTransitionScale(scrollTop));
+                    return ((fullSVGheight) * d.percentOfSubtotal * tScale(scrollTop));
                 });
 
             d3.selectAll('.Other')
                 .style('height', function(d){
-                    cropTransitionScale.range([0, d.percentOfTotal]);
+                    tScale.range([0, d.percentOfTotal]);
 
-                    return (fullSVGheight) * cropTransitionScale(scrollTop);
+                    return (fullSVGheight) * tScale(scrollTop);
                 });
         }
 
         // PHASE 3: Bars rescaled to worker productivity
         else if (scrollTop >= phases["phase3"].start && scrollTop < phases["phase3"].end){
-            d3.selectAll('.stickySentence').classed('active', false);
-            d3.selectAll(`.stickySentence.phase3`).classed('active', true);
+            changeTransitionHeader('phase3');
+            let tScale = phases['phase3'].scale;
 
             // set country bar max to max times productivity transition scale
             // set crops to % of totals of new (scaled) max
@@ -583,43 +617,42 @@ var render = function() {
             d3.selectAll('.country')
                 .style('height', function(d){
                     // set range for scroll triggered transition
-                    countryTransitionScale
+                    tScale
                         .range([1, d[0][curData] / heightScale.domain()[1]]);
 
-                    return plotHeight * countryTransitionScale(scrollTop);
+                    return plotHeight * tScale(scrollTop);
                 })
                 .style('top', function (d){
                     // set range for scroll triggered transition
-                    countryTransitionScale
+                    tScale
                         .range([1, d[0][curData] / heightScale.domain()[1]]);
 
-                    return fullSVGheight - ((plotHeight+10) * countryTransitionScale(scrollTop));
+                    return fullSVGheight - ((plotHeight+10) * tScale(scrollTop));
                     // plotHeight + 10 because need to account for original heightScale range that sets the min at 10
                 });
 
             d3.selectAll('.crop')
                 .style('height', function(d){
-                    countryTransitionScale
+                    tScale
                         .range([1, d[curData] / heightScale.domain()[1]]);
 
-                    return plotHeight * countryTransitionScale(scrollTop) * d.percentOfTotal;
+                    return plotHeight * tScale(scrollTop) * d.percentOfTotal;
                 });
 
             callCountryLabels();
             d3.selectAll('.countryLabel')
                 .style('bottom', function (d){ return (heightScale(d[0][curData])); })
                 .style('opacity', function(d){
-                    countryTransitionScale
+                    tScale
                         .range([0, 1]);
 
-                    return countryTransitionScale(scrollTop);
+                    return tScale(scrollTop);
                 });
         }
 
         // PHASE 4: exploration phase
         else if (scrollTop >= phases["phase4"].start ){
-            d3.selectAll('.stickySentence').classed('active', false);
-            d3.selectAll(`.stickySentence.phase4`).classed('active', true);
+            changeTransitionHeader('phase4');
 
             curScale = scaleMapping[metric];
             scale();
@@ -629,6 +662,22 @@ var render = function() {
 
     window.requestAnimationFrame(render)
 };
+
+function changeTransitionHeader(phase){
+    let tScale = phases[phase].scale
+        .range([0, 1]);
+
+    if (phase === 'phase0') tScale.range([1,0]);
+
+    d3.selectAll(`h3.stickySentence`)
+        .text(phases[phase].text1)
+        .style('opacity', function(){return tScale(scrollTop); });
+
+    d3.selectAll('h4.transitionSubheader')
+        .text(function(){ return (phases[phase].text2) ? phases[phase].text2 : '';})
+        .style('opacity', function(){ return tScale(scrollTop); })
+        .style('top', phases[phase].start * WINDOW_HEIGHT);
+}
 
 window.requestAnimationFrame(render);
 

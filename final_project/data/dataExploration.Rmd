@@ -36,7 +36,10 @@ Population..total..SP.POP.TOTL.,
 Arable.land..hectares...AG.LND.ARBL.HA.,
 Land.area..sq..km...AG.LND.TOTL.K2.,
 Rural.poverty.headcount.ratio.at.national.poverty.lines....of.rural.population...SI.POV.RUHC.,
-Long.Name
+Long.Name,
+Access.to.electricity..rural....of.rural.population...EG.ELC.ACCS.RU.ZS.,
+People.using.basic.drinking.water.services..rural....of.rural.population...SH.H2O.BASW.RU.ZS.,
+Employment.in.agriculture....of.total.employment...SL.AGR.EMPL.ZS.  
 # GINI.index..World.Bank.estimate...SI.POV.GINI.
 ) %>%
   rename(AgriValuePerWorker = Agriculture.value.added.per.worker..constant.2010.US....EA.PRD.AGRI.KD.,
@@ -58,7 +61,10 @@ Long.Name
         GDP = GDP..current.US....NY.GDP.MKTP.CD.,
         ArableLandHectares = Arable.land..hectares...AG.LND.ARBL.HA.,
         LandAreaSqMeters = Land.area..sq..km...AG.LND.TOTL.K2.,
-        RuralPovertyRatio = Rural.poverty.headcount.ratio.at.national.poverty.lines....of.rural.population...SI.POV.RUHC.
+        RuralPovertyRatio = Rural.poverty.headcount.ratio.at.national.poverty.lines....of.rural.population...SI.POV.RUHC.,
+        RuralElectricityAccess = Access.to.electricity..rural....of.rural.population...EG.ELC.ACCS.RU.ZS.,
+        RuralWaterServicesAccess = People.using.basic.drinking.water.services..rural....of.rural.population...SH.H2O.BASW.RU.ZS.,
+        EmploymentShareInAg = Employment.in.agriculture....of.total.employment...SL.AGR.EMPL.ZS.  
         # Gini = GINI.index..World.Bank.estimate...SI.POV.GINI.
         )
 #TODO: add more variabel aliases
@@ -77,6 +83,7 @@ gini <- read_csv('Income inequality, Gini coefficient.csv', skip = 1)
 # gini <- rename(gini, '2015' = 'X2015')
 # head(gini)
 # glimpse(gini)
+View(gini)
 
 gini_new <- gather(gini,'Time', 'Gini', 3: 13, na.rm = TRUE)
 gini_new$Time = as.character(gini_new$Time)
@@ -165,7 +172,7 @@ crops_with_Other_row$Year = as.character(crops_with_Other_row$Year)
 
 final_crop_data <- right_join(country_data, crops_with_Other_row, by= c ("Country" = "Area", "Time" = "Year"))
 
-View(final_crop_data[final_crop_data$Time >= 2010,])
+glimpse(final_crop_data[final_crop_data$Time >= 2010,])
 
 final_crop_data <- final_crop_data %>% 
   filter(Time >= 2010) %>%

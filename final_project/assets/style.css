@@ -1,6 +1,6 @@
 body{
     font-family: 'Raleway', sans-serif;
-    background-color: rgba(185,185,185,0.25);
+    background-color: rgba(185, 180, 82, 0.25);
     fill: #200b13;
     /*font-family: ProximaNova,sans-serif;*/
     letter-spacing: .5px;
@@ -9,41 +9,36 @@ body{
 }
 
 .titleContainer{
-    background-color: rgb(237, 237, 237);
+    /*background-color: rgb(237, 237, 237);*/
+}
+
+.title{
+    color: #0165B6;
+    font-weight: bolder;
 }
 
 .subtitleContainer{
     /*height: 80%;*/
 }
 
-.subtitle>p{
-    column-count: 2;
-    /*column-gap: 2em;*/
+.stickySentence, .transitionSubheader{
+    text-anchor: middle;
+    color: #0165B6;
+    z-index: 3;
+    text-align: center;
+    padding: 1em;
+    transition: text 2s;
 }
 
 .stickySentence{
     position: sticky;
-    text-anchor: middle;
     top: 5%;
     left: 50%;
-    background-color: rgb(237, 237, 237);
-    z-index: 3;
-    text-align: center;
-    visibility: collapse;
-    height: 0;
-    opacity: 0;
 }
 
-.stickySentence.active{
-    height: auto;
-    padding: 1em;
-    visibility: visible;
-    opacity: .8;
-    transition: opacity 2s;
-}
-
-h4.stickySentence{
-    top: 7%;
+.transitionSubheader{
+    position: absolute;
+    z-index: -3;
 }
 
 div.plotContainer{
@@ -75,7 +70,7 @@ p{
 }
 
 a{
-    color: #17a2b8;
+    color: #0165B6;
 }
 
 .introHover:hover{
