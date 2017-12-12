@@ -541,12 +541,14 @@ var phases = {
     "phase3": {
         "start": 4,
         "end": 5.5,
-        "text1": "Scaled by Worker Productivity"
+        "text1": "Scaled by Worker Productivity",
+        "text2": "Each bar is now rescaled according to that country's agriculture value added per worker."
     },
     "phase4": {
         "start": 6.5,
         "end": 7,
-        "text1": "Explore Other Indicators"
+        "text1": "Explore Other Indicators",
+        "text2": "Click on the buttons below to see the countries shuffle into a new order. The circles underneath give a sense for the distribution of the selected metric"
     }
 };
 
