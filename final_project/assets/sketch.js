@@ -685,6 +685,8 @@ function changeTransitionHeader(phase){
     let tScale = phases[phase].scale
         .range([0, 1]);
 
+    let phaseMiddle = (phases[phase].start + phases[phase].end)/2;
+
     if (phase === 'phase0') tScale.range([1,0]);
 
     d3.selectAll(`h3.stickySentence`)
@@ -694,7 +696,7 @@ function changeTransitionHeader(phase){
     d3.selectAll('.transitionSubheader')
         .text(function(){ return (phases[phase].text2) ? phases[phase].text2 : '';})
         .style('opacity', function(){ return tScale(scrollTop); })
-        .style('top', phases[phase].start * WINDOW_HEIGHT);
+        .style('top', phaseMiddle * WINDOW_HEIGHT);
 
 }
 
