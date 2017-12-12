@@ -244,6 +244,9 @@ function drawGhostCircles(){
     let barPadding = 5; // to make it line up with the bars below
     let tallTickHeight = 30;
 
+    ghostAxis.selectAll('text').remove();
+    ghostAxis.selectAll('g').remove();
+
     console.log('metric:', metric);
     // x scale for ghost circles
     let ghostX = d3.scaleLinear()
@@ -273,25 +276,24 @@ function drawGhostCircles(){
         .on('mouseout', function(d) {countryHoverOff(d[0].Country);})
         .on('click', onClick);
 
-    var textLabelsData = ghostAxis.selectAll('text.label')
+    var textLabelsData = ghostAxis.selectAll('.label')
         .data(data);
 
     var textLabels = textLabelsData.enter()
         .append('text')
         .merge(textLabelsData)
         .attr('class', function(d){ return `${d[0].Country.replace(/\s/g, '')} label`; })
-        .text(function(d){ return d[0][m]});
+        .text(function(d){ console.log(d[0][m]); return d[0][m]});
 
     textLabels.transition()
         .duration(2000)
         .attr('x', function(d){ return ghostX(d[0][m]); })
         .attr('y', 0)
-        .style('opacity', 0.7);
+        .attr('text-anchor', 'middle')
+        .attr('opacity', 0);
 
     ghostCirclesData.exit().remove();
     textLabelsData.exit().remove();
-    ghostAxis.selectAll('text').remove();
-    ghostAxis.selectAll('g').remove();
 
     // call axis
     let g = ghostAxis.append('g')
