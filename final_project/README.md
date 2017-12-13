@@ -40,7 +40,7 @@ Data for this project is brought together from the following sources. In bringin
 
 - Metrics on Human Welfare and Development from: 
     
-    “DataBank - The World Bank.” Accessed November 7, 2017. __[http://databank.worldbank.org/data/home.aspx](http://databank.worldbank.org/data/home.aspx).__
+    “DataBank \| The World Bank.” Accessed November 7, 2017. __[http://databank.worldbank.org/data/home.aspx](http://databank.worldbank.org/data/home.aspx).__
 
 - Crop distributions from: 
 
@@ -48,6 +48,6 @@ Data for this project is brought together from the following sources. In bringin
     
 - Gini Scores from: 
 
-    “Human Development Data (1990-2015) | Human Development Reports.” Accessed December 5, 2017. __[http://hdr.undp.org/en/data#](http://hdr.undp.org/en/data#)__.
+    “Human Development Data (1990-2015) \| Human Development Reports.” Accessed December 5, 2017. __[http://hdr.undp.org/en/data#](http://hdr.undp.org/en/data#)__.
 
 - Crop images found on google image search
