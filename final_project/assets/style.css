@@ -33,6 +33,10 @@ body{
 
 .stickySentence{
     position: sticky;
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
     top: 5%;
     left: 50%;
 }
@@ -55,6 +59,10 @@ div.plot{
     min-width: 600px;
     max-height: 800px;
     position: sticky;
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
     top: 23%;
     background-color: #EDECD3;
 }
