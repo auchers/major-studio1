@@ -51,7 +51,8 @@ var width, plotHeight, fullSVGheight, ghostHeight;
 var countries, crops, x;
 
 var scrollTop = 0,
-    newScrollTop = 0;
+    newScrollTop = 0,
+    tScale;
 
 // set starting values
 var year = 2014,
@@ -521,35 +522,35 @@ function formatNumbers(n, unit = metric){
 var phases = {
     "phase0": {
         "start": 0,
-        "end": 1 * WINDOW_HEIGHT,
+        "end": Math.round(1.5 * WINDOW_HEIGHT) - 5,
         "text1": "Scroll Down to Explore the Data"
     },
     "phase1": {
-        "start": 1 * WINDOW_HEIGHT,
-        "end": 2.5 * WINDOW_HEIGHT,
+        "start": Math.round(1.5 * WINDOW_HEIGHT),
+        "end": Math.round(2.5 * WINDOW_HEIGHT) - 5,
         "text1": "Top 5 Crops Distribution",
         "text2": "Each vertical bar depicts 1 country in sub-Saharan Africa. The images composing the bar represent the distribution of that country's top 5 crops (by yield)."
     },
     "phase2": {
-        "start": 2.5 * WINDOW_HEIGHT,
-        "end": 4 * WINDOW_HEIGHT,
+        "start": Math.round(2.5 * WINDOW_HEIGHT),
+        "end": Math.round(4 * WINDOW_HEIGHT) - 5,
         "text1": "Top 5 Crops Out of All Crops Distribution",
         "text2": "The original top 5 crops are now rescaled to show their proportion out of total crops. Remaining 'other' crops are shown in gray."
     },
     "phase3": {
-        "start": 4 * WINDOW_HEIGHT,
-        "end": 5.5 * WINDOW_HEIGHT,
+        "start": Math.round(4 * WINDOW_HEIGHT),
+        "end": Math.round(5.5 * WINDOW_HEIGHT) - 5,
         "text1": "Scaled by Worker Productivity",
         "text2": "Each bar is now rescaled according to that country's agriculture value added per worker."
     },
     "phase4": {
-        "start": 5.5 * WINDOW_HEIGHT,
-        "end": 7 * WINDOW_HEIGHT,
+        "start": Math.round(5.5 * WINDOW_HEIGHT),
+        "end": Math.round(7 * WINDOW_HEIGHT),
         "text1": "Explore Other Indicators",
         "text2": "Click on the buttons below to see the countries shuffle into a new order. The circles underneath give a sense for the distribution of the selected metric"
     }
 };
-let i = 0
+let i = 0;
 for (p in phases){
     phases[p].scale = d3.scaleLinear()
         .domain([phases[p].start, phases[p].end]);
@@ -562,14 +563,26 @@ for (p in phases){
         // .text(p)
         .style('top', function(){
             // phase 4 stops to early to allow view of all the metrics and distributions
-            return (p === 'phase4')? phases[p].end + 100 : phases[p].end;
+            let top = phases[p].end;
+            if (p === 'phase4') top = phases[p].end + WINDOW_HEIGHT/4; // over shoot last ont
+            if (p === 'phase0') top = phases[p].start; // go to the beginning for first one
+            return top; // plus 5 to trigger next button
         });
 
-    var nextButton = plotContainer
-        .append('button')
-        .attr('class', 'navButton phase'+i)
-        .text('Next')
+
+    // add down buttons
+    d3.select('body')
+        .append('div')
+        .attr('class', 'navButton down phase'+i)
         .attr('href', '#phase'+ (i+1))
+        .style('visibility','hidden');
+
+    // add up buttons
+    d3.select('body')
+        .append('div')
+        .attr('class', 'navButton up phase'+i)
+        // .text('Next')
+        .attr('href', '#phase'+ (i-1))
         .style('visibility','hidden');
 
     i++;
@@ -577,11 +590,13 @@ for (p in phases){
 
 var render = function() {
     newScrollTop = window.scrollY;
+
     if (scrollTop !== newScrollTop) {
         scrollTop = newScrollTop;
 
         console.log(scrollTop / WINDOW_HEIGHT, scrollTop);
 
+        // make tooltip invisible so that it doesn't show while scrolling
         tool_tip
             .style('opacity', 0);
 
@@ -591,7 +606,7 @@ var render = function() {
         }
 
         // PHASE 1: Full bars based on crop subtotals
-        else if (scrollTop < phases["phase1"].end){
+        else if (scrollTop <= phases["phase1"].end){
             changeTransitionHeader(1);
 
             d3.selectAll('.countryLabel').remove();
@@ -611,9 +626,10 @@ var render = function() {
         }
 
         // PHASE 2: Full bars based on crop totals
-        else if (scrollTop >= phases["phase2"].start && scrollTop < phases["phase2"].end){
+        else if (scrollTop > phases["phase2"].start && scrollTop <= phases["phase2"].end){
             changeTransitionHeader(2);
             let tScale = phases['phase2'].scale;
+                // .domain([phases["phase2"].start, phases["phase2"].end + 5]);
 
             d3.selectAll('.countryLabel').remove();
 
@@ -643,7 +659,7 @@ var render = function() {
         }
 
         // PHASE 3: Bars rescaled to worker productivity
-        else if (scrollTop >= phases["phase3"].start && scrollTop < phases["phase3"].end){
+        else if (scrollTop > phases["phase3"].start && scrollTop <= phases["phase3"].end){
             changeTransitionHeader(3);
             let tScale = phases['phase3'].scale;
 
@@ -666,7 +682,7 @@ var render = function() {
                     tScale
                         .range([1, d[0][curData] / heightScale.domain()[1]]);
 
-                    return fullSVGheight - ((plotHeight+10) * tScale(scrollTop));
+                    return fullSVGheight - ((plotHeight) * tScale(scrollTop) - 3);
                     // plotHeight + 10 because need to account for original heightScale range that sets the min at 10
                 });
 
@@ -690,7 +706,7 @@ var render = function() {
         }
 
         // PHASE 4: exploration phase
-        else if (scrollTop >= phases["phase4"].start ){
+        else if (scrollTop > phases["phase4"].start ){
             changeTransitionHeader(4);
 
             curScale = scaleMapping[metric];
@@ -703,31 +719,24 @@ var render = function() {
 };
 
 function changeTransitionHeader(n){
-    let tScale = phases['phase'+n].scale
-        .range([0, 1]);
 
-    if (n === 0) tScale.range([1,0]);
+    if (scrollTop > phases['phase'+n].start + 20){
+        tScale = phases['phase'+n].scale
+            .range([0, 1]);
 
-    d3.selectAll(`h3.stickySentence`)
-        .text(phases['phase'+n].text1)
-        .style('opacity', function(){return tScale(scrollTop); });
+        if (n === 0) tScale.range([1,0]);
+
+        d3.selectAll(`h3.stickySentence`)
+            .text(phases['phase'+n].text1)
+            .style('opacity', function(){return tScale(scrollTop); });
+    }
+
 
     // SET NEXT BUTTON
     d3.selectAll('.navButton').style('visibility', 'hidden');
-     if (n !== 4) {
-        d3.select('.navButton.phase'+n)
-            .style('visibility', 'visible')
-    };
 
-    let phaseMiddle = (phases['phase'+n].start + phases['phase'+n].end)/2;
-    let topDist = .2;
-// todo come back to subheader
-    // d3.selectAll('.transitionSubheader')
-    //     .text(function(){ return (phases[phase].text2) ? phases[phase].text2 : '';})
-    //     .style('opacity', function(){ return tScale(scrollTop); })
-    //     .style('top', function(){
-    //         return ((scrollTop > phases[phase].start - topDist)? scrollTop + topDist : phases[phase].start)+ 'px';
-    //     });
+        d3.selectAll('.navButton.phase'+n)
+            .style('visibility', 'visible')
 
 }
 
@@ -748,8 +757,12 @@ d3.selection.prototype.moveToFront = function() {
 function scrollNav() {
     $('.navButton').click(function(){
         //Animate
+        console.log('scrollNav to:',Math.ceil($( $(this).attr('href') ).offset().top));
+        console.log('jump to: ', $(this).attr('href').replace('#', ''));
+        console.log('domain end:', phases[$(this).attr('href').replace('#', '')].scale.domain());
+        console.log('domain value:', phases[$(this).attr('href').replace('#', '')].scale(Math.ceil($( $(this).attr('href') ).offset().top)));
         $('html, body').stop().animate({
-            scrollTop: $( $(this).attr('href') ).offset().top - 10
+            scrollTop: Math.ceil($( $(this).attr('href') ).offset().top)
         }, 600);
         render();
         return false;

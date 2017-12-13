@@ -148,10 +148,31 @@ button.scale{
 }
 
 .navButton{
-    position: sticky;
-    top: 95%;
-    left: 50%;
+    position: fixed;
+    right: 2em;
     /*z-index: -10;*/
+    border-bottom: 1px #200b13 solid;
+    border-left: 1px #200b13 solid;
+    width: 24px;
+    height: 24px;
+    box-sizing: border-box;
+    margin-left: -12px;
+    background-color: rgba(0,0,0,0);
+}
+
+.navButton.up{
+    top: 49%;
+    transform: rotate(135deg);
+}
+
+.navButton.down{
+    top: 51%;
+    transform: rotate(-45deg);
+}
+
+.navButton:hover{
+    border-bottom: 2px #200b13 solid;
+    border-left: 2px #200b13 solid;
 }
 
 .crop:hover{
