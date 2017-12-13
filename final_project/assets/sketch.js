@@ -540,7 +540,7 @@ var phases = {
     "phase3": {
         "start": Math.round(4 * WINDOW_HEIGHT),
         "end": Math.round(5.5 * WINDOW_HEIGHT) - 5,
-        "text1": "Scaled by Worker Productivity",
+        "text1": "Countries Scaled by Worker Productivity",
         "text2": "Each bar is now rescaled according to that country's agriculture value added per worker."
     },
     "phase4": {
