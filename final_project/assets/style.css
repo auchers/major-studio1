@@ -159,10 +159,10 @@ button.scale{
     position: fixed;
     right: 2em;
     /*z-index: -10;*/
-    border-bottom: 1px #200b13 solid;
-    border-left: 1px #200b13 solid;
-    width: 24px;
-    height: 24px;
+    border-bottom: 3px #0165B7 solid;
+    border-left: 3px #0165B7 solid;
+    width: 25px;
+    height: 25px;
     box-sizing: border-box;
     margin-left: -12px;
     background-color: rgba(0,0,0,0);
@@ -179,8 +179,8 @@ button.scale{
 }
 
 .navButton:hover{
-    border-bottom: 2px #200b13 solid;
-    border-left: 2px #200b13 solid;
+    border-bottom: 4px #0165B7 solid;
+    border-left: 4px #0165B7 solid;
 }
 
 .crop:hover{
