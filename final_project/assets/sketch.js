@@ -575,7 +575,10 @@ for (p in phases){
         .append('div')
         .attr('class', 'navButton down phase'+i)
         .attr('href', '#phase'+ (i+1))
-        .style('visibility','hidden');
+        .style('visibility',function (){
+            if (p === 'phase0') return 'visible';
+            else return 'hidden';
+        });
 
     // add up buttons
     d3.select('body')
@@ -583,8 +586,10 @@ for (p in phases){
         .attr('class', 'navButton up phase'+i)
         // .text('Next')
         .attr('href', '#phase'+ (i-1))
-        .style('visibility','hidden');
-
+        .style('visibility',function (){
+            if (p === 'phase0') return 'visible';
+            else return 'hidden';
+        });
     i++;
 }
 
