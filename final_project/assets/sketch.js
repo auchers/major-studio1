@@ -754,10 +754,10 @@ function scrollNav() {
     $('.navButton').click(function(){
         //Animate
         onClick();
-        console.log('scrollNav to:',Math.ceil($( $(this).attr('href') ).offset().top));
-        console.log('jump to: ', $(this).attr('href').replace('#', ''));
-        console.log('domain end:', phases[$(this).attr('href').replace('#', '')].scale.domain());
-        console.log('domain value:', phases[$(this).attr('href').replace('#', '')].scale(Math.ceil($( $(this).attr('href') ).offset().top)));
+        // console.log('scrollNav to:',Math.ceil($( $(this).attr('href') ).offset().top));
+        // console.log('jump to: ', $(this).attr('href').replace('#', ''));
+        // console.log('domain end:', phases[$(this).attr('href').replace('#', '')].scale.domain());
+        // console.log('domain value:', phases[$(this).attr('href').replace('#', '')].scale(Math.ceil($( $(this).attr('href') ).offset().top)));
         $('html, body').stop().animate({
             scrollTop: Math.ceil($( $(this).attr('href') ).offset().top)
         }, 600);
