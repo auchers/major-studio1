@@ -22,9 +22,9 @@ var scaleMapping ={
     },
     'Fertilizer Consumption': {
         "dataName": 'FertilizerConsumpPerHA',
-        "scaleType": "Linear",
+        "scaleType": "Log",
         "fullName": "Fertilizer consumption (kilograms per hectare of arable land)",
-        "unit_long": "(kilograms per hectare of arable land)",
+        "unit_long": "(kilograms per hectare of arable land - logarithmic scale)",
         "unit": "kg",
         "description": "Fertilizer consumption measures the quantity of plant nutrients used per unit of arable land. Fertilizer products cover nitrogenous, potash, and phosphate fertilizers (including ground rock phosphate). Traditional nutrients--animal and plant manures--are not included. For the purpose of data dissemination, FAO has adopted the concept of a calendar year (January to December). Some countries compile fertilizer data on a calendar year basis, while others are on a split-year basis. Arable land includes land defined by the FAO as land under temporary crops (double-cropped areas are counted once), temporary meadows for mowing or for pasture, land under market or kitchen gardens, and land temporarily fallow. Land abandoned as a result of shifting cultivation is excluded.",
         "source": "Food and Agriculture Organization, electronic files and web site."
@@ -249,7 +249,11 @@ function drawGhostCircles(){
 
     console.log('metric:', metric);
     // x scale for ghost circles
-    let ghostX = d3.scaleLinear()
+
+    let scaleType = 'scale'+scaleMapping[metric].scaleType;
+    // scaleMapping[i].scale = d3[scaleType]()
+
+    let ghostX = d3[scaleType]()
         .domain([d3.min(scaleMapping[metric].data), d3.max(scaleMapping[metric].data)])
         .range([r + barPadding, width - r - barPadding]);
 
@@ -405,14 +409,13 @@ function callCountryLabels(){
 }
 
 function onClick(d, i, nodes){
-    console.log('in click');
-
+    // d is nonexistent in cases when this is called from the scroll button instead
     // select all but node selected
-    var toRemove = d3.selectAll('.country')
-        .filter(function(x){ return d[0].Country !== x[0].Country; });
+    var toRemove = (d)? d3.selectAll('.country')
+        .filter(function(x){ return d[0].Country !== x[0].Country; }): null;
 
-
-    if ((toRemove._groups[0].length < 2)){ // bringing the full view back
+    // toremove is null with this function is called from scroll button
+    if (!toRemove || (toRemove._groups[0].length < 2)){ // bringing the full view back
 
         // first remove svg from previous click drilldowns
         d3.select('.drilldown').remove();
@@ -424,7 +427,7 @@ function onClick(d, i, nodes){
         d3.selectAll('circle')
             .classed('active', false);
 
-        console.log(d[0].Country);
+        // console.log(d[0].Country);
      // otherwise, remove others and plot drilldown
     }else {
         d3.selectAll('.countryLabel').remove();
@@ -447,17 +450,6 @@ function onClick(d, i, nodes){
             .attr('x', (dWidth)/2)
             .attr('y', '30%')
             .text(d[0].Country);
-
-        // drilldown.append('text')
-        //     .attr('class', 'drilldownContent')
-        //     .attr('text-anchor', 'middle')
-        //     .attr('x', (dWidth)/2)
-        //     .attr('y', '40%')
-        //     .html(
-        //         `GDP: $${d[0].GDP}
-        //         Gini: ${d[0].Gini}
-        //         `
-        //     );
 
         toRemove.remove();
     }
@@ -761,6 +753,7 @@ d3.selection.prototype.moveToFront = function() {
 function scrollNav() {
     $('.navButton').click(function(){
         //Animate
+        onClick();
         console.log('scrollNav to:',Math.ceil($( $(this).attr('href') ).offset().top));
         console.log('jump to: ', $(this).attr('href').replace('#', ''));
         console.log('domain end:', phases[$(this).attr('href').replace('#', '')].scale.domain());
