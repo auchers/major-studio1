@@ -139,13 +139,12 @@ function getWidthandHeight(){
     // plot dimensions
     width = plot.node().offsetWidth;
     fullSVGheight = plot.node().offsetHeight;
-    plotHeight = fullSVGheight * 0.8; //todo use this to change the height of the scaled bars by more
+    plotHeight = fullSVGheight * 0.8;
 
     ghostHeight = ghostAxis.node().getBoundingClientRect().height;
 
-    console.log(`width: ${width} plotHeight: ${plotHeight} ghostHeight: ${ghostHeight}`);
+    // console.log(`width: ${width} plotHeight: ${plotHeight} ghostHeight: ${ghostHeight}`);
 
-    //TODO: set range of scroll height scales
 }
 
 // get data
@@ -599,7 +598,7 @@ var render = function() {
     if (scrollTop !== newScrollTop) {
         scrollTop = newScrollTop;
 
-        console.log(scrollTop / WINDOW_HEIGHT, scrollTop);
+        // console.log(scrollTop / WINDOW_HEIGHT, scrollTop);
 
         // make tooltip invisible so that it doesn't show while scrolling
         tool_tip
