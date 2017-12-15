@@ -519,25 +519,25 @@ var phases = {
     "phase1": {
         "start": Math.round(1.5 * WINDOW_HEIGHT),
         "end": Math.round(2.5 * WINDOW_HEIGHT) - 5,
-        "text1": "Top 5 Crops Distribution",
+        "text1": "Top 5 Crops Distribution - 2014",
         "text2": "Each vertical bar depicts 1 country in sub-Saharan Africa. The images composing the bar represent the distribution of that country's top 5 crops (by yield)."
     },
     "phase2": {
         "start": Math.round(2.5 * WINDOW_HEIGHT),
         "end": Math.round(4 * WINDOW_HEIGHT) - 5,
-        "text1": "Top 5 Crops Out of All Crops Distribution",
+        "text1": "Top 5 Crops Out of All Crops Distribution - 2014",
         "text2": "The original top 5 crops are now rescaled to show their proportion out of total crops. Remaining 'other' crops are shown in gray."
     },
     "phase3": {
         "start": Math.round(4 * WINDOW_HEIGHT),
         "end": Math.round(5.5 * WINDOW_HEIGHT) - 5,
-        "text1": "Countries Scaled by Worker Productivity",
+        "text1": "Countries Scaled by Worker Productivity - 2014",
         "text2": "Each bar is now rescaled according to that country's agriculture value added per worker."
     },
     "phase4": {
         "start": Math.round(5.5 * WINDOW_HEIGHT),
         "end": Math.round(7 * WINDOW_HEIGHT),
-        "text1": "Explore Other Indicators",
+        "text1": "Explore Other Indicators - 2014",
         "text2": "Click on the buttons below to see the countries shuffle into a new order. The circles underneath give a sense for the distribution of the selected metric"
     }
 };
