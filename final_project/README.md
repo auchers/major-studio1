@@ -1,5 +1,7 @@
 # Agricultural Productivity in sub-Sarahan Africa
 
+VIEW FINAL PROJECT HERE: https://auchers.github.io/major-studio1/final_project
+
 ## Crop Profiles of Countries in sub-Saharan Africa
 
 This project aims to explore the effect of agricultural investment and productivity on the welfare and equitable share of resources in Africa. 
